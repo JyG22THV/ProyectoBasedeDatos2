@@ -12,9 +12,43 @@
     </h1>
 
     <header style="display:flex; align-items:center; padding:20px; background:#0d47a1; color:white;">
-    <img src="imagenes/gtu_logo.jpg.jpeg" width="150">
-    <h1 style="margin-left:15px;">                                Tecnología de Punta</h1>
-    </header>
+    
+    <img src="imagenes/gtu_logo.jpg.jpeg"
+         width="150"
+         id="logo"
+         style="cursor:pointer;"
+         onclick="expandirLogo()">
+
+    <h1 style="margin-left:15px;">
+        Tecnología de Punta
+    </h1>
+
+</header>
+
+    <style>
+#logo {
+    transition: transform 0.4s ease;
+}
+
+.logo-grande {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2.5);
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+</style>
+
+    <script>
+function expandirLogo() {
+    document.getElementById("logo").classList.toggle("logo-grande");
+}
+</script>
+
+    
 
     <marquee behavior="scroll" direction="left" style="background:black; color:#00ffcc; font-size:22px; padding:10px;">
     💡 Bienvenidos a nuestra página de Tecnología de Punta 💡      💡 Bienvenidos a nuestra página de Tecnología de Punta 💡      💡 Bienvenidos a nuestra página de Tecnología de Punta 💡
