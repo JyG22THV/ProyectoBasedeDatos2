@@ -12,7 +12,7 @@
     </h1>
 
     <marquee behavior="scroll" direction="left" style="background:black; color:#00ffcc; font-size:22px; padding:10px;">
-    💡 Bienvenidos a nuestra página de Kimberly Clark 💡      💡 El mejor distribuidor de productos para el cuidado 💡      💡 BBienvenidos a nuestra página de Kimberly Clark 💡
+    💡 Bienvenidos a nuestra página de Kimberly Clark 💡      💡 El mejor distribuidor de productos para el cuidado personal 💡      💡 Bienvenidos a nuestra página de Kimberly Clark 💡
     </marquee>
 
     
@@ -57,30 +57,30 @@ function expandirLogo() {
     <span style="color:white; font-size:18px;">| Conócenos |</span>
 </nav>
 
-<div style="text-align:center; margin-top:15px;">
+<div style="text-align:left; margin-top:15px;">
     <ul style="list-style:none; padding:0;">
-        <li class="item-menu" onclick="abrirPopup('mision')">Misión</li>
-        <li class="item-menu" onclick="abrirPopup('vision')">Visión</li>
-        <li class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</li>
+        <li class="item-menu" onclick="abrirPopup('mision')"> [ Misión</li>
+        <li class="item-menu" onclick="abrirPopup('vision')"> [Visión</li>
+        <li class="item-menu" onclick="abrirPopup('objetivo')"> [ Objetivo</li>
     </ul>
 </div>
 
 <div id="mision" class="popup">
     <span class="cerrar" onclick="cerrarPopup('mision')">X</span>
     <h2>Misión</h2>
-    <p>Promover el uso responsable e innovador de la tecnología para mejorar la calidad de vida.</p>
+    <p>Nuestra misión es ofrecer productos y soluciones que mejoren la salud, la higiene y el bienestar de las personas en todo el mundo. Lo hacemos a través de la innovación constante, la sostenibilidad y un compromiso con la excelencia operativa.</p>
 </div>
 
 <div id="vision" class="popup">
     <span class="cerrar" onclick="cerrarPopup('vision')">X</span>
     <h2>Visión</h2>
-    <p>Ser un referente en información sobre tecnología de punta a nivel educativo.</p>
+    <p>Ser la empresa líder a nivel mundial en productos de cuidado personal e higiene, reconocida por su dedicación a las personas, el medio ambiente y la innovación tecnológica que mejora la calidad de vida de millones de consumidores. </p>
 </div>
 
 <div id="objetivo" class="popup">
     <span class="cerrar" onclick="cerrarPopup('objetivo')">X</span>
     <h2>Objetivo</h2>
-    <p>Informar y educar sobre los avances tecnológicos más importantes del mundo.</p>
+    <p>Estamos trabajando en diseñar e implementar un sistema de gestión de pedidos y clientes que se base en una base de datos bien estructurada. Este sistema ayudará a Kimberly-Clark a optimizar la atención al cliente, mejorar la trazabilidad de los pedidos y facilitar la toma de decisiones con información actualizada y confiable.</p>
 </div>
 
 <style>
@@ -88,7 +88,7 @@ function expandirLogo() {
     cursor: pointer;
     color: #0d47a1;
     margin: 8px 0;
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .item-menu:hover {
@@ -126,7 +126,6 @@ function cerrarPopup(id) {
     document.getElementById(id).style.display = "none";
 }
 </script>
-
 
 
 
