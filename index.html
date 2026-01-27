@@ -13,12 +13,83 @@
 
     <header style="display:flex; align-items:center; padding:20px; background:#0d47a1; color:white;">
     <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png" width="60">
-    <h1 style="margin-left:15px;">                  Tecnología de Punta</h1>
+    <h1 style="margin-left:15px;">                                Tecnología de Punta</h1>
     </header>
 
     <marquee behavior="scroll" direction="left" style="background:black; color:#00ffcc; font-size:22px; padding:10px;">
     💡 Bienvenidos a nuestra página de Tecnología de Punta 💡      💡 Bienvenidos a nuestra página de Tecnología de Punta 💡      💡 Bienvenidos a nuestra página de Tecnología de Punta 💡
     </marquee>
+
+    <nav style="background:#1976d2; padding:10px; text-align:center;">
+    <span style="color:white; font-size:18px;">| Conócenos |</span>
+    </nav>
+
+    <div style="text-align:center; margin-top:15px;">
+    <button onclick="abrirPopup('mision')">Misión</button>
+    <button onclick="abrirPopup('vision')">Visión</button>
+    <button onclick="abrirPopup('objetivo')">Objetivo</button>
+    </div>
+
+
+<div id="mision" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('mision')">X</span>
+    <h2>Misión</h2>
+    <p>Promover el uso responsable e innovador de la tecnología para mejorar la calidad de vida.</p>
+</div>
+
+
+<div id="vision" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('vision')">X</span>
+    <h2>Visión</h2>
+    <p>Ser un referente en información sobre tecnología de punta a nivel educativo.</p>
+</div>
+
+
+<div id="objetivo" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('objetivo')">X</span>
+    <h2>Objetivo</h2>
+    <p>Informar y educar sobre los avances tecnológicos más importantes del mundo.</p>
+</div>
+
+    <style>
+.popup {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid #0d47a1;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0px 0px 10px black;
+    z-index: 1000;
+}
+
+.cerrar {
+    float: right;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}
+button {
+    margin: 5px;
+    padding: 10px;
+}
+</style>
+
+    <script>
+function abrirPopup(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+function cerrarPopup(id) {
+    document.getElementById(id).style.display = "none";
+}
+</script>
+
+
+
 
 
 
