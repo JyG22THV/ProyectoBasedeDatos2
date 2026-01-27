@@ -8,11 +8,11 @@
 <body style="background-color:#E0F7FA;">
 
     <h1 style="text-align:center; color:#0d47a1;">
-        Tecnologia de Punta
+        Kimberly Clark
     </h1>
 
     <marquee behavior="scroll" direction="left" style="background:black; color:#00ffcc; font-size:22px; padding:10px;">
-    💡 Bienvenidos a nuestra página de Tecnología de Punta 💡      💡 Bienvenidos a nuestra página de Tecnología de Punta 💡      💡 Bienvenidos a nuestra página de Tecnología de Punta 💡
+    💡 Bienvenidos a nuestra página de Kimberly Clark 💡      💡 El mejor distribuidor de productos para el cuidado 💡      💡 BBienvenidos a nuestra página de Kimberly Clark 💡
     </marquee>
 
     
@@ -25,7 +25,7 @@
          onclick="expandirLogo()">
 
     <h1 style="margin-left:15px;">
-        Tecnología de Punta
+        Aqui va el eslogan
     </h1>
 
 </header>
@@ -53,16 +53,17 @@ function expandirLogo() {
 }
 </script>
 
-    <nav style="background:#1976d2; padding:10px; text-align:center;">
+<nav style="background:#1976d2; padding:10px; text-align:center;">
     <span style="color:white; font-size:18px;">| Conócenos |</span>
-    </nav>
+</nav>
 
-    <div style="text-align:center; margin-top:15px;">
-    <button onclick="abrirPopup('mision')">Misión</button>
-    <button onclick="abrirPopup('vision')">Visión</button>
-    <button onclick="abrirPopup('objetivo')">Objetivo</button>
-    </div>
-
+<div style="text-align:center; margin-top:15px;">
+    <ul style="list-style:none; padding:0;">
+        <li class="item-menu" onclick="abrirPopup('mision')">Misión</li>
+        <li class="item-menu" onclick="abrirPopup('vision')">Visión</li>
+        <li class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</li>
+    </ul>
+</div>
 
 <div id="mision" class="popup">
     <span class="cerrar" onclick="cerrarPopup('mision')">X</span>
@@ -70,13 +71,11 @@ function expandirLogo() {
     <p>Promover el uso responsable e innovador de la tecnología para mejorar la calidad de vida.</p>
 </div>
 
-
 <div id="vision" class="popup">
     <span class="cerrar" onclick="cerrarPopup('vision')">X</span>
     <h2>Visión</h2>
     <p>Ser un referente en información sobre tecnología de punta a nivel educativo.</p>
 </div>
-
 
 <div id="objetivo" class="popup">
     <span class="cerrar" onclick="cerrarPopup('objetivo')">X</span>
@@ -84,11 +83,22 @@ function expandirLogo() {
     <p>Informar y educar sobre los avances tecnológicos más importantes del mundo.</p>
 </div>
 
-    <style>
+<style>
+.item-menu {
+    cursor: pointer;
+    color: #0d47a1;
+    margin: 8px 0;
+    font-size: 18px;
+}
+
+.item-menu:hover {
+    text-decoration: underline;
+}
+
 .popup {
     display: none;
     position: fixed;
-    top: 30%;
+    top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
@@ -105,13 +115,9 @@ function expandirLogo() {
     color: red;
     font-weight: bold;
 }
-button {
-    margin: 5px;
-    padding: 10px;
-}
 </style>
 
-    <script>
+<script>
 function abrirPopup(id) {
     document.getElementById(id).style.display = "block";
 }
