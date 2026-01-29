@@ -2,150 +2,232 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Kimberly Clark</title>
-</head>
+    <title>Kimberly-Clark</title>
 
-<body style="background-color:#E0F7FA;">
-
-    <h1 style="text-align:center; color:#0d47a1;">
-        Kimberly Clark
-    </h1>
-
-    <marquee behavior="scroll" direction="left" style="background:black; color:#00ffcc; font-size:22px; padding:10px;">
-    💡 Bienvenidos a nuestra página de Kimberly Clark 💡      💡 El mejor distribuidor de productos para el cuidado personal 💡      💡 Bienvenidos a nuestra página de Kimberly Clark 💡
-    </marquee>
-
-    
-    <header style="display:flex; align-items:center; padding:20px; background:#0d47a1; color:white;">
-    
-    <img src="imagenes/gtu_logo.jpg.jpeg"
-         width="300"
-         id="logo"
-         style="cursor:pointer;"
-         onclick="expandirLogo()">
-
-    <h1 style="margin-left:15px;">
-        Better Care For A Better World
-    </h1>
-
-</header>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-#logo {
-    transition: transform 0.4s ease;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-.logo-grande {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(3.5);
-    background: black;
-    padding: 10px;
-    border-radius: 5px;
-}
+        body {
+            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+            color: #0d47a1;
+        }
 
-</style>
+        /* ---------- HEADER ---------- */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 20px 40px;
+            background: #0d47a1;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
 
-    <script>
-function expandirLogo() {
-    document.getElementById("logo").classList.toggle("logo-grande");
-}
-</script>
+        header img {
+            width: 140px;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
 
-<nav style="background:#1976d2; padding:10px; text-align:left;">
-    <span style="color:white; font-size:18px; cursor:pointer;"
-          onclick="toggleMenu()">| Conócenos |</span>
-</nav>
+        header h1 {
+            margin-left: 20px;
+            font-weight: 600;
+            font-size: 26px;
+        }
 
-<div id="menuConocenos" style="display:none; text-align:left; margin-top:15px;">
-    <ul style="list-style:none; padding:0;">
-        <li class="item-menu" onclick="abrirPopup('mision')"> ||| Misión |||</li>
-        <li class="item-menu" onclick="abrirPopup('vision')"> ||| Visión |||</li>
-        <li class="item-menu" onclick="abrirPopup('objetivo')"> ||| Objetivo |||</li>
-    </ul>
-</div>
+        /* Logo ampliado */
+        .logo-grande {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(3);
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 2000;
+        }
 
-<div id="mision" class="popup">
-    <span class="cerrar" onclick="cerrarPopup('mision')">X</span>
-    <h2>Misión</h2>
-    <p>
-        Nuestra misión es ofrecer productos y soluciones que mejoren la salud,
-        la higiene y el bienestar de las personas en todo el mundo. Lo hacemos
-        a través de la innovación constante, la sostenibilidad y un compromiso
-        con la excelencia operativa.
-    </p>
-</div>
+        /* ---------- BANNER ---------- */
+        .banner {
+            background: #1976d2;
+            color: white;
+            padding: 12px;
+            overflow: hidden;
+        }
 
-<div id="vision" class="popup">
-    <span class="cerrar" onclick="cerrarPopup('vision')">X</span>
-    <h2>Visión</h2>
-    <p>
-        Ser la empresa líder a nivel mundial en productos de cuidado personal
-        e higiene, reconocida por su dedicación a las personas, el medio ambiente
-        y la innovación tecnológica que mejora la calidad de vida.
-    </p>
-</div>
+        .banner span {
+            display: inline-block;
+            white-space: nowrap;
+            animation: mover 15s linear infinite;
+            font-size: 18px;
+        }
 
-<div id="objetivo" class="popup">
-    <span class="cerrar" onclick="cerrarPopup('objetivo')">X</span>
-    <h2>Objetivo</h2>
-    <p>
-        Estamos trabajando en diseñar e implementar un sistema de gestión de
-        pedidos y clientes basado en una base de datos bien estructurada para
-        optimizar la atención al cliente y la toma de decisiones.
-    </p>
-</div>
+        @keyframes mover {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
 
-<style>
-.item-menu {
-    cursor: pointer;
-    color: #0d47a1;
-    margin: 8px 0;
-    font-size: 22px;
-}
+        /* ---------- NAV ---------- */
+        nav {
+            background: #1565c0;
+            padding: 15px 40px;
+        }
 
-.item-menu:hover {
-    text-decoration: underline;
-}
+        nav span {
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: 500;
+        }
 
-.popup {
-    display: none;
-    position: fixed;
-    top: 140px;
-    left: 220px;
-    background: white;
-    border: 2px solid #0d47a1;
-    padding: 20px;
-    width: 300px;
-    box-shadow: 0px 0px 10px black;
-    z-index: 1000;
-}
+        /* ---------- MENU ---------- */
+        #menuConocenos {
+            display: none;
+            padding: 20px 40px;
+        }
 
-.cerrar {
-    float: right;
-    cursor: pointer;
-    color: red;
-    font-weight: bold;
-}
-</style>
+        .item-menu {
+            font-size: 20px;
+            margin: 10px 0;
+            cursor: pointer;
+            color: #0d47a1;
+            transition: color 0.3s;
+        }
 
-<script>
-function toggleMenu() {
-    const menu = document.getElementById("menuConocenos");
-    menu.style.display = (menu.style.display === "none") ? "block" : "none";
-}
+        .item-menu:hover {
+            color: #1976d2;
+            text-decoration: underline;
+        }
 
-function abrirPopup(id) {
-    document.getElementById(id).style.display = "block";
-}
+        /* ---------- POPUPS ---------- */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            width: 360px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1500;
+        }
 
-function cerrarPopup(id) {
-    document.getElementById(id).style.display = "none";
-}
-</script>
+        .popup h2 {
+            margin-bottom: 10px;
+            color: #0d47a1;
+        }
 
+        .popup p {
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .cerrar {
+            float: right;
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            margin-top: 50px;
+            background: #0d47a1;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <img src="imagenes/gtu_logo.jpg.jpeg" id="logo" onclick="expandirLogo()">
+        <h1>Better Care For A Better World</h1>
+    </header>
+
+    <!-- BANNER -->
+    <div class="banner">
+        <span>💡 Bienvenidos a Kimberly-Clark | Innovación • Calidad • Cuidado Personal 💡</span>
     </div>
+
+    <!-- NAV -->
+    <nav>
+        <span onclick="toggleMenu()">Conócenos</span>
+    </nav>
+
+    <!-- MENU -->
+    <div id="menuConocenos">
+        <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
+        <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
+        <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
+    </div>
+
+    <!-- POPUPS -->
+    <div id="mision" class="popup">
+        <span class="cerrar" onclick="cerrarPopup('mision')">✖</span>
+        <h2>Misión</h2>
+        <p>
+            Ofrecer productos innovadores que mejoren la salud, higiene y bienestar
+            de las personas, actuando con responsabilidad social y sostenibilidad.
+        </p>
+    </div>
+
+    <div id="vision" class="popup">
+        <span class="cerrar" onclick="cerrarPopup('vision')">✖</span>
+        <h2>Visión</h2>
+        <p>
+            Ser líderes globales en cuidado personal, reconocidos por la calidad,
+            innovación tecnológica y compromiso con el medio ambiente.
+        </p>
+    </div>
+
+    <div id="objetivo" class="popup">
+        <span class="cerrar" onclick="cerrarPopup('objetivo')">✖</span>
+        <h2>Objetivo</h2>
+        <p>
+            Diseñar e implementar un sistema eficiente de gestión de clientes y pedidos
+            apoyado en bases de datos bien estructuradas.
+        </p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 Kimberly-Clark | Proyecto Académico
+    </footer>
+
+    <!-- JS -->
+    <script>
+        function expandirLogo() {
+            document.getElementById("logo").classList.toggle("logo-grande");
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById("menuConocenos");
+            menu.style.display = (menu.style.display === "none") ? "block" : "none";
+        }
+
+        function abrirPopup(id) {
+            document.getElementById(id).style.display = "block";
+        }
+
+        function cerrarPopup(id) {
+            document.getElementById(id).style.display = "none";
+        }
+    </script>
 
 </body>
 </html>
