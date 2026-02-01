@@ -28,7 +28,6 @@
             color: #0d47a1;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             border-bottom: 3px solid #1976d2;
-
         }
 
         header img {
@@ -87,6 +86,30 @@
             font-weight: 500;
         }
 
+        /* SLIDER */
+        .slider {
+            width: 100%;
+            max-width: 1100px;
+            height: 320px;
+            margin: 40px auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        .slides {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .slides img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+        }
+
         /* MENU */
         #menuConocenos {
             display: none;
@@ -133,13 +156,14 @@
         }
 
         .cerrar {
-            float: right;
+            position: absolute;
+            top: 15px;
+            right: 15px;
             cursor: pointer;
             color: red;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
         }
-
 
         /* FOOTER */
         footer {
@@ -170,8 +194,17 @@
     <span onclick="toggleMenu()">Conócenos</span>
 </nav>
 
+<!-- SLIDER YA INTEGRADO -->
+<div class="slider">
+    <div class="slides">
+        <img src="imagenes/productfondo.png" alt="Productos Kimberly-Clark">
+        <img src="imagenes/kimtrabajo.png" alt="Trabajo en Kimberly-Clark">
+        <img src="imagenes/profesionalkim.jpg" alt="Profesionales Kimberly-Clark">
+    </div>
+</div>
+
 <div id="menuConocenos">
-   <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
+    <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
     <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
     <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
 </div>
@@ -185,6 +218,7 @@
         y cuidado personal que ayuden a las personas a vivir una vida más saludable,
         segura y digna. La empresa se enfoca en la innovación constante, la calidad
         y el desarrollo sostenible para generar un impacto positivo en la sociedad.
+
     </p>
 </div>
 
@@ -231,6 +265,21 @@
     function cerrarPopup(id) {
         document.getElementById(id).style.display = "none";
     }
+
+    /* SLIDER AUTOMÁTICO */
+    let indice = 0;
+    const slides = document.querySelector(".slides");
+    const totalSlides = slides.children.length;
+
+    setInterval(() => {
+        indice++;
+
+        if (indice >= totalSlides) {
+            indice = 0;
+        }
+
+        slides.style.transform = `translateX(-${indice * 100}%)`;
+    }, 4000);
 </script>
 
 </body>
