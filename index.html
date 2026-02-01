@@ -2,9 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Kimberly-Clark</title>
+    <title>Kimberly-Clark | Better Care for a Better World</title>
 
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -20,7 +19,7 @@
             color: #0d47a1;
         }
 
-        /* ---------- HEADER ---------- */
+        /* HEADER */
         header {
             display: flex;
             align-items: center;
@@ -38,11 +37,10 @@
 
         header h1 {
             margin-left: 20px;
-            font-weight: 600;
             font-size: 26px;
+            font-weight: 600;
         }
 
-        /* Logo ampliado */
         .logo-grande {
             position: fixed;
             top: 50%;
@@ -54,7 +52,7 @@
             z-index: 2000;
         }
 
-        /* ---------- BANNER ---------- */
+        /* BANNER */
         .banner {
             background: #1976d2;
             color: white;
@@ -74,7 +72,7 @@
             to { transform: translateX(-100%); }
         }
 
-        /* ---------- NAV ---------- */
+        /* NAV */
         nav {
             background: #1565c0;
             padding: 15px 40px;
@@ -87,7 +85,7 @@
             font-weight: 500;
         }
 
-        /* ---------- MENU ---------- */
+        /* MENU */
         #menuConocenos {
             display: none;
             padding: 20px 40px;
@@ -106,7 +104,7 @@
             text-decoration: underline;
         }
 
-        /* ---------- POPUPS ---------- */
+        /* POPUPS */
         .popup {
             display: none;
             position: fixed;
@@ -115,7 +113,7 @@
             transform: translate(-50%, -50%);
             background: white;
             padding: 25px;
-            width: 360px;
+            width: 380px;
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             z-index: 1500;
@@ -128,7 +126,8 @@
 
         .popup p {
             font-size: 15px;
-            line-height: 1.6;
+            line-height: 1.7;
+            text-align: justify;
         }
 
         .cerrar {
@@ -139,7 +138,7 @@
             font-size: 18px;
         }
 
-        /* ---------- FOOTER ---------- */
+        /* FOOTER */
         footer {
             margin-top: 50px;
             background: #0d47a1;
@@ -153,81 +152,83 @@
 
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <img src="imagenes/gtu_logo.jpg.jpeg" id="logo" onclick="expandirLogo()">
-        <h1>Better Care For A Better World</h1>
-    </header>
+<header>
+    <img src="imagenes/gtu_logo.jpg.jpeg" id="logo" onclick="expandirLogo()">
+    <h1>Kimberly-Clark | Better Care for a Better World</h1>
+</header>
 
-    <!-- BANNER -->
-    <div class="banner">
-        <span>💡 Bienvenidos a Kimberly-Clark | Innovación • Calidad • Cuidado Personal 💡</span>
-    </div>
+<div class="banner">
+    <span>
+        Kimberly-Clark • Innovación • Higiene • Cuidado Personal • Compromiso con el Medio Ambiente
+    </span>
+</div>
 
-    <!-- NAV -->
-    <nav>
-        <span onclick="toggleMenu()">Conócenos</span>
-    </nav>
+<nav>
+    <span onclick="toggleMenu()">Conócenos</span>
+</nav>
 
-    <!-- MENU -->
-    <div id="menuConocenos">
-        <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
-        <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
-        <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
-    </div>
+<div id="menuConocenos">
+    <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
+    <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
+    <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
+</div>
 
-    <!-- POPUPS -->
-    <div id="mision" class="popup">
-        <span class="cerrar" onclick="cerrarPopup('mision')">✖</span>
-        <h2>Misión</h2>
-        <p>
-            Ofrecer productos innovadores que mejoren la salud, higiene y bienestar
-            de las personas, actuando con responsabilidad social y sostenibilidad.
-        </p>
-    </div>
+<!-- MISIÓN -->
+<div id="mision" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('mision')">✖</span>
+    <h2>Misión</h2>
+    <p>
+        La misión de Kimberly-Clark es proporcionar productos esenciales de higiene
+        y cuidado personal que ayuden a las personas a vivir una vida más saludable,
+        segura y digna. La empresa se enfoca en la innovación constante, la calidad
+        y el desarrollo sostenible para generar un impacto positivo en la sociedad.
+    </p>
+</div>
 
-    <div id="vision" class="popup">
-        <span class="cerrar" onclick="cerrarPopup('vision')">✖</span>
-        <h2>Visión</h2>
-        <p>
-            Ser líderes globales en cuidado personal, reconocidos por la calidad,
-            innovación tecnológica y compromiso con el medio ambiente.
-        </p>
-    </div>
+<!-- VISIÓN -->
+<div id="vision" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('vision')">✖</span>
+    <h2>Visión</h2>
+    <p>
+        Ser una empresa líder a nivel mundial en soluciones de cuidado personal e higiene,
+        reconocida por su responsabilidad social, compromiso ambiental e innovación
+        tecnológica, contribuyendo al bienestar de millones de personas en todo el mundo.
+    </p>
+</div>
 
-    <div id="objetivo" class="popup">
-        <span class="cerrar" onclick="cerrarPopup('objetivo')">✖</span>
-        <h2>Objetivo</h2>
-        <p>
-            Diseñar e implementar un sistema eficiente de gestión de clientes y pedidos
-            apoyado en bases de datos bien estructuradas.
-        </p>
-    </div>
+<!-- OBJETIVO -->
+<div id="objetivo" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('objetivo')">✖</span>
+    <h2>Objetivo</h2>
+    <p>
+        El objetivo de Kimberly-Clark es optimizar sus procesos de producción, distribución
+        y atención al cliente mediante el uso de tecnología y sistemas de información,
+        garantizando productos de alta calidad, eficientes y sostenibles.
+    </p>
+</div>
 
-    <!-- FOOTER -->
-    <footer>
-        © 2026 Kimberly-Clark | Proyecto Académico
-    </footer>
+<footer>
+    © 2026 Kimberly-Clark | Proyecto Académico – Página Informativa
+</footer>
 
-    <!-- JS -->
-    <script>
-        function expandirLogo() {
-            document.getElementById("logo").classList.toggle("logo-grande");
-        }
+<script>
+    function expandirLogo() {
+        document.getElementById("logo").classList.toggle("logo-grande");
+    }
 
-        function toggleMenu() {
-            const menu = document.getElementById("menuConocenos");
-            menu.style.display = (menu.style.display === "none") ? "block" : "none";
-        }
+    function toggleMenu() {
+        const menu = document.getElementById("menuConocenos");
+        menu.style.display = (menu.style.display === "none") ? "block" : "none";
+    }
 
-        function abrirPopup(id) {
-            document.getElementById(id).style.display = "block";
-        }
+    function abrirPopup(id) {
+        document.getElementById(id).style.display = "block";
+    }
 
-        function cerrarPopup(id) {
-            document.getElementById(id).style.display = "none";
-        }
-    </script>
+    function cerrarPopup(id) {
+        document.getElementById(id).style.display = "none";
+    }
+</script>
 
 </body>
 </html>
