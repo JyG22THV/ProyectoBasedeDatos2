@@ -99,7 +99,7 @@
 
         .slides {
             display: flex;
-            width: 300%;
+            width: 100%;
             height: 100%;
             transition: transform 0.8s ease-in-out;
         }
@@ -141,7 +141,7 @@
             width: 360px;
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            z-index: 1500;
+            z-index: 3000;
         }
 
         .popup h2 {
@@ -259,7 +259,9 @@
     }
 
     function abrirPopup(id) {
-        document.getElementById(id).style.display = "block";
+        const popups = document.querySelectorAll('.popup');
+        popups.forEach(p => p.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
     }
 
     function cerrarPopup(id) {
