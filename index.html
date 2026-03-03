@@ -1,1045 +1,302 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kimberly-Clark | Better Care for a Better World</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --blue-deep: #003087;
-      --blue-mid: #0057b8;
-      --blue-light: #0099e6;
-      --gold: #f5a623;
-      --white: #ffffff;
-      --offwhite: #f7f9fc;
-      --dark: #0a1628;
-      --gray: #6b7a99;
-    }
+    <meta charset="UTF-8">
+    <title>Kimberly-Clark | Better Care for a Better World</title>
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    html { scroll-behavior: smooth; }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--dark);
-      color: var(--white);
-      overflow-x: hidden;
-    }
+        body {
+            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+            color: #0d47a1;
+        }
 
-    .logo-grande {
-      position: fixed !important;
-      top: 50% !important;
-      left: 50% !important;
-      transform: translate(-50%, -50%) scale(3) !important;
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      z-index: 9000;
-      transition: all 0.4s ease;
-    }
-    body { cursor: none; }
-    #cursor {
-      width: 12px; height: 12px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease;
-      mix-blend-mode: difference;
-    }
-    #cursor-ring {
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--blue-light);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.35s ease, width 0.3s, height 0.3s;
-    }
+        /* HEADER */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            color: #0d47a1;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-bottom: 3px solid #1976d2;
+        }
 
-    /* ─── TOP TICKER ─── */
-    .ticker {
-      background: var(--blue-mid);
-      padding: 8px 0;
-      overflow: hidden;
-    }
-    .ticker-inner {
-      display: flex;
-      white-space: nowrap;
-      animation: ticker 22s linear infinite;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.9);
-    }
-    .ticker-inner span { margin: 0 40px; }
-    .ticker-inner .dot { color: var(--gold); font-size: 18px; vertical-align: middle; }
-    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        header img {
+            width: 140px;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
 
-    /* ─── HEADER ─── */
-    header {
-      position: fixed; top: 36px; left: 0; right: 0;
-      z-index: 1000;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 60px;
-      background: rgba(10,22,40,0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      transition: all 0.4s ease;
-    }
-    header.scrolled {
-      top: 0;
-      padding: 12px 60px;
-      background: rgba(10,22,40,0.97);
-    }
+        header h1 {
+            margin-left: 20px;
+            font-size: 26px;
+            font-weight: 600;
+        }
 
-    .brand {
-      display: flex; align-items: center; gap: 16px;
-    }
-    .brand-logo {
-      height: 48px;
-      background: var(--white);
-      border-radius: 10px;
-      padding: 6px 10px;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .brand-logo img { height: 36px; width: auto; display: block; }
-    .brand-logo:hover { transform: scale(1.08); }
-    .brand-text { line-height: 1.2; }
-    .brand-text h1 { font-size: 16px; font-weight: 500; letter-spacing: 0.04em; }
-    .brand-text p { font-size: 11px; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; }
+        .logo-grande {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(3);
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 2000;
+        }
 
-    /* NAV */
-    nav { display: flex; gap: 8px; align-items: center; }
-    .nav-link {
-      padding: 10px 20px;
-      font-size: 14px; font-weight: 500;
-      color: rgba(255,255,255,0.75);
-      cursor: pointer;
-      border-radius: 6px;
-      transition: all 0.25s;
-      position: relative;
-      background: none; border: none;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .nav-link:hover { color: var(--white); background: rgba(255,255,255,0.07); }
-    .nav-btn {
-      padding: 10px 22px;
-      background: var(--blue-mid);
-      color: var(--white);
-      border-radius: 8px;
-      font-size: 14px; font-weight: 500;
-      cursor: pointer; border: none;
-      transition: all 0.3s;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .nav-btn:hover { background: var(--blue-light); transform: translateY(-1px); }
+        /* BANNER */
+        .banner {
+            background: #1976d2;
+            color: white;
+            padding: 12px;
+            overflow: hidden;
+        }
 
-    /* DROPDOWN */
-    .dropdown { position: relative; }
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 12px);
-      left: 50%; transform: translateX(-50%);
-      background: rgba(15,28,52,0.98);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 10px;
-      min-width: 200px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-      animation: fadeDown 0.2s ease;
-    }
-    @keyframes fadeDown { from { opacity:0; transform: translateX(-50%) translateY(-8px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
-    .dropdown:hover .dropdown-menu { display: block; }
-    .dropdown-item {
-      padding: 12px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex; align-items: center; gap: 12px;
-      transition: all 0.2s;
-      color: rgba(255,255,255,0.8);
-    }
-    .dropdown-item:hover { background: rgba(0,87,184,0.3); color: var(--white); }
-    .dropdown-item .icon { font-size: 20px; }
+        .banner span {
+            display: inline-block;
+            white-space: nowrap;
+            animation: mover 15s linear infinite;
+            font-size: 18px;
+        }
 
-    /* ─── HERO ─── */
-    .hero {
-      height: 100vh;
-      position: relative;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, #001a4d 0%, #003087 40%, #0057b8 70%, #0099e6 100%);
-    }
-    /* animated mesh */
-    .hero-bg::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(245,166,35,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 80% 30%, rgba(0,153,230,0.2) 0%, transparent 60%);
-      animation: meshPulse 8s ease-in-out infinite alternate;
-    }
-    @keyframes meshPulse {
-      from { transform: scale(1) rotate(0deg); }
-      to { transform: scale(1.05) rotate(2deg); }
-    }
-    /* grid lines */
-    .hero-bg::after {
-      content: '';
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-    /* floating orbs */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.25;
-      animation: float 10s ease-in-out infinite alternate;
-    }
-    .orb-1 { width: 400px; height: 400px; background: var(--gold); top: -100px; right: -100px; animation-duration: 12s; }
-    .orb-2 { width: 300px; height: 300px; background: var(--blue-light); bottom: -50px; left: 10%; animation-duration: 8s; animation-delay: -4s; }
-    .orb-3 { width: 200px; height: 200px; background: #ffffff; top: 40%; right: 20%; animation-duration: 14s; animation-delay: -2s; }
-    @keyframes float {
-      from { transform: translateY(0) scale(1); }
-      to { transform: translateY(-30px) scale(1.1); }
-    }
+        @keyframes mover {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
 
-    .hero-content {
-      position: relative; z-index: 2;
-      text-align: center;
-      max-width: 900px;
-      padding: 0 30px;
-    }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 100px;
-      padding: 8px 20px;
-      font-size: 12px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 30px;
-      animation: fadeUp 0.8s ease 0.2s both;
-    }
-    .hero-eyebrow .dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.7} }
+        /* NAV */
+        nav {
+            background: #1565c0;
+            padding: 15px 40px;
+            position: relative;
+        }
 
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(52px, 8vw, 100px);
-      line-height: 1;
-      font-weight: 900;
-      margin-bottom: 24px;
-      animation: fadeUp 0.8s ease 0.4s both;
-    }
-    .hero-title em {
-      font-style: italic;
-      background: linear-gradient(90deg, var(--gold), #ffcc44);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .hero-sub {
-      font-size: clamp(16px, 2vw, 20px);
-      color: rgba(255,255,255,0.7);
-      max-width: 560px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-      animation: fadeUp 0.8s ease 0.6s both;
-    }
-    .hero-ctas {
-      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 0.8s ease 0.8s both;
-    }
-    .btn-primary {
-      padding: 16px 36px;
-      background: var(--gold);
-      color: var(--dark);
-      font-weight: 600; font-size: 15px;
-      border-radius: 10px;
-      cursor: pointer; border: none;
-      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-      font-family: 'DM Sans', sans-serif;
-      letter-spacing: 0.02em;
-    }
-    .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 30px rgba(245,166,35,0.4); }
-    .btn-outline {
-      padding: 16px 36px;
-      background: transparent;
-      color: var(--white);
-      font-weight: 500; font-size: 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      border: 1.5px solid rgba(255,255,255,0.3);
-      transition: all 0.3s;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); transform: translateY(-2px); }
+        nav span {
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: 500;
+        }
 
-    /* scroll indicator */
-    .scroll-hint {
-      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      animation: fadeIn 1.5s ease 1.2s both;
-    }
-    .scroll-line {
-      width: 1px; height: 50px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
-      animation: scrollDrop 2s ease infinite;
-    }
-    @keyframes scrollDrop { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        /* SLIDER */
+        .slider {
+            width: 100%;
+            max-width: 1100px;
+            height: 320px;
+            margin: 40px auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
 
-    /* ─── STATS ─── */
-    .stats {
-      background: var(--offwhite);
-      padding: 60px 60px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-    }
-    .stat-item {
-      background: var(--white);
-      padding: 40px 30px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.3s;
-    }
-    .stat-item:first-child { border-radius: 12px 0 0 12px; }
-    .stat-item:last-child { border-radius: 0 12px 12px 0; }
-    .stat-item:hover { transform: translateY(-4px); }
-    .stat-item::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--blue-mid), var(--blue-light));
-      transform: scaleX(0);
-      transition: transform 0.4s;
-    }
-    .stat-item:hover::after { transform: scaleX(1); }
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 52px; font-weight: 900;
-      color: var(--blue-deep);
-      line-height: 1;
-    }
-    .stat-num span { color: var(--gold); }
-    .stat-label {
-      font-size: 13px; color: var(--gray);
-      margin-top: 8px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
+        .slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
 
-    /* ─── SECTIONS ─── */
-    section {
-      padding: 100px 60px;
-    }
-    .section-label {
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .section-label::before {
-      content: '';
-      width: 30px; height: 1px;
-      background: var(--gold);
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(36px, 5vw, 56px);
-      font-weight: 900;
-      line-height: 1.1;
-    }
+        .slides img {
+            min-width: 100%;
+            height: 320px;
+            object-fit: cover;
+        }
 
-    /* ─── CAROUSEL SECTION ─── */
-    .carousel-section {
-      background: var(--dark);
-      overflow: hidden;
-    }
-    .carousel-wrap {
-      display: flex; align-items: center; gap: 60px;
-    }
-    .carousel-text { flex: 1; }
-    .carousel-text .section-title { color: var(--white); margin-bottom: 20px; }
-    .carousel-text p { color: rgba(255,255,255,0.6); line-height: 1.8; font-size: 16px; }
+        /* MENU */
+        #menuConocenos {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 40px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            z-index: 2500;
+        }
 
-    .carousel-container { flex: 1.2; position: relative; }
-    .carousel {
-      width: 100%;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
-      position: relative;
-      aspect-ratio: 16/9;
-    }
-    .carousel-slides {
-      display: flex;
-      height: 100%;
-      transition: transform 0.7s cubic-bezier(0.77,0,0.175,1);
-    }
-    .carousel-slide {
-      min-width: 100%;
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-    .slide-bg {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 8s ease;
-    }
-    .carousel:hover .slide-bg { transform: scale(1.05); }
-    .slide-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,48,135,0.8), transparent 60%);
-      display: flex; align-items: flex-end;
-      padding: 30px;
-    }
-    .slide-caption {
-      color: var(--white);
-      font-size: 18px; font-weight: 600;
-    }
-    .slide-caption small { font-size: 13px; color: rgba(255,255,255,0.7); display: block; font-weight: 300; }
+        .item-menu {
+            font-size: 20px;
+            margin: 10px 0;
+            cursor: pointer;
+            color: #0d47a1;
+            transition: color 0.3s;
+        }
 
-    /* carousel controls */
-    .carousel-controls {
-      display: flex; gap: 12px; margin-top: 24px;
-    }
-    .carousel-btn {
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.05);
-      color: var(--white);
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .carousel-btn:hover { background: var(--blue-mid); border-color: var(--blue-mid); }
-    .carousel-dots {
-      display: flex; align-items: center; gap: 8px; margin-left: 8px;
-    }
-    .carousel-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .carousel-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+        .item-menu:hover {
+            color: #1976d2;
+            text-decoration: underline;
+        }
 
-    /* ─── MVV CARDS ─── */
-    .mvv-section {
-      background: #f0f4fa;
-    }
-    .mvv-section .section-label { color: var(--blue-mid); }
-    .mvv-section .section-label::before { background: var(--blue-mid); }
-    .mvv-section .section-title { color: var(--blue-deep); margin-bottom: 60px; }
-    .mvv-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .mvv-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 44px 36px;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
-    }
-    .mvv-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,48,135,0.15); }
-    .mvv-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--blue-deep), var(--blue-light));
-    }
-    .mvv-card:nth-child(2)::before { background: linear-gradient(90deg, var(--gold), #ffcc44); }
-    .mvv-card:nth-child(3)::before { background: linear-gradient(90deg, #00b4d8, #48cae4); }
-    .mvv-icon {
-      font-size: 44px; margin-bottom: 20px;
-    }
-    .mvv-card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px; color: var(--blue-deep);
-      margin-bottom: 16px;
-    }
-    .mvv-card p { font-size: 15px; line-height: 1.8; color: var(--gray); }
-    /* watermark text */
-    .mvv-card::after {
-      content: attr(data-word);
-      position: absolute;
-      bottom: -20px; right: -10px;
-      font-family: 'Playfair Display', serif;
-      font-size: 100px; font-weight: 900;
-      color: rgba(0,48,135,0.04);
-      line-height: 1;
-      pointer-events: none;
-    }
+        /* POPUPS */
+        .popup{
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            width: 360px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 3000;
+        }
 
-    /* ─── BRANDS / PRODUCTS ─── */
-    .brands-section { background: var(--dark); }
-    .brands-section .section-title { color: var(--white); margin-bottom: 16px; }
-    .brands-section > p { color: rgba(255,255,255,0.55); margin-bottom: 60px; font-size: 16px; max-width: 500px; }
-    .brands-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .brand-card { border-radius: 16px; padding: 28px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); text-align: center; transition: all 0.4s; cursor: pointer; overflow: hidden; }
-    .brand-card:hover { background: rgba(0,87,184,0.25); border-color: rgba(0,153,230,0.4); transform: translateY(-6px); }
-    .brand-card .brand-img-wrap { width: 100%; height: 140px; border-radius: 10px; overflow: hidden; margin-bottom: 16px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; }
-    .brand-card .brand-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-    .brand-card:hover .brand-img-wrap img { transform: scale(1.08); }
-    .brand-card h4 { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
-    .brand-card p { font-size: 13px; color: rgba(255,255,255,0.5); }
+        .popup h2 {
+            margin-bottom: 10px;
+            color: #0d47a1;
+        }
 
-    /* ─── SUSTAINABILITY ─── */
-    .sustain-section {
-      background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
-      position: relative; overflow: hidden;
-    }
-    .sustain-section::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-    .sustain-inner {
-      position: relative; z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px; align-items: center;
-    }
-    .sustain-text .section-label { color: rgba(255,255,255,0.7); }
-    .sustain-text .section-label::before { background: rgba(255,255,255,0.7); }
-    .sustain-text .section-title { color: var(--white); margin-bottom: 24px; }
-    .sustain-text p { color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 16px; margin-bottom: 36px; }
-    .sustain-goals {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    }
-    .goal-item {
-      background: rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 20px;
-      display: flex; gap: 14px; align-items: flex-start;
-    }
-    .goal-icon { font-size: 28px; flex-shrink: 0; }
-    .goal-item h4 { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
-    .goal-item p { font-size: 13px; color: rgba(255,255,255,0.6); }
+        .popup p {
+            font-size: 15px;
+            line-height: 1.7;
+            text-align: justify;
+        }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: #050e1c;
-      padding: 60px 60px 30px;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 60px;
-      padding-bottom: 50px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 30px;
-    }
-    .footer-brand h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px; color: var(--white);
-      margin-bottom: 12px;
-    }
-    .footer-brand p { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.8; max-width: 280px; }
-    .footer-col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-    .footer-col a {
-      display: block; color: rgba(255,255,255,0.5);
-      font-size: 14px; margin-bottom: 10px;
-      text-decoration: none;
-      transition: color 0.2s;
-      cursor: pointer;
-    }
-    .footer-col a:hover { color: var(--white); }
-    .footer-bottom {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 13px; color: rgba(255,255,255,0.3);
-    }
-    .footer-dots { display: flex; gap: 8px; }
-    .footer-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .fd1 { background: #003087; }
-    .fd2 { background: #0099e6; }
-    .fd3 { background: var(--gold); }
+        .cerrar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+            font-size: 20px;
+        }
 
-    /* ─── MODAL ─── */
-    .modal-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(5,14,28,0.85);
-      z-index: 5000;
-      backdrop-filter: blur(10px);
-      align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 50px;
-      max-width: 520px; width: 90%;
-      position: relative;
-      animation: modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    @keyframes modalIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
-    .modal-close {
-      position: absolute; top: 20px; right: 20px;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: #f0f4fa;
-      border: none; cursor: pointer;
-      font-size: 16px; color: var(--gray);
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-    }
-    .modal-close:hover { background: var(--blue-deep); color: var(--white); }
-    .modal-icon { font-size: 52px; margin-bottom: 20px; }
-    .modal h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 30px; color: var(--blue-deep);
-      margin-bottom: 16px;
-    }
-    .modal p { font-size: 15px; line-height: 1.85; color: var(--gray); }
-
-    /* ─── SCROLL REVEAL ─── */
-    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      header { padding: 14px 24px; }
-      section { padding: 70px 24px; }
-      .stats { grid-template-columns: repeat(2,1fr); padding: 40px 24px; }
-      .mvv-grid, .brands-grid { grid-template-columns: 1fr 1fr; }
-      .sustain-inner, .carousel-wrap, .footer-top { grid-template-columns: 1fr; gap: 40px; }
-    }
-    @media (max-width: 600px) {
-      .hero-title { font-size: 40px; }
-      .mvv-grid, .brands-grid { grid-template-columns: 1fr; }
-      nav .nav-link { display: none; }
-    }
-  </style>
+        /* FOOTER */
+        footer {
+            margin-top: 50px;
+            background: #0d47a1;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- Custom Cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- Top Ticker -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span>🌍 Kimberly-Clark</span><span class="dot">·</span>
-    <span>Innovación Global</span><span class="dot">·</span>
-    <span>Higiene y Cuidado</span><span class="dot">·</span>
-    <span>Sostenibilidad</span><span class="dot">·</span>
-    <span>Marcas Líderes</span><span class="dot">·</span>
-    <span>175+ años de historia</span><span class="dot">·</span>
-    <span>Presencia en 175 países</span><span class="dot">·</span>
-    <span>Better Care for a Better World</span><span class="dot">·</span>
-    <!-- duplicate for seamless loop -->
-    <span>🌍 Kimberly-Clark</span><span class="dot">·</span>
-    <span>Innovación Global</span><span class="dot">·</span>
-    <span>Higiene y Cuidado</span><span class="dot">·</span>
-    <span>Sostenibilidad</span><span class="dot">·</span>
-    <span>Marcas Líderes</span><span class="dot">·</span>
-    <span>175+ años de historia</span><span class="dot">·</span>
-    <span>Presencia en 175 países</span><span class="dot">·</span>
-    <span>Better Care for a Better World</span><span class="dot">·</span>
-  </div>
-</div>
-
-<!-- Header -->
-<header id="header">
-  <div class="brand">
-    <div class="brand-logo">
-      <img src="imagenes/logo.png" id="logo" onclick="expandirLogo()" alt="Logo Kimberly-Clark">
-    </div>
-    <div class="brand-text">
-      <h1>Kimberly-Clark</h1>
-      <p>Better Care for a Better World</p>
-    </div>
-  </div>
-  <nav>
-    <div class="dropdown">
-      <button class="nav-link">Conócenos ▾</button>
-      <div class="dropdown-menu">
-        <div class="dropdown-item" onclick="openModal('mision')"><span class="icon">🎯</span> Misión</div>
-        <div class="dropdown-item" onclick="openModal('vision')"><span class="icon">🔭</span> Visión</div>
-        <div class="dropdown-item" onclick="openModal('objetivo')"><span class="icon">🏆</span> Objetivo</div>
-      </div>
-    </div>
-    <button class="nav-link" onclick="document.getElementById('sec-productos').scrollIntoView({behavior:'smooth'})">Productos</button>
-    <button class="nav-link" onclick="document.getElementById('sec-sustain').scrollIntoView({behavior:'smooth'})">Sostenibilidad</button>
-    <button class="nav-btn">Contacto</button>
-  </nav>
+<header>
+    <img src="imagenes/logo.png" id="logo" onclick="expandirLogo()" alt="Logo Kimberly-Clark">
+    <h1>Kimberly-Clark | Better Care for a Better World</h1>
 </header>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow"><span class="dot"></span> Empresa Global de Cuidado Personal</div>
-    <h1 class="hero-title">Better Care<br>for a <em>Better World</em></h1>
-    <p class="hero-sub">Más de 175 años innovando en productos de higiene y cuidado personal que mejoran la vida de millones de personas en todo el mundo.</p>
-    <div class="hero-ctas">
-      <button class="btn-primary" onclick="document.getElementById('sec-mvv').scrollIntoView({behavior:'smooth'})">Descúbrenos</button>
-      <button class="btn-outline" onclick="document.getElementById('sec-productos').scrollIntoView({behavior:'smooth'})">Nuestras Marcas</button>
-    </div>
-  </div>
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-    Scroll
-  </div>
-</section>
-
-<!-- Stats -->
-<div class="stats reveal" id="stats">
-  <div class="stat-item">
-    <div class="stat-num">175<span>+</span></div>
-    <div class="stat-label">Años de Historia</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">175<span></span></div>
-    <div class="stat-label">Países con Presencia</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">47<span>k</span></div>
-    <div class="stat-label">Empleados Globales</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">$20<span>B</span></div>
-    <div class="stat-label">Ingresos Anuales</div>
-  </div>
+<div class="banner">
+    <span>
+        Kimberly-Clark • Innovación • Higiene • Cuidado Personal • Compromiso con el Medio Ambiente
+    </span>
 </div>
 
-<!-- Carousel Section -->
-<section class="carousel-section">
-  <div class="carousel-wrap">
-    <div class="carousel-text reveal">
-      <div class="section-label">Galería</div>
-      <h2 class="section-title" style="color:var(--white)">Innovación en<br>cada producto</h2>
-      <p style="color:rgba(255,255,255,0.6);margin-top:16px;line-height:1.8">Desde productos de higiene personal hasta soluciones empresariales, Kimberly-Clark está presente en los momentos más importantes del día a día de las personas.</p>
-      <div class="carousel-controls">
-        <button class="carousel-btn" id="btn-prev">←</button>
-        <button class="carousel-btn" id="btn-next">→</button>
-        <div class="carousel-dots">
-          <div class="carousel-dot active" onclick="goTo(0)"></div>
-          <div class="carousel-dot" onclick="goTo(1)"></div>
-          <div class="carousel-dot" onclick="goTo(2)"></div>
-          <div class="carousel-dot" onclick="goTo(3)"></div>
-        </div>
-      </div>
+<nav>
+    <span onclick="toggleMenu()">Conócenos</span>
+    
+    <div id="menuConocenos">
+        <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
+        <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
+        <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
     </div>
-    <div class="carousel-container reveal">
-      <div class="carousel">
-        <div class="carousel-slides" id="slides">
+</nav>
 
-          <!-- Slide 1: Huggies -->
-          <div class="carousel-slide">
-            <img class="slide-bg" src="imagenes/productfondo.png" alt="Productos Kimberly-Clark" onerror="this.style.display='none'">
-            <div class="slide-overlay">
-              <div class="slide-caption">
-                Huggies® — Pañales
-                <small>Protección y confort para tu bebé</small>
-              </div>
-            </div>
-          </div>
+<!-- SLIDER YA INTEGRADO -->
+<div class="slider">
+    <div class="slides">
+        <img src="imagenes/productfondo.png" alt="Productos Kimberly-Clark">
+        <img src="imagenes/kimtrabajo.png" alt="Trabajo en Kimberly-Clark">
+        <img src="imagenes/profesionalkim.jpg" alt="Profesionales Kimberly-Clark">
+    </div>
+</div>
 
-          <!-- Slide 2: Kleenex -->
-          <div class="carousel-slide">
-            <img class="slide-bg" src="imagenes/kimtrabajo.png" alt="Trabajo en Kimberly-Clark" onerror="this.style.display='none'">
-            <div class="slide-overlay">
-              <div class="slide-caption">
-                Kleenex® — Pañuelos Faciales
-                <small>Suavidad que cuida tu piel</small>
-              </div>
-            </div>
-          </div>
+<div id="menuConocenos">
+    <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
+    <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
+    <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
+</div>
 
-          <!-- Slide 3: Kotex -->
-          <div class="carousel-slide">
-            <img class="slide-bg" src="imagenes/profesionalkim.jpg" alt="Profesionales Kimberly-Clark" onerror="this.style.display='none'">
-            <div class="slide-overlay">
-              <div class="slide-caption">
-                Kotex® — Cuidado Femenino
-                <small>Confianza en cada momento</small>
-              </div>
-            </div>
-          </div>
+<!-- MISIÓN -->
+<div id="mision" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('mision')">✖</span>
+    <h2>Misión</h2>
+    <p>
+        La misión de Kimberly-Clark es proporcionar productos esenciales de higiene
+        y cuidado personal que ayuden a las personas a vivir una vida más saludable,
+        segura y digna. La empresa se enfoca en la innovación constante, la calidad
+        y el desarrollo sostenible para generar un impacto positivo en la sociedad.
 
-          <!-- Slide 4: Scott -->
-          <div class="carousel-slide">
-            <img class="slide-bg" src="imagenes/productfondo.png" alt="Productos Kimberly-Clark" onerror="this.style.display='none'">
-            <div class="slide-overlay">
-              <div class="slide-caption">
-                Scott® — Toallas de Papel
-                <small>Limpieza eficiente en el hogar</small>
-              </div>
-            </div>
-          </div>
+    </p>
+</div>
 
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- VISIÓN -->
+<div id="vision" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('vision')">✖</span>
+    <h2>Visión</h2>
+    <p>
+        Ser una empresa líder a nivel mundial en soluciones de cuidado personal e higiene,
+        reconocida por su responsabilidad social, compromiso ambiental e innovación
+        tecnológica, contribuyendo al bienestar de millones de personas en todo el mundo.
+    </p>
+</div>
 
-<!-- MVV Section -->
-<section class="mvv-section" id="sec-mvv">
-  <div class="section-label">Quiénes Somos</div>
-  <h2 class="section-title" style="color:var(--blue-deep);margin-bottom:60px">Nuestra Identidad</h2>
-  <div class="mvv-grid">
-    <div class="mvv-card reveal" data-word="Misión" onclick="openModal('mision')">
-      <div class="mvv-icon">🎯</div>
-      <h3>Misión</h3>
-      <p>Proporcionar productos esenciales de higiene y cuidado personal que ayuden a las personas a vivir una vida más saludable, segura y digna.</p>
-    </div>
-    <div class="mvv-card reveal" data-word="Visión" onclick="openModal('vision')" style="transition-delay:0.15s">
-      <div class="mvv-icon">🔭</div>
-      <h3>Visión</h3>
-      <p>Ser una empresa líder a nivel mundial reconocida por su responsabilidad social, compromiso ambiental e innovación tecnológica.</p>
-    </div>
-    <div class="mvv-card reveal" data-word="Meta" onclick="openModal('objetivo')" style="transition-delay:0.3s">
-      <div class="mvv-icon">🏆</div>
-      <h3>Objetivo</h3>
-      <p>Optimizar procesos de producción y distribución mediante tecnología, garantizando productos de alta calidad, eficientes y sostenibles.</p>
-    </div>
-  </div>
-</section>
+<!-- OBJETIVO -->
+<div id="objetivo" class="popup">
+    <span class="cerrar" onclick="cerrarPopup('objetivo')">✖</span>
+    <h2>Objetivo</h2>
+    <p>
+        El objetivo de Kimberly-Clark es optimizar sus procesos de producción, distribución
+        y atención al cliente mediante el uso de tecnología y sistemas de información,
+        garantizando productos de alta calidad, eficientes y sostenibles.
+    </p>
+</div>
 
-<!-- Products / Brands -->
-<section class="brands-section" id="sec-productos">
-  <div class="section-label" style="color:rgba(255,255,255,0.5)">Portafolio</div>
-  <h2 class="section-title" style="color:var(--white);margin-bottom:12px">Nuestras Marcas</h2>
-  <p style="color:rgba(255,255,255,0.5);margin-bottom:50px;font-size:16px">Marcas icónicas que forman parte de la vida cotidiana de millones de personas.</p>
-  <div class="brands-grid">
-    <div class="brand-card reveal">
-      <div class="brand-img-wrap">
-        <img src="https://m.media-amazon.com/images/I/61Y1yHVPEYL._AC_SX679_.jpg" alt="Kleenex" onerror="this.parentElement.innerHTML='🧻'">
-      </div>
-      <h4>Kleenex®</h4>
-      <p>Pañuelos y productos de papel facial</p>
-    </div>
-    <div class="brand-card reveal" style="transition-delay:0.1s">
-      <div class="brand-img-wrap">
-        <img src="https://m.media-amazon.com/images/I/81RdPUfRlTL._AC_SX679_.jpg" alt="Huggies" onerror="this.parentElement.innerHTML='👶'">
-      </div>
-      <h4>Huggies®</h4>
-      <p>Pañales y cuidado para bebés</p>
-    </div>
-    <div class="brand-card reveal" style="transition-delay:0.2s">
-      <div class="brand-img-wrap">
-        <img src="https://images.behance.net/project_modules/fs/8c5c28147219041.62c06e38b4dd8.jpg" alt="Kotex" onerror="this.parentElement.innerHTML='🌸'">
-      </div>
-      <h4>Kotex®</h4>
-      <p>Cuidado femenino con confianza</p>
-    </div>
-    <div class="brand-card reveal" style="transition-delay:0.3s">
-      <div class="brand-img-wrap">
-        <img src="https://m.media-amazon.com/images/I/81nmB4pKtnL._AC_SX679_.jpg" alt="Scott" onerror="this.parentElement.innerHTML='🧤'">
-      </div>
-      <h4>Scott®</h4>
-      <p>Papel de cocina y productos de limpieza</p>
-    </div>
-  </div>
-</section>
-
-<!-- Sustainability -->
-<section class="sustain-section" id="sec-sustain">
-  <div class="sustain-inner">
-    <div class="sustain-text reveal">
-      <div class="section-label">Compromisos 2030</div>
-      <h2 class="section-title">Sostenibilidad<br>& Impacto</h2>
-      <p>Kimberly-Clark trabaja activamente para reducir su huella ambiental y generar un impacto positivo en las comunidades donde opera.</p>
-      <button class="btn-primary" onclick="openModal('sustain')">Ver Compromisos</button>
-    </div>
-    <div class="sustain-goals reveal" style="transition-delay:0.2s">
-      <div class="goal-item">
-        <span class="goal-icon">♻️</span>
-        <div>
-          <h4>Residuo Cero</h4>
-          <p>90% de residuos industriales reciclados o reutilizados</p>
-        </div>
-      </div>
-      <div class="goal-item">
-        <span class="goal-icon">💧</span>
-        <div>
-          <h4>Agua Limpia</h4>
-          <p>Reducción del 50% en el consumo de agua por tonelada</p>
-        </div>
-      </div>
-      <div class="goal-item">
-        <span class="goal-icon">🌳</span>
-        <div>
-          <h4>Bosques Responsables</h4>
-          <p>100% de fibra certificada de fuentes sostenibles</p>
-        </div>
-      </div>
-      <div class="goal-item">
-        <span class="goal-icon">⚡</span>
-        <div>
-          <h4>Energías Renovables</h4>
-          <p>50% energía de fuentes renovables en operaciones</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
 <footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <h2>Kimberly-Clark</h2>
-      <p>Liderando la innovación en higiene y cuidado personal para un mundo mejor. Proyecto académico informativo.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Empresa</h4>
-      <a onclick="openModal('mision')">Misión</a>
-      <a onclick="openModal('vision')">Visión</a>
-      <a onclick="openModal('objetivo')">Objetivo</a>
-    </div>
-    <div class="footer-col">
-      <h4>Marcas</h4>
-      <a>Kleenex®</a>
-      <a>Huggies®</a>
-      <a>Kotex®</a>
-      <a>Scott®</a>
-    </div>
-    <div class="footer-col">
-      <h4>Temas</h4>
-      <a onclick="document.getElementById('sec-sustain').scrollIntoView({behavior:'smooth'})">Sostenibilidad</a>
-      <a>Innovación</a>
-      <a>Responsabilidad Social</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Kimberly-Clark · Proyecto Académico</span>
-    <div class="footer-dots">
-      <div class="footer-dot fd1"></div>
-      <div class="footer-dot fd2"></div>
-      <div class="footer-dot fd3"></div>
-    </div>
-  </div>
+    © 2026 Kimberly-Clark | Proyecto Académico – Página Informativa
 </footer>
 
-<!-- Modals -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
-  <div class="modal" id="modal-box" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-icon" id="modal-icon"></div>
-    <h2 id="modal-title"></h2>
-    <p id="modal-body"></p>
-  </div>
-</div>
-
 <script>
-  // ── Expandir Logo ──
-  function expandirLogo() {
-    document.getElementById("logo").classList.toggle("logo-grande");
-  }
-
-  // ── Custom Cursor ──
-  const cur = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.transform=`translate(${mx-6}px,${my-6}px)`; });
-  (function animRing(){
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.transform = `translate(${rx-18}px,${ry-18}px)`;
-    requestAnimationFrame(animRing);
-  })();
-  document.querySelectorAll('a,button,.mvv-card,.brand-card,.dropdown-item,.carousel-btn').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{ cur.style.transform+=` scale(1.6)`; ring.style.width='60px'; ring.style.height='60px'; });
-    el.addEventListener('mouseleave',()=>{ ring.style.width='36px'; ring.style.height='36px'; });
-  });
-
-  // ── Header scroll ──
-  window.addEventListener('scroll', ()=>{
-    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 60);
-  });
-
-  // ── Carousel ──
-  let cur_slide = 0;
-  const slides_el = document.getElementById('slides');
-  const dots = document.querySelectorAll('.carousel-dot');
-  const total = 4;
-  function goTo(n) {
-    cur_slide = (n + total) % total;
-    slides_el.style.transform = `translateX(-${cur_slide * 100}%)`;
-    dots.forEach((d,i) => d.classList.toggle('active', i===cur_slide));
-  }
-  document.getElementById('btn-next').onclick = () => goTo(cur_slide+1);
-  document.getElementById('btn-prev').onclick = () => goTo(cur_slide-1);
-  setInterval(() => goTo(cur_slide+1), 5000);
-
-  // ── Modals ──
-  const modalData = {
-    mision: {
-      icon:'🎯', title:'Misión',
-      body:'La misión de Kimberly-Clark es proporcionar productos esenciales de higiene y cuidado personal que ayuden a las personas a vivir una vida más saludable, segura y digna. La empresa se enfoca en la innovación constante, la calidad y el desarrollo sostenible para generar un impacto positivo en la sociedad.'
-    },
-    vision: {
-      icon:'🔭', title:'Visión',
-      body:'Ser una empresa líder a nivel mundial en soluciones de cuidado personal e higiene, reconocida por su responsabilidad social, compromiso ambiental e innovación tecnológica, contribuyendo al bienestar de millones de personas en todo el mundo.'
-    },
-    objetivo: {
-      icon:'🏆', title:'Objetivo',
-      body:'El objetivo de Kimberly-Clark es optimizar sus procesos de producción, distribución y atención al cliente mediante el uso de tecnología y sistemas de información, garantizando productos de alta calidad, eficientes y sostenibles.'
-    },
-    sustain: {
-      icon:'🌍', title:'Compromisos de Sostenibilidad 2030',
-      body:'Kimberly-Clark se ha comprometido a alcanzar en 2030: 90% de residuos industriales reciclados, reducción del 50% en consumo de agua, 100% de fibra certificada de fuentes responsables y 50% de su energía proveniente de fuentes renovables. Estos objetivos forman parte de su estrategia global de responsabilidad ambiental.'
+    function expandirLogo() {
+        document.getElementById("logo").classList.toggle("logo-grande");
     }
-  };
-  function openModal(id) {
-    const d = modalData[id];
-    document.getElementById('modal-icon').textContent = d.icon;
-    document.getElementById('modal-title').textContent = d.title;
-    document.getElementById('modal-body').textContent = d.body;
-    document.getElementById('modal-overlay').classList.add('open');
-  }
-  function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('open');
-  }
-  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 
-  // ── Scroll Reveal ──
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    function toggleMenu() {
+        const menu = document.getElementById("menuConocenos");
+        menu.style.display = (menu.style.display === "none") ? "block" : "none";
+    }
+
+    function abrirPopup(id) {
+        const popups = document.querySelectorAll('.popup');
+        popups.forEach(p => p.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+    }
+
+    function cerrarPopup(id) {
+        document.getElementById(id).style.display = "none";
+    }
+
+    /* SLIDER AUTOMÁTICO */
+    let indice = 0;
+    const slides = document.querySelector(".slides");
+    const totalSlides = slides.children.length;
+
+    setInterval(() => {
+        indice++;
+
+        if (indice >= totalSlides) {
+            indice = 0;
+        }
+
+        slides.style.transform = `translateX(-${indice * 100}%)`;
+    }, 4000);
 </script>
+
 </body>
 </html>
