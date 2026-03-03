@@ -1,302 +1,963 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Kimberly-Clark | Better Care for a Better World</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kimberly-Clark | Better Care for a Better World</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul: #003087;
+      --azul-medio: #1055b5;
+      --azul-claro: #2d7dd2;
+      --acento: #f5a623;
+      --blanco: #ffffff;
+      --gris-claro: #f4f7fc;
+      --texto: #1a1a2e;
+    }
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+    html { scroll-behavior: smooth; }
 
-        body {
-            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
-            color: #0d47a1;
-        }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--blanco);
+      color: var(--texto);
+      overflow-x: hidden;
+    }
 
-        /* HEADER */
-        header {
-            display: flex;
-            align-items: center;
-            padding: 20px 40px;
-            background: white;
-            color: #0d47a1;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            border-bottom: 3px solid #1976d2;
-        }
+    /* ─── HEADER ─────────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 50px;
+      border-bottom: 2px solid var(--azul);
+      box-shadow: 0 4px 30px rgba(0,48,135,0.12);
+    }
 
-        header img {
-            width: 140px;
-            cursor: pointer;
-            transition: transform 0.4s ease;
-        }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
-        header h1 {
-            margin-left: 20px;
-            font-size: 26px;
-            font-weight: 600;
-        }
+    header img#logo {
+      width: 130px;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
 
-        .logo-grande {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(3);
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            z-index: 2000;
-        }
+    header img#logo:hover { transform: scale(1.06); }
 
-        /* BANNER */
-        .banner {
-            background: #1976d2;
-            color: white;
-            padding: 12px;
-            overflow: hidden;
-        }
+    .header-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--azul);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
 
-        .banner span {
-            display: inline-block;
-            white-space: nowrap;
-            animation: mover 15s linear infinite;
-            font-size: 18px;
-        }
+    .header-tagline span {
+      display: block;
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      color: var(--azul-claro);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
 
-        @keyframes mover {
-            from { transform: translateX(100%); }
-            to { transform: translateX(-100%); }
-        }
+    /* ─── BANNER TICKER ──────────────────────────────────── */
+    .ticker {
+      background: linear-gradient(90deg, var(--azul), var(--azul-medio));
+      color: white;
+      padding: 9px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
 
-        /* NAV */
-        nav {
-            background: #1565c0;
-            padding: 15px 40px;
-            position: relative;
-        }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker-move 22s linear infinite;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
 
-        nav span {
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            font-weight: 500;
-        }
+    .ticker-inner span {
+      margin: 0 40px;
+      opacity: 0.85;
+    }
 
-        /* SLIDER */
-        .slider {
-            width: 100%;
-            max-width: 1100px;
-            height: 320px;
-            margin: 40px auto;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-        }
+    .ticker-inner .dot {
+      color: var(--acento);
+      margin: 0;
+    }
 
-        .slides {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s ease-in-out;
-        }
+    @keyframes ticker-move {
+      from { transform: translateX(100vw); }
+      to { transform: translateX(-100%); }
+    }
 
-        .slides img {
-            min-width: 100%;
-            height: 320px;
-            object-fit: cover;
-        }
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      background: var(--azul);
+      padding: 0 50px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
 
-        /* MENU */
-        #menuConocenos {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 40px;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            z-index: 2500;
-        }
+    .nav-btn {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 16px 20px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      position: relative;
+      transition: background 0.25s;
+      border-bottom: 3px solid transparent;
+    }
 
-        .item-menu {
-            font-size: 20px;
-            margin: 10px 0;
-            cursor: pointer;
-            color: #0d47a1;
-            transition: color 0.3s;
-        }
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%; right: 50%;
+      height: 3px;
+      background: var(--acento);
+      transition: left 0.3s, right 0.3s;
+    }
 
-        .item-menu:hover {
-            color: #1976d2;
-            text-decoration: underline;
-        }
+    .nav-btn:hover::after,
+    .nav-btn.active::after { left: 0; right: 0; }
 
-        /* POPUPS */
-        .popup{
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 25px;
-            width: 360px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            z-index: 3000;
-        }
+    .nav-btn:hover { background: rgba(255,255,255,0.08); }
 
-        .popup h2 {
-            margin-bottom: 10px;
-            color: #0d47a1;
-        }
+    /* DROPDOWN */
+    .dropdown { position: relative; }
 
-        .popup p {
-            font-size: 15px;
-            line-height: 1.7;
-            text-align: justify;
-        }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      min-width: 200px;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 15px 40px rgba(0,48,135,0.18);
+      overflow: hidden;
+      z-index: 2000;
+      border-top: 3px solid var(--acento);
+    }
 
-        .cerrar {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            cursor: pointer;
-            color: red;
-            font-weight: bold;
-            font-size: 20px;
-        }
+    .dropdown:hover .dropdown-menu { display: block; }
 
-        /* FOOTER */
-        footer {
-            margin-top: 50px;
-            background: #0d47a1;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            font-size: 14px;
-        }
-    </style>
+    .dropdown-item {
+      display: block;
+      padding: 14px 22px;
+      font-size: 14px;
+      color: var(--azul);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .dropdown-item:hover {
+      background: var(--gris-claro);
+      border-left-color: var(--azul-claro);
+      padding-left: 28px;
+    }
+
+    /* ─── HERO / SLIDER ──────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      overflow: hidden;
+    }
+
+    .slides-wrapper {
+      display: flex;
+      height: 100%;
+      transition: transform 0.9s cubic-bezier(0.77,0,0.175,1);
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,48,135,0.72) 0%, rgba(0,48,135,0.1) 60%);
+      display: flex;
+      align-items: center;
+      padding: 60px;
+    }
+
+    .slide-text {
+      color: white;
+      max-width: 520px;
+    }
+
+    .slide-text .label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--acento);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .slide-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .slide-text p {
+      font-size: 16px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    /* Dots */
+    .slider-dots {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .dot-btn {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .dot-btn.active {
+      background: var(--acento);
+      width: 28px;
+      border-radius: 5px;
+    }
+
+    /* Arrows */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      border: none;
+      color: white;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .arrow:hover { background: rgba(255,255,255,0.35); }
+    .arrow.prev { left: 20px; }
+    .arrow.next { right: 20px; }
+
+    /* ─── SECCIÓN CARDS ──────────────────────────────────── */
+    .section {
+      padding: 80px 50px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 55px;
+    }
+
+    .section-header .eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--azul-claro);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      color: var(--azul);
+      font-weight: 700;
+    }
+
+    .section-header p {
+      margin-top: 12px;
+      color: #666;
+      font-size: 16px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,48,135,0.08);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+      border: 1px solid rgba(0,48,135,0.06);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 48px rgba(0,48,135,0.16);
+    }
+
+    .card-icon {
+      height: 8px;
+      background: linear-gradient(90deg, var(--azul), var(--azul-claro));
+    }
+
+    .card-body {
+      padding: 32px;
+    }
+
+    .card-emoji {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--azul);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 14.5px;
+      color: #555;
+      line-height: 1.75;
+    }
+
+    /* ─── STATS BAR ──────────────────────────────────────── */
+    .stats-bar {
+      background: linear-gradient(135deg, var(--azul) 0%, var(--azul-medio) 100%);
+      padding: 60px 50px;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      flex: 1;
+      min-width: 180px;
+      text-align: center;
+      padding: 20px 30px;
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      color: var(--acento);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    /* ─── PRODUCTOS ──────────────────────────────────────── */
+    .productos-section {
+      background: var(--gris-claro);
+      padding: 80px 50px;
+    }
+
+    .marcas-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .marca-chip {
+      background: white;
+      border: 2px solid rgba(0,48,135,0.12);
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--azul);
+      transition: all 0.3s;
+      cursor: default;
+    }
+
+    .marca-chip:hover {
+      background: var(--azul);
+      color: white;
+      border-color: var(--azul);
+      transform: scale(1.05);
+    }
+
+    /* ─── VALORES ────────────────────────────────────────── */
+    .valores-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .valor-item {
+      text-align: center;
+      padding: 36px 24px;
+      border-radius: 14px;
+      background: white;
+      box-shadow: 0 2px 16px rgba(0,48,135,0.07);
+      transition: transform 0.3s;
+    }
+
+    .valor-item:hover { transform: translateY(-5px); }
+
+    .valor-icon {
+      width: 58px; height: 58px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 26px;
+    }
+
+    .valor-item h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--azul);
+      margin-bottom: 8px;
+    }
+
+    .valor-item p {
+      font-size: 13.5px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* ─── MODAL ──────────────────────────────────────────── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 4000;
+      backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay.show { display: flex; }
+
+    .modal {
+      background: white;
+      width: 90%;
+      max-width: 480px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+      animation: modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    @keyframes modal-in {
+      from { opacity: 0; transform: scale(0.85) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+      padding: 28px 32px 24px;
+      color: white;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .modal-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s;
+    }
+
+    .modal-close:hover { background: rgba(255,255,255,0.4); }
+
+    .modal-body {
+      padding: 28px 32px 32px;
+    }
+
+    .modal-body p {
+      font-size: 15.5px;
+      color: #444;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    .modal-accent {
+      display: inline-block;
+      width: 40px; height: 3px;
+      background: var(--acento);
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--azul);
+      color: white;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      padding: 60px 50px 50px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+
+    .footer-col p, .footer-col a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      line-height: 2;
+      display: block;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+
+    .footer-col a:hover { color: white; }
+
+    .footer-bottom {
+      text-align: center;
+      padding: 18px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ─── SCROLL TO TOP ──────────────────────────────────── */
+    #scrollTop {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      background: var(--azul);
+      color: white;
+      border: none;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,48,135,0.35);
+      display: none;
+      align-items: center; justify-content: center;
+      z-index: 900;
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    #scrollTop:hover { background: var(--azul-medio); transform: translateY(-3px); }
+    #scrollTop.visible { display: flex; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+      header { padding: 12px 20px; }
+      .header-tagline { font-size: 14px; }
+      nav { padding: 0 20px; }
+      .hero { height: 340px; }
+      .slide-overlay { padding: 30px; }
+      .slide-text h2 { font-size: 26px; }
+      .section, .productos-section { padding: 55px 20px; }
+      .stats-bar { padding: 40px 20px; }
+      .footer-top { padding: 40px 20px; }
+    }
+  </style>
 </head>
-
 <body>
 
+<!-- ═══ HEADER ═══════════════════════════════════════════════ -->
 <header>
-    <img src="imagenes/logo.png" id="logo" onclick="expandirLogo()" alt="Logo Kimberly-Clark">
-    <h1>Kimberly-Clark | Better Care for a Better World</h1>
+  <div class="header-left">
+    <img src="imagenes/logo.png" id="logo" onclick="pulseLogo()" alt="Logo Kimberly-Clark">
+    <div class="header-tagline">
+      Kimberly-Clark
+      <span>Better Care for a Better World</span>
+    </div>
+  </div>
 </header>
 
-<div class="banner">
-    <span>
-        Kimberly-Clark • Innovación • Higiene • Cuidado Personal • Compromiso con el Medio Ambiente
-    </span>
+<!-- ═══ TICKER ════════════════════════════════════════════════ -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Innovación</span><span class="dot">✦</span>
+    <span>Higiene &amp; Cuidado Personal</span><span class="dot">✦</span>
+    <span>Sostenibilidad</span><span class="dot">✦</span>
+    <span>+175 años de historia</span><span class="dot">✦</span>
+    <span>Presencia en 175 países</span><span class="dot">✦</span>
+    <span>Marcas líderes mundiales</span><span class="dot">✦</span>
+    <span>Comprometidos con el planeta</span><span class="dot">✦</span>
+    <span>Better Care for a Better World</span><span class="dot">✦</span>
+  </div>
 </div>
 
+<!-- ═══ NAV ═══════════════════════════════════════════════════ -->
 <nav>
-    <span onclick="toggleMenu()">Conócenos</span>
-    
-    <div id="menuConocenos">
-        <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
-        <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
-        <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
+  <div class="dropdown">
+    <div class="nav-btn">Conócenos ▾</div>
+    <div class="dropdown-menu">
+      <div class="dropdown-item" onclick="abrirModal('mision')">🎯 Misión</div>
+      <div class="dropdown-item" onclick="abrirModal('vision')">🔭 Visión</div>
+      <div class="dropdown-item" onclick="abrirModal('objetivo')">🏆 Objetivo</div>
     </div>
+  </div>
+  <div class="nav-btn" onclick="scrollTo('#sec-historia')">Historia</div>
+  <div class="nav-btn" onclick="scrollTo('#sec-productos')">Productos</div>
+  <div class="nav-btn" onclick="scrollTo('#sec-valores')">Valores</div>
 </nav>
 
-<!-- SLIDER YA INTEGRADO -->
-<div class="slider">
-    <div class="slides">
-        <img src="imagenes/productfondo.png" alt="Productos Kimberly-Clark">
-        <img src="imagenes/kimtrabajo.png" alt="Trabajo en Kimberly-Clark">
-        <img src="imagenes/profesionalkim.jpg" alt="Profesionales Kimberly-Clark">
+<!-- ═══ HERO SLIDER ═══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="slides-wrapper" id="slidesWrapper">
+    <div class="slide">
+      <img src="imagenes/productfondo.png" alt="Productos Kimberly-Clark">
+      <div class="slide-overlay">
+        <div class="slide-text">
+          <div class="label">Nuestros Productos</div>
+          <h2>Calidad que cuida cada momento</h2>
+          <p>Soluciones de higiene y cuidado personal para millones de familias.</p>
+        </div>
+      </div>
     </div>
+    <div class="slide">
+      <img src="imagenes/kimtrabajo.png" alt="Trabajo en Kimberly-Clark">
+      <div class="slide-overlay">
+        <div class="slide-text">
+          <div class="label">Nuestro Equipo</div>
+          <h2>Personas comprometidas con el bienestar</h2>
+          <p>Más de 47,000 colaboradores impulsando un mundo mejor.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="imagenes/profesionalkim.jpg" alt="Profesionales Kimberly-Clark">
+      <div class="slide-overlay">
+        <div class="slide-text">
+          <div class="label">Innovación</div>
+          <h2>Liderando el futuro del cuidado personal</h2>
+          <p>Tecnología e innovación al servicio de la salud y la dignidad humana.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="arrow prev" onclick="cambiarSlide(-1)">&#8249;</button>
+  <button class="arrow next" onclick="cambiarSlide(1)">&#8250;</button>
+
+  <div class="slider-dots" id="sliderDots">
+    <button class="dot-btn active" onclick="irASlide(0)"></button>
+    <button class="dot-btn" onclick="irASlide(1)"></button>
+    <button class="dot-btn" onclick="irASlide(2)"></button>
+  </div>
+</section>
+
+<!-- ═══ STATS ═════════════════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">175+</div>
+    <div class="stat-label">Años de trayectoria</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">175</div>
+    <div class="stat-label">Países con presencia</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">47K</div>
+    <div class="stat-label">Colaboradores</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">$20B</div>
+    <div class="stat-label">En ventas anuales</div>
+  </div>
 </div>
 
-<div id="menuConocenos">
-    <div class="item-menu" onclick="abrirPopup('mision')">Misión</div>
-    <div class="item-menu" onclick="abrirPopup('vision')">Visión</div>
-    <div class="item-menu" onclick="abrirPopup('objetivo')">Objetivo</div>
+<!-- ═══ MISIÓN / VISIÓN / OBJETIVO CARDS ══════════════════════ -->
+<section class="section" id="sec-historia">
+  <div class="section-header">
+    <div class="eyebrow">Quiénes somos</div>
+    <h2>Propósito y Dirección</h2>
+    <p>Conoce los pilares que guían cada decisión y cada producto que llega a tus manos.</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card" onclick="abrirModal('mision')">
+      <div class="card-icon"></div>
+      <div class="card-body">
+        <div class="card-emoji">🎯</div>
+        <h3>Misión</h3>
+        <p>Proporcionar productos esenciales de higiene y cuidado personal que ayuden a las personas a vivir una vida más saludable, segura y digna.</p>
+      </div>
+    </div>
+    <div class="card" onclick="abrirModal('vision')">
+      <div class="card-icon" style="background:linear-gradient(90deg,#1055b5,#2d7dd2)"></div>
+      <div class="card-body">
+        <div class="card-emoji">🔭</div>
+        <h3>Visión</h3>
+        <p>Ser la empresa líder mundial en soluciones de cuidado personal, reconocida por su responsabilidad social y compromiso ambiental.</p>
+      </div>
+    </div>
+    <div class="card" onclick="abrirModal('objetivo')">
+      <div class="card-icon" style="background:linear-gradient(90deg,#2d7dd2,#5ba0e0)"></div>
+      <div class="card-body">
+        <div class="card-emoji">🏆</div>
+        <h3>Objetivo</h3>
+        <p>Optimizar procesos de producción y distribución mediante tecnología, garantizando productos de alta calidad, eficientes y sostenibles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUCTOS / MARCAS ════════════════════════════════════ -->
+<section class="productos-section" id="sec-productos">
+  <div class="section-header">
+    <div class="eyebrow">Portafolio</div>
+    <h2>Nuestras Marcas Icónicas</h2>
+    <p>Marcas en las que confían millones de hogares alrededor del mundo todos los días.</p>
+  </div>
+  <div class="marcas-grid">
+    <div class="marca-chip">Kleenex®</div>
+    <div class="marca-chip">Huggies®</div>
+    <div class="marca-chip">Kotex®</div>
+    <div class="marca-chip">Scott®</div>
+    <div class="marca-chip">Depend®</div>
+    <div class="marca-chip">Pull-Ups®</div>
+    <div class="marca-chip">GoodNites®</div>
+    <div class="marca-chip">Plenitud®</div>
+    <div class="marca-chip">Andrex®</div>
+    <div class="marca-chip">WypAll®</div>
+  </div>
+</section>
+
+<!-- ═══ VALORES ═══════════════════════════════════════════════ -->
+<section class="section" id="sec-valores">
+  <div class="section-header">
+    <div class="eyebrow">Lo que nos define</div>
+    <h2>Nuestros Valores Corporativos</h2>
+  </div>
+  <div class="valores-grid">
+    <div class="valor-item">
+      <div class="valor-icon">♻️</div>
+      <h4>Sostenibilidad</h4>
+      <p>Comprometidos a reducir nuestra huella ambiental en cada etapa del proceso productivo.</p>
+    </div>
+    <div class="valor-item">
+      <div class="valor-icon">💡</div>
+      <h4>Innovación</h4>
+      <p>Desarrollamos soluciones que anticipan las necesidades de las personas y el mercado.</p>
+    </div>
+    <div class="valor-item">
+      <div class="valor-icon">🤝</div>
+      <h4>Integridad</h4>
+      <p>Actuamos con transparencia, honestidad y responsabilidad en todo lo que hacemos.</p>
+    </div>
+    <div class="valor-item">
+      <div class="valor-icon">🌍</div>
+      <h4>Inclusión</h4>
+      <p>Fomentamos una cultura diversa e inclusiva que refleja al mundo que servimos.</p>
+    </div>
+    <div class="valor-item">
+      <div class="valor-icon">⭐</div>
+      <h4>Calidad</h4>
+      <p>Cada producto cumple los más altos estándares para garantizar la confianza del consumidor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MODALES ════════════════════════════════════════════════ -->
+<div class="overlay" id="overlay" onclick="cerrarModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2 id="modalTitle">Título</h2>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-accent"></div>
+      <p id="modalText"></p>
+    </div>
+  </div>
 </div>
 
-<!-- MISIÓN -->
-<div id="mision" class="popup">
-    <span class="cerrar" onclick="cerrarPopup('mision')">✖</span>
-    <h2>Misión</h2>
-    <p>
-        La misión de Kimberly-Clark es proporcionar productos esenciales de higiene
-        y cuidado personal que ayuden a las personas a vivir una vida más saludable,
-        segura y digna. La empresa se enfoca en la innovación constante, la calidad
-        y el desarrollo sostenible para generar un impacto positivo en la sociedad.
-
-    </p>
-</div>
-
-<!-- VISIÓN -->
-<div id="vision" class="popup">
-    <span class="cerrar" onclick="cerrarPopup('vision')">✖</span>
-    <h2>Visión</h2>
-    <p>
-        Ser una empresa líder a nivel mundial en soluciones de cuidado personal e higiene,
-        reconocida por su responsabilidad social, compromiso ambiental e innovación
-        tecnológica, contribuyendo al bienestar de millones de personas en todo el mundo.
-    </p>
-</div>
-
-<!-- OBJETIVO -->
-<div id="objetivo" class="popup">
-    <span class="cerrar" onclick="cerrarPopup('objetivo')">✖</span>
-    <h2>Objetivo</h2>
-    <p>
-        El objetivo de Kimberly-Clark es optimizar sus procesos de producción, distribución
-        y atención al cliente mediante el uso de tecnología y sistemas de información,
-        garantizando productos de alta calidad, eficientes y sostenibles.
-    </p>
-</div>
-
+<!-- ═══ FOOTER ════════════════════════════════════════════════ -->
 <footer>
-    © 2026 Kimberly-Clark | Proyecto Académico – Página Informativa
+  <div class="footer-top">
+    <div class="footer-col">
+      <h4>Kimberly-Clark</h4>
+      <p>Better Care for a Better World.</p>
+      <p>Fundada en 1872, Wisconsin, EE.UU.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <a href="#" onclick="abrirModal('mision'); return false;">Misión</a>
+      <a href="#" onclick="abrirModal('vision'); return false;">Visión</a>
+      <a href="#" onclick="abrirModal('objetivo'); return false;">Objetivo</a>
+      <a href="#sec-valores">Valores</a>
+    </div>
+    <div class="footer-col">
+      <h4>Marcas</h4>
+      <a href="#">Huggies®</a>
+      <a href="#">Kleenex®</a>
+      <a href="#">Kotex®</a>
+      <a href="#">Scott®</a>
+    </div>
+    <div class="footer-col">
+      <h4>Proyecto</h4>
+      <p>Página informativa académica.</p>
+      <p>Contenido elaborado con fines educativos.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 Kimberly-Clark | Proyecto Académico — Página Informativa
+  </div>
 </footer>
 
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ═══ SCRIPTS ═══════════════════════════════════════════════ -->
 <script>
-    function expandirLogo() {
-        document.getElementById("logo").classList.toggle("logo-grande");
+  /* ── LOGO PULSE ── */
+  function pulseLogo() {
+    const logo = document.getElementById('logo');
+    logo.style.transform = 'scale(1.2)';
+    setTimeout(() => logo.style.transform = '', 400);
+  }
+
+  /* ── NAV SCROLL ── */
+  function scrollTo(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ── SLIDER ── */
+  let current = 0;
+  const total = 3;
+  const wrapper = document.getElementById('slidesWrapper');
+  const dots = document.querySelectorAll('.dot-btn');
+
+  function irASlide(n) {
+    current = n;
+    wrapper.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function cambiarSlide(dir) {
+    current = (current + dir + total) % total;
+    irASlide(current);
+  }
+
+  setInterval(() => cambiarSlide(1), 5000);
+
+  /* ── MODAL ── */
+  const contenidos = {
+    mision: {
+      titulo: '🎯 Misión',
+      texto: 'La misión de Kimberly-Clark es proporcionar productos esenciales de higiene y cuidado personal que ayuden a las personas a vivir una vida más saludable, segura y digna. La empresa se enfoca en la innovación constante, la calidad y el desarrollo sostenible para generar un impacto positivo en la sociedad y en las comunidades donde opera.'
+    },
+    vision: {
+      titulo: '🔭 Visión',
+      texto: 'Ser una empresa líder a nivel mundial en soluciones de cuidado personal e higiene, reconocida por su responsabilidad social, compromiso ambiental e innovación tecnológica, contribuyendo al bienestar de millones de personas en todo el mundo y construyendo un futuro más sostenible para las próximas generaciones.'
+    },
+    objetivo: {
+      titulo: '🏆 Objetivo',
+      texto: 'El objetivo de Kimberly-Clark es optimizar sus procesos de producción, distribución y atención al cliente mediante el uso de tecnología y sistemas de información, garantizando productos de alta calidad, eficientes y sostenibles que respondan a las necesidades reales de sus consumidores en los cinco continentes.'
     }
+  };
 
-    function toggleMenu() {
-        const menu = document.getElementById("menuConocenos");
-        menu.style.display = (menu.style.display === "none") ? "block" : "none";
-    }
+  function abrirModal(id) {
+    const { titulo, texto } = contenidos[id];
+    document.getElementById('modalTitle').textContent = titulo;
+    document.getElementById('modalText').textContent = texto;
+    document.getElementById('overlay').classList.add('show');
+  }
 
-    function abrirPopup(id) {
-        const popups = document.querySelectorAll('.popup');
-        popups.forEach(p => p.style.display = 'none');
-        document.getElementById(id).style.display = 'block';
-    }
+  function cerrarModal() {
+    document.getElementById('overlay').classList.remove('show');
+  }
 
-    function cerrarPopup(id) {
-        document.getElementById(id).style.display = "none";
-    }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
 
-    /* SLIDER AUTOMÁTICO */
-    let indice = 0;
-    const slides = document.querySelector(".slides");
-    const totalSlides = slides.children.length;
-
-    setInterval(() => {
-        indice++;
-
-        if (indice >= totalSlides) {
-            indice = 0;
-        }
-
-        slides.style.transform = `translateX(-${indice * 100}%)`;
-    }, 4000);
+  /* ── SCROLL TO TOP ── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+  });
 </script>
-
 </body>
 </html>
