@@ -90,16 +90,15 @@
       display: flex; align-items: center; gap: 16px;
     }
     .brand-logo {
-      width: 52px; height: 52px;
+      height: 48px;
       background: var(--white);
       border-radius: 10px;
+      padding: 6px 10px;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-weight: 900; font-size: 22px;
-      color: var(--blue-deep);
       transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .brand-logo:hover { transform: rotate(10deg) scale(1.1); }
+    .brand-logo img { height: 36px; width: auto; display: block; }
+    .brand-logo:hover { transform: scale(1.08); }
     .brand-text { line-height: 1.2; }
     .brand-text h1 { font-size: 16px; font-weight: 500; letter-spacing: 0.04em; }
     .brand-text p { font-size: 11px; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; }
@@ -501,21 +500,11 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
-    .brand-card {
-      border-radius: 16px;
-      padding: 32px 24px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      text-align: center;
-      transition: all 0.4s;
-      cursor: pointer;
-    }
-    .brand-card:hover {
-      background: rgba(0,87,184,0.25);
-      border-color: rgba(0,153,230,0.4);
-      transform: translateY(-6px);
-    }
-    .brand-card .brand-emoji { font-size: 40px; margin-bottom: 12px; }
+    .brand-card { border-radius: 16px; padding: 28px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); text-align: center; transition: all 0.4s; cursor: pointer; overflow: hidden; }
+    .brand-card:hover { background: rgba(0,87,184,0.25); border-color: rgba(0,153,230,0.4); transform: translateY(-6px); }
+    .brand-card .brand-img-wrap { width: 100%; height: 140px; border-radius: 10px; overflow: hidden; margin-bottom: 16px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; }
+    .brand-card .brand-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .brand-card:hover .brand-img-wrap img { transform: scale(1.08); }
     .brand-card h4 { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
     .brand-card p { font-size: 13px; color: rgba(255,255,255,0.5); }
 
@@ -679,7 +668,9 @@
 <!-- Header -->
 <header id="header">
   <div class="brand">
-    <div class="brand-logo">KC</div>
+    <div class="brand-logo">
+      <img src="imagenes/logo.png" alt="Kimberly-Clark Logo" onerror="this.parentElement.innerHTML='<span style=\'font-family:Playfair Display,serif;font-weight:900;font-size:18px;color:#003087\'>KC</span>'">
+    </div>
     <div class="brand-text">
       <h1>Kimberly-Clark</h1>
       <p>Better Care for a Better World</p>
@@ -755,6 +746,7 @@
           <div class="carousel-dot active" onclick="goTo(0)"></div>
           <div class="carousel-dot" onclick="goTo(1)"></div>
           <div class="carousel-dot" onclick="goTo(2)"></div>
+          <div class="carousel-dot" onclick="goTo(3)"></div>
         </div>
       </div>
     </div>
@@ -762,41 +754,46 @@
       <div class="carousel">
         <div class="carousel-slides" id="slides">
 
-          <!-- Slide 1 -->
+          <!-- Slide 1: Huggies -->
           <div class="carousel-slide">
-            <div style="width:100%;height:100%;background:linear-gradient(135deg,#003087,#0099e6);display:flex;align-items:center;justify-content:center;font-size:80px">
-              🛒
-            </div>
+            <img class="slide-bg" src="imagenes/productfondo.png" alt="Productos Kimberly-Clark" onerror="this.style.display='none'">
             <div class="slide-overlay">
               <div class="slide-caption">
-                Productos Kimberly-Clark
-                <small>Calidad que cuida a tu familia</small>
+                Huggies® — Pañales
+                <small>Protección y confort para tu bebé</small>
               </div>
             </div>
           </div>
 
-          <!-- Slide 2 -->
+          <!-- Slide 2: Kleenex -->
           <div class="carousel-slide">
-            <div style="width:100%;height:100%;background:linear-gradient(135deg,#0057b8,#48cae4);display:flex;align-items:center;justify-content:center;font-size:80px">
-              👔
-            </div>
+            <img class="slide-bg" src="imagenes/kimtrabajo.png" alt="Trabajo en Kimberly-Clark" onerror="this.style.display='none'">
             <div class="slide-overlay">
               <div class="slide-caption">
-                Equipo Profesional
-                <small>Comprometidos con la excelencia</small>
+                Kleenex® — Pañuelos Faciales
+                <small>Suavidad que cuida tu piel</small>
               </div>
             </div>
           </div>
 
-          <!-- Slide 3 -->
+          <!-- Slide 3: Kotex -->
           <div class="carousel-slide">
-            <div style="width:100%;height:100%;background:linear-gradient(135deg,#001a4d,#003087);display:flex;align-items:center;justify-content:center;font-size:80px">
-              🌱
-            </div>
+            <img class="slide-bg" src="imagenes/profesionalkim.jpg" alt="Profesionales Kimberly-Clark" onerror="this.style.display='none'">
             <div class="slide-overlay">
               <div class="slide-caption">
-                Compromiso Ambiental
-                <small>Un mundo más sostenible</small>
+                Kotex® — Cuidado Femenino
+                <small>Confianza en cada momento</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4: Scott -->
+          <div class="carousel-slide">
+            <img class="slide-bg" src="imagenes/productfondo.png" alt="Productos Kimberly-Clark" onerror="this.style.display='none'">
+            <div class="slide-overlay">
+              <div class="slide-caption">
+                Scott® — Toallas de Papel
+                <small>Limpieza eficiente en el hogar</small>
               </div>
             </div>
           </div>
@@ -837,22 +834,30 @@
   <p style="color:rgba(255,255,255,0.5);margin-bottom:50px;font-size:16px">Marcas icónicas que forman parte de la vida cotidiana de millones de personas.</p>
   <div class="brands-grid">
     <div class="brand-card reveal">
-      <div class="brand-emoji">🧻</div>
+      <div class="brand-img-wrap">
+        <img src="https://m.media-amazon.com/images/I/61Y1yHVPEYL._AC_SX679_.jpg" alt="Kleenex" onerror="this.parentElement.innerHTML='🧻'">
+      </div>
       <h4>Kleenex®</h4>
       <p>Pañuelos y productos de papel facial</p>
     </div>
     <div class="brand-card reveal" style="transition-delay:0.1s">
-      <div class="brand-emoji">👶</div>
+      <div class="brand-img-wrap">
+        <img src="https://m.media-amazon.com/images/I/81RdPUfRlTL._AC_SX679_.jpg" alt="Huggies" onerror="this.parentElement.innerHTML='👶'">
+      </div>
       <h4>Huggies®</h4>
       <p>Pañales y cuidado para bebés</p>
     </div>
     <div class="brand-card reveal" style="transition-delay:0.2s">
-      <div class="brand-emoji">🌸</div>
+      <div class="brand-img-wrap">
+        <img src="https://images.behance.net/project_modules/fs/8c5c28147219041.62c06e38b4dd8.jpg" alt="Kotex" onerror="this.parentElement.innerHTML='🌸'">
+      </div>
       <h4>Kotex®</h4>
       <p>Cuidado femenino con confianza</p>
     </div>
     <div class="brand-card reveal" style="transition-delay:0.3s">
-      <div class="brand-emoji">🧤</div>
+      <div class="brand-img-wrap">
+        <img src="https://m.media-amazon.com/images/I/81nmB4pKtnL._AC_SX679_.jpg" alt="Scott" onerror="this.parentElement.innerHTML='🧤'">
+      </div>
       <h4>Scott®</h4>
       <p>Papel de cocina y productos de limpieza</p>
     </div>
@@ -974,7 +979,7 @@
   let cur_slide = 0;
   const slides_el = document.getElementById('slides');
   const dots = document.querySelectorAll('.carousel-dot');
-  const total = 3;
+  const total = 4;
   function goTo(n) {
     cur_slide = (n + total) % total;
     slides_el.style.transform = `translateX(-${cur_slide * 100}%)`;
