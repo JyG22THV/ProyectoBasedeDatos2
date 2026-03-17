@@ -897,6 +897,34 @@ footer { background:var(--kc-blue); color:#fff; }
       <div><div style="font-size:.78rem;color:var(--gray);margin-bottom:.5rem;">Unidades asignadas por Planta</div><canvas id="chart-bar"></canvas></div>
       <div><div style="font-size:.78rem;color:var(--gray);margin-bottom:.5rem;">Participación de Costos por Planta</div><canvas id="chart-pie"></canvas></div>
     </div>
+    <!-- RESUMEN CTA -->
+    <div style="text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--sys-border);">
+      <div style="font-size:.8rem;color:var(--gray);margin-bottom:1rem;">¡Listo! Tu distribución está optimizada. Genera el resumen completo de tu pedido.</div>
+      <button id="btn-resumen-final" onclick="abrirResumen()" style="
+        display:inline-flex;align-items:center;gap:12px;
+        padding:16px 40px;border-radius:14px;border:none;cursor:pointer;
+        background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));
+        color:var(--kc-blue);font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;
+        box-shadow:0 6px 28px rgba(245,166,35,.5);
+        animation:pulse-gold 2s ease-in-out infinite;
+        transition:all .25s;
+      " onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 36px rgba(245,166,35,.7)'"
+         onmouseout="this.style.transform='';this.style.boxShadow='0 6px 28px rgba(245,166,35,.5)'">
+        <i class="fas fa-receipt" style="font-size:1.2rem;"></i>
+        Ver Resumen del Pedido
+        <i class="fas fa-arrow-right" style="font-size:.9rem;"></i>
+      </button>
+      <div style="margin-top:.9rem;">
+        <button onclick="descargarPDF()" style="
+          background:none;border:1px solid rgba(245,166,35,.4);border-radius:10px;
+          color:var(--kc-gold);padding:9px 22px;cursor:pointer;font-size:.82rem;
+          font-family:'Syne',sans-serif;font-weight:700;transition:all .25s;
+          display:inline-flex;align-items:center;gap:8px;
+        " onmouseover="this.style.background='rgba(245,166,35,.1)'" onmouseout="this.style.background='none'">
+          <i class="fas fa-file-arrow-down"></i> Descargar PDF directo
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
