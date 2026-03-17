@@ -14,6 +14,7 @@
   --kc-mid:    #1055b5;
   --kc-light:  #2d7dd2;
   --kc-gold:   #f5a623;
+  --kc-gold2:  #e6951a;
   --sys-bg:    #070f1f;
   --sys-card:  #0c1a32;
   --sys-panel: #0f2040;
@@ -33,7 +34,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
   position:sticky; top:0; z-index:1000;
   background:rgba(255,255,255,0.97); backdrop-filter:blur(14px);
   display:flex; align-items:center; justify-content:space-between;
-  padding:12px 48px;
+  padding:10px 40px;
   border-bottom:3px solid var(--kc-blue);
   box-shadow:0 4px 30px rgba(0,48,135,0.14);
   animation:slideDown .5s ease both;
@@ -62,18 +63,54 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 }
 @keyframes shimmer { to{transform:translateX(100%);} }
 
-/* ── TICKER ── */
-.ticker { background:linear-gradient(90deg,var(--kc-blue),var(--kc-mid)); padding:9px 0; overflow:hidden; white-space:nowrap; }
-.ticker-inner {
-  display:inline-block; animation:ticker-scroll 26s linear infinite;
-  font-size:12px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500; color:rgba(255,255,255,.88);
+/* ── HEADER ACTIONS (search + cart badge) ── */
+.header-actions { display:flex; align-items:center; gap:10px; }
+.header-search-wrap { position:relative; }
+.header-search-input {
+  width:0; padding:0; border:none; outline:none; background:transparent;
+  font-family:'DM Sans',sans-serif; font-size:14px; color:var(--kc-blue);
+  transition:all .4s cubic-bezier(.4,0,.2,1); border-radius:20px;
+  border:2px solid transparent;
 }
-.ticker-inner span { margin:0 36px; }
-.ticker-inner .dot { color:var(--kc-gold); margin:0; }
-@keyframes ticker-scroll { from{transform:translateX(100vw);} to{transform:translateX(-100%);} }
+.header-search-wrap.open .header-search-input {
+  width:220px; padding:8px 38px 8px 16px;
+  background:#f4f7fc; border-color:var(--kc-light);
+}
+.header-search-btn {
+  position:absolute; right:0; top:50%; transform:translateY(-50%);
+  background:none; border:none; cursor:pointer; color:var(--kc-blue);
+  width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+  border-radius:50%; transition:background .2s; font-size:14px;
+}
+.header-search-btn:hover { background:rgba(0,48,135,.08); }
+.cart-header-btn {
+  position:relative; background:none; border:none; cursor:pointer;
+  color:var(--kc-blue); width:40px; height:40px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%; transition:background .2s; font-size:17px;
+}
+.cart-header-btn:hover { background:rgba(0,48,135,.08); }
+.cart-badge-count {
+  position:absolute; top:2px; right:2px;
+  background:var(--kc-gold); color:var(--kc-blue);
+  font-size:10px; font-weight:800; font-family:'Syne',sans-serif;
+  width:17px; height:17px; border-radius:50%;
+  display:none; align-items:center; justify-content:center;
+  border:2px solid #fff;
+}
+.cart-badge-count.visible { display:flex; }
+.btn-ir-sistema {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:9px 18px; border-radius:20px;
+  background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));
+  color:var(--kc-blue); font-family:'Syne',sans-serif; font-weight:800;
+  font-size:.8rem; border:none; cursor:pointer; transition:all .25s;
+  box-shadow:0 3px 12px rgba(245,166,35,.4); white-space:nowrap;
+}
+.btn-ir-sistema:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(245,166,35,.55); }
 
 /* ── NAV ── */
-.main-nav { background:var(--kc-blue); padding:0 48px; display:flex; align-items:center; gap:4px; }
+.main-nav { background:var(--kc-blue); padding:0 40px; display:flex; align-items:center; gap:4px; }
 .nav-btn {
   color:#fff; font-size:13.5px; font-weight:500; padding:15px 18px;
   cursor:pointer; position:relative; letter-spacing:.3px; transition:background .25s; user-select:none;
@@ -84,6 +121,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 }
 .nav-btn:hover::after, .nav-btn.active::after { left:0; right:0; }
 .nav-btn:hover { background:rgba(255,255,255,.09); }
+.nav-btn.active { background:rgba(255,255,255,.09); }
 .dropdown { position:relative; }
 .dropdown-menu {
   display:none; position:absolute; top:100%; left:0;
@@ -99,22 +137,18 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 .dropdown-item:hover { background:#f4f7fc; border-left-color:var(--kc-light); padding-left:28px; }
 
 /* ── HERO SLIDER ── */
-.hero-slider { position:relative; width:100%; height:480px; overflow:hidden; }
+.hero-slider { position:relative; width:100%; height:460px; overflow:hidden; }
 .slides-wrapper { display:flex; height:100%; transition:transform .9s cubic-bezier(.77,0,.175,1); }
 .slide { min-width:100%; height:100%; position:relative; }
-
 .slide-bg {
   width:100%; height:100%;
   display:flex; align-items:center;
   position:relative; overflow:hidden;
   background-size:cover; background-position:center;
 }
-/* Fallback gradients (show if image missing) */
 .slide-1 .slide-bg { background-color:#001a5c; }
 .slide-2 .slide-bg { background-color:#001040; }
 .slide-3 .slide-bg { background-color:#00264d; }
-
-/* Dark overlay so text is always readable over photos */
 .slide-bg::before {
   content:''; position:absolute; inset:0; z-index:0;
   background:linear-gradient(to right, rgba(0,24,80,0.78) 0%, rgba(0,24,80,0.35) 60%, transparent 100%);
@@ -127,19 +161,26 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 }
 .slide-overlay {
   position:relative; z-index:2;
-  padding:60px; color:#fff; max-width:580px;
+  padding:60px; color:#fff; max-width:600px;
 }
 .slide-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--kc-gold); font-weight:600; margin-bottom:14px; }
-.slide-overlay h2 { font-family:'Playfair Display',serif; font-size:42px; font-weight:900; line-height:1.18; margin-bottom:18px; }
+.slide-overlay h2 { font-family:'Playfair Display',serif; font-size:40px; font-weight:900; line-height:1.18; margin-bottom:18px; }
 .slide-overlay p  { font-size:16px; opacity:.9; line-height:1.65; margin-bottom:28px; }
+.slide-ctas { display:flex; gap:12px; flex-wrap:wrap; }
 .slide-cta {
   display:inline-flex; align-items:center; gap:8px;
   padding:12px 26px; border-radius:8px;
   background:var(--kc-gold); color:var(--kc-blue);
   font-family:'Syne',sans-serif; font-weight:700; font-size:.88rem;
   cursor:pointer; border:none; transition:all .25s;
+  box-shadow:0 4px 16px rgba(245,166,35,.35);
 }
 .slide-cta:hover { filter:brightness(1.1); transform:translateY(-2px); }
+.slide-cta.secondary {
+  background:rgba(255,255,255,.15); color:#fff;
+  border:2px solid rgba(255,255,255,.4); box-shadow:none;
+}
+.slide-cta.secondary:hover { background:rgba(255,255,255,.25); }
 .arrow {
   position:absolute; top:50%; transform:translateY(-50%);
   background:rgba(255,255,255,.16); backdrop-filter:blur(6px);
@@ -155,11 +196,31 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 .dot-btn.active { background:var(--kc-gold); width:26px; border-radius:5px; }
 
 /* ── STATS BAR ── */
-.stats-bar { background:linear-gradient(135deg,#001a5c,var(--kc-mid)); padding:48px 50px; display:flex; justify-content:center; flex-wrap:wrap; }
-.stat-item { flex:1; min-width:170px; text-align:center; padding:16px 28px; border-right:1px solid rgba(255,255,255,.12); }
+.stats-bar { background:linear-gradient(135deg,#001a5c,var(--kc-mid)); padding:40px 50px; display:flex; justify-content:center; flex-wrap:wrap; }
+.stat-item { flex:1; min-width:150px; text-align:center; padding:14px 24px; border-right:1px solid rgba(255,255,255,.12); }
 .stat-item:last-child { border-right:none; }
-.stat-num  { font-family:'Playfair Display',serif; font-size:46px; font-weight:900; color:var(--kc-gold); line-height:1; }
+.stat-num  { font-family:'Playfair Display',serif; font-size:42px; font-weight:900; color:var(--kc-gold); line-height:1; }
 .stat-lbl  { font-size:12px; color:rgba(255,255,255,.75); text-transform:uppercase; letter-spacing:1.5px; margin-top:8px; font-weight:500; }
+
+/* ── QUICK ACTIONS BAR ── */
+.quick-actions {
+  background:linear-gradient(90deg,var(--kc-blue),var(--kc-mid));
+  padding:14px 40px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  border-bottom:2px solid rgba(245,166,35,.25);
+}
+.quick-actions-label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.5); font-weight:600; margin-right:4px; }
+.quick-btn {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:8px 18px; border-radius:20px; font-size:.8rem;
+  font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; border:none;
+  transition:all .22s; white-space:nowrap;
+}
+.quick-btn.gold { background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2)); color:var(--kc-blue); box-shadow:0 3px 12px rgba(245,166,35,.35); }
+.quick-btn.gold:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(245,166,35,.5); }
+.quick-btn.outline { background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.25); }
+.quick-btn.outline:hover { background:rgba(255,255,255,.2); }
+.quick-btn.green { background:rgba(0,230,118,.15); color:var(--g-green); border:1px solid rgba(0,230,118,.3); }
+.quick-btn.green:hover { background:rgba(0,230,118,.25); }
 
 /* ── SECTIONS ── */
 .section { padding:70px 50px; }
@@ -189,18 +250,28 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 
 /* ── MVC CARDS ── */
 .mvc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:28px; max-width:1100px; margin:0 auto; }
-.mvc-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,48,135,.1); transition:transform .35s, box-shadow .35s; cursor:pointer; }
+.mvc-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,48,135,.1); transition:transform .35s, box-shadow .35s; cursor:pointer; position:relative; }
 .mvc-card:hover { transform:translateY(-8px); box-shadow:0 18px 50px rgba(0,48,135,.18); }
 .mvc-top  { height:7px; background:linear-gradient(90deg,var(--kc-blue),var(--kc-light)); }
 .mvc-body { padding:30px; }
 .mvc-emoji { font-size:34px; margin-bottom:14px; }
 .mvc-body h3 { font-family:'Playfair Display',serif; font-size:21px; color:var(--kc-blue); margin-bottom:10px; }
 .mvc-body p  { font-size:14px; color:#555; line-height:1.75; }
+.mvc-link { display:inline-flex; align-items:center; gap:5px; margin-top:14px; font-size:12.5px; color:var(--kc-mid); font-weight:600; }
 
 /* ── MARCAS ── */
-.marcas-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:1000px; margin:0 auto; }
-.marca-chip { background:#fff; border:2px solid rgba(0,48,135,.12); border-radius:50px; padding:11px 26px; font-size:13.5px; font-weight:600; color:var(--kc-blue); transition:all .3s; cursor:default; }
+.marcas-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; max-width:1100px; margin:0 auto; }
+.marca-chip {
+  background:#fff; border:2px solid rgba(0,48,135,.12); border-radius:50px;
+  padding:11px 22px; font-size:13px; font-weight:600; color:var(--kc-blue);
+  transition:all .3s; cursor:pointer; display:flex; align-items:center; gap:8px;
+}
 .marca-chip:hover { background:var(--kc-blue); color:#fff; border-color:var(--kc-blue); transform:scale(1.05); }
+.marca-chip .marca-cat {
+  font-size:10px; color:#888; font-weight:400; background:#f4f7fc;
+  padding:2px 7px; border-radius:10px; transition:all .3s;
+}
+.marca-chip:hover .marca-cat { background:rgba(255,255,255,.2); color:rgba(255,255,255,.8); }
 
 /* ── VALORES ── */
 .valores-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:22px; max-width:1100px; margin:0 auto; }
@@ -218,6 +289,63 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 .sys-divider::before, .sys-divider::after { content:''; flex:1; height:1px; background:rgba(45,125,210,.25); }
 .sys-divider span { font-family:'Syne',sans-serif; font-size:.78rem; color:var(--kc-light); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; }
 
+/* ── CATALOG OVERLAY ── */
+.catalog-overlay {
+  display:none; position:fixed; inset:0; z-index:3000;
+  background:rgba(4,8,20,0.92); backdrop-filter:blur(10px);
+  animation:fadeIn .25s ease;
+}
+.catalog-overlay.show { display:flex; flex-direction:column; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+.catalog-panel {
+  width:100%; max-width:1200px; margin:0 auto;
+  flex:1; display:flex; flex-direction:column;
+  padding:24px 32px; overflow:hidden;
+  animation:slideUp .35s cubic-bezier(.34,1.2,.64,1) both;
+}
+@keyframes slideUp { from{transform:translateY(40px);opacity:0;} to{transform:none;opacity:1;} }
+.catalog-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px; flex-wrap:wrap; gap:12px;
+}
+.catalog-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:#fff; }
+.catalog-title span { color:var(--kc-gold); }
+.catalog-close {
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+  color:#fff; width:40px; height:40px; border-radius:50%; font-size:18px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s;
+}
+.catalog-close:hover { background:rgba(255,255,255,.2); transform:rotate(90deg); }
+.catalog-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.cat-filter-btn {
+  padding:7px 18px; border-radius:20px; font-size:.78rem; font-weight:700;
+  font-family:'Syne',sans-serif; cursor:pointer; border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.07); color:rgba(255,255,255,.7); transition:all .2s;
+}
+.cat-filter-btn.active, .cat-filter-btn:hover {
+  background:var(--kc-gold); color:var(--kc-blue); border-color:var(--kc-gold);
+}
+.catalog-search {
+  position:relative; margin-bottom:20px;
+}
+.catalog-search input {
+  width:100%; padding:12px 18px 12px 44px;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  border-radius:12px; color:#fff; font-size:14px; font-family:'DM Sans',sans-serif;
+  outline:none; transition:border-color .2s;
+}
+.catalog-search input::placeholder { color:rgba(255,255,255,.4); }
+.catalog-search input:focus { border-color:var(--kc-gold); }
+.catalog-search i { position:absolute; left:15px; top:50%; transform:translateY(-50%); color:rgba(255,255,255,.4); }
+.catalog-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:14px; overflow-y:auto; padding-bottom:20px;
+  flex:1;
+}
+.catalog-grid::-webkit-scrollbar { width:6px; }
+.catalog-grid::-webkit-scrollbar-track { background:rgba(255,255,255,.05); border-radius:3px; }
+.catalog-grid::-webkit-scrollbar-thumb { background:rgba(255,255,255,.15); border-radius:3px; }
+
 /* ── PRODUCTS ── */
 .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:14px; margin-bottom:2.5rem; }
 .prod-card { background:var(--sys-card); border:1px solid var(--sys-border); border-radius:15px; padding:1rem; display:flex; flex-direction:column; gap:.65rem; transition:transform .3s, box-shadow .3s, border-color .3s; animation:fadeUp .6s ease both; }
@@ -225,12 +353,21 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 .prod-img   { width:100%; height:84px; border-radius:10px; background:linear-gradient(135deg,rgba(0,48,135,.35),rgba(45,125,210,.2)); display:grid; place-items:center; font-size:2.1rem; }
 .prod-name  { font-family:'Syne',sans-serif; font-size:.85rem; font-weight:700; }
 .prod-cat   { font-size:.7rem; color:var(--gray); margin-top:-4px; }
-.prod-price { color:#7ec8f8; font-size:.92rem; font-weight:700; }
+.prod-price { color:var(--kc-gold); font-size:.92rem; font-weight:700; }
 .prod-stock { font-size:.73rem; color:var(--gray); }
 .stock-bar  { height:4px; background:rgba(255,255,255,.07); border-radius:3px; overflow:hidden; }
 .stock-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--kc-blue),var(--kc-light)); transition:width .5s; }
-.btn-add { width:100%; padding:8px; background:rgba(0,48,135,.3); border:1px solid rgba(45,125,210,.4); border-radius:9px; color:#7ec8f8; font-family:'DM Sans',sans-serif; font-weight:600; font-size:.8rem; cursor:pointer; transition:all .25s; display:flex; align-items:center; justify-content:center; gap:5px; }
-.btn-add:hover { background:var(--kc-mid); border-color:var(--kc-mid); color:#fff; box-shadow:0 4px 16px rgba(16,85,181,.45); }
+.btn-add {
+  width:100%; padding:9px; border-radius:9px; cursor:pointer; transition:all .25s;
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));
+  border:none; color:var(--kc-blue); font-family:'Syne',sans-serif; font-weight:800; font-size:.8rem;
+  box-shadow:0 3px 10px rgba(245,166,35,.3);
+}
+.btn-add:hover { transform:translateY(-2px); box-shadow:0 5px 16px rgba(245,166,35,.5); filter:brightness(1.05); }
+.btn-add:active { transform:scale(0.97); }
+.prod-in-cart { font-size:.72rem; color:var(--g-green); font-weight:600; text-align:center; display:none; }
+.prod-in-cart.visible { display:block; }
 
 /* ── TWO COL ── */
 .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; margin-bottom:2.5rem; }
@@ -250,11 +387,19 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 .qty-ctrl span { min-width:22px; text-align:center; font-weight:600; }
 .btn-del { background:none; border:none; color:#ef5350; cursor:pointer; font-size:.88rem; transition:transform .2s; }
 .btn-del:hover { transform:scale(1.2); }
-.cart-empty { text-align:center; padding:2rem; color:var(--gray); font-size:.86rem; }
+.cart-empty { text-align:center; padding:2rem 1rem; color:var(--gray); font-size:.86rem; }
 .cart-empty i { font-size:1.8rem; display:block; margin-bottom:.5rem; opacity:.4; }
+.cart-empty .cart-empty-hint { font-size:.78rem; color:rgba(255,255,255,.25); margin-top:.5rem; }
+.cart-empty .btn-open-catalog {
+  margin-top:1rem; display:inline-flex; align-items:center; gap:7px;
+  padding:9px 20px; border-radius:20px; font-size:.8rem;
+  font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; border:none;
+  background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2)); color:var(--kc-blue);
+  box-shadow:0 3px 10px rgba(245,166,35,.3);
+}
 .cart-footer { margin-top:.9rem; display:flex; align-items:center; justify-content:space-between; padding-top:.75rem; border-top:1px solid var(--sys-border); }
 .cart-total { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; }
-.cart-total span { color:#7ec8f8; }
+.cart-total span { color:var(--kc-gold); }
 
 /* ── PLANTS ── */
 .plants-stack { display:flex; flex-direction:column; gap:.55rem; }
@@ -267,18 +412,40 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 .plant-stock small  { font-size:.72rem; color:var(--gray); display:block; }
 .cost-box { margin-top:1rem; padding:10px 14px; background:rgba(45,125,210,.07); border:1px solid var(--sys-border); border-radius:10px; }
 .cost-box-lbl { font-size:.72rem; color:var(--gray); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+.cost-box-note { font-size:.68rem; color:rgba(255,255,255,.25); margin-top:4px; }
 .cost-mini-tbl { width:100%; border-collapse:collapse; font-size:.76rem; }
 .cost-mini-tbl th { padding:3px 7px; color:#7ec8f8; text-align:center; }
 .cost-mini-tbl th:first-child { text-align:left; }
 .cost-mini-tbl td { padding:3px 7px; text-align:center; color:var(--white); }
 
 /* ── BUTTONS ── */
-.btn-primary { display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:10px; background:linear-gradient(135deg,var(--kc-mid),var(--kc-blue)); border:none; color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:.87rem; cursor:pointer; transition:all .25s; box-shadow:0 4px 18px rgba(0,48,135,.45); }
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 26px rgba(0,48,135,.6); }
-.btn-primary:disabled { opacity:.4; cursor:not-allowed; transform:none; }
-.btn-confirm { width:100%; padding:11px; background:linear-gradient(135deg,var(--kc-mid),var(--kc-blue)); border:none; border-radius:10px; color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:.87rem; cursor:pointer; transition:all .25s; box-shadow:0 4px 16px rgba(0,48,135,.35); margin-top:.8rem; }
-.btn-confirm:hover { filter:brightness(1.1); }
-.btn-confirm:disabled { opacity:.4; cursor:not-allowed; }
+.btn-primary { display:inline-flex; align-items:center; gap:8px; padding:13px 28px; border-radius:10px; background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2)); border:none; color:var(--kc-blue); font-family:'Syne',sans-serif; font-weight:800; font-size:.92rem; cursor:pointer; transition:all .25s; box-shadow:0 4px 18px rgba(245,166,35,.4); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 26px rgba(245,166,35,.55); filter:brightness(1.06); }
+.btn-primary:disabled { opacity:.4; cursor:not-allowed; transform:none; box-shadow:none; filter:none; }
+.btn-confirm { width:100%; padding:12px; background:linear-gradient(135deg,var(--kc-mid),var(--kc-blue)); border:none; border-radius:10px; color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:.87rem; cursor:pointer; transition:all .25s; box-shadow:0 4px 16px rgba(0,48,135,.35); margin-top:.8rem; }
+.btn-confirm:hover { filter:brightness(1.1); transform:translateY(-1px); }
+.btn-confirm:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+/* ── CATALOG TRIGGER SECTION ── */
+.catalog-trigger-card {
+  background:linear-gradient(135deg,rgba(245,166,35,.12),rgba(245,166,35,.04));
+  border:2px dashed rgba(245,166,35,.3); border-radius:16px;
+  padding:2rem; text-align:center; margin-bottom:2rem; cursor:pointer;
+  transition:all .3s;
+}
+.catalog-trigger-card:hover { background:linear-gradient(135deg,rgba(245,166,35,.2),rgba(245,166,35,.08)); border-color:rgba(245,166,35,.6); transform:translateY(-2px); }
+.catalog-trigger-card .ctc-icon { font-size:2.5rem; margin-bottom:.8rem; }
+.catalog-trigger-card h3 { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:800; color:var(--kc-gold); margin-bottom:.4rem; }
+.catalog-trigger-card p { font-size:.83rem; color:var(--gray); }
+.catalog-trigger-card .btn-open-big {
+  display:inline-flex; align-items:center; gap:8px;
+  margin-top:1.2rem; padding:11px 28px; border-radius:25px;
+  background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));
+  color:var(--kc-blue); font-family:'Syne',sans-serif; font-weight:800;
+  font-size:.88rem; border:none; cursor:pointer; transition:all .25s;
+  box-shadow:0 4px 16px rgba(245,166,35,.35);
+}
+.catalog-trigger-card .btn-open-big:hover { transform:translateY(-2px); box-shadow:0 6px 22px rgba(245,166,35,.5); }
 
 /* ── OPTIMIZE ── */
 .opt-bar { background:var(--sys-card); border:1px solid var(--sys-border); border-radius:16px; padding:1.35rem 1.7rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.2rem; }
@@ -340,7 +507,7 @@ canvas { max-height:210px; }
 .ticket-item-info  { flex:1; }
 .ticket-item-name  { font-size:.84rem; font-weight:600; }
 .ticket-item-qty   { font-size:.74rem; color:var(--gray); }
-.ticket-item-price { font-family:'Syne',sans-serif; font-size:.9rem; font-weight:700; color:#7ec8f8; }
+.ticket-item-price { font-family:'Syne',sans-serif; font-size:.9rem; font-weight:700; color:var(--kc-gold); }
 .ticket-totals { background:rgba(0,48,135,.2); border:1px solid rgba(45,125,210,.3); border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
 .ticket-row { display:flex; justify-content:space-between; font-size:.83rem; }
 .ticket-row.total { border-top:1px solid rgba(45,125,210,.3); padding-top:8px; margin-top:2px; font-family:'Syne',sans-serif; font-size:1rem; font-weight:800; }
@@ -378,12 +545,12 @@ canvas { max-height:210px; }
 .modal-bd p { font-size:15px; color:#444; line-height:1.82; text-align:justify; }
 
 /* ── TOAST ── */
-#toast { position:fixed; bottom:2rem; right:2rem; z-index:999; background:var(--sys-card); border:1px solid var(--sys-border); border-radius:12px; padding:11px 17px; display:flex; align-items:center; gap:9px; font-size:.84rem; font-weight:500; box-shadow:0 8px 32px rgba(0,0,0,.5); transform:translateY(100px); opacity:0; transition:all .35s cubic-bezier(.34,1.56,.64,1); pointer-events:none; max-width:320px; }
-#toast.show { transform:translateY(0); opacity:1; }
-#toast.success { border-color:rgba(0,230,118,.4); }
+#toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(100px); z-index:9999; background:var(--sys-card); border:1px solid var(--sys-border); border-radius:12px; padding:11px 22px; display:flex; align-items:center; gap:9px; font-size:.84rem; font-weight:500; box-shadow:0 8px 32px rgba(0,0,0,.5); opacity:0; transition:all .35s cubic-bezier(.34,1.56,.64,1); pointer-events:none; max-width:360px; white-space:nowrap; }
+#toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+#toast.success { border-color:rgba(245,166,35,.5); background:rgba(245,166,35,.12); }
 #toast.info    { border-color:rgba(45,125,210,.4); }
 #toast i { font-size:.95rem; }
-#toast.success i { color:var(--g-green); }
+#toast.success i { color:var(--kc-gold); }
 #toast.info    i { color:#7ec8f8; }
 
 /* ── FOOTER ── */
@@ -395,26 +562,51 @@ footer { background:var(--kc-blue); color:#fff; }
 .footer-bottom { text-align:center; padding:17px; font-size:12.5px; color:rgba(255,255,255,.4); }
 
 /* ── SCROLL TOP ── */
-#scrollTop { position:fixed; bottom:28px; right:28px; background:var(--kc-blue); color:#fff; border:none; width:44px; height:44px; border-radius:50%; font-size:18px; cursor:pointer; box-shadow:0 4px 20px rgba(0,48,135,.4); display:none; align-items:center; justify-content:center; z-index:900; transition:background .25s, transform .25s; }
-#scrollTop:hover { background:var(--kc-mid); transform:translateY(-3px); }
+#scrollTop { position:fixed; bottom:28px; right:28px; background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2)); color:var(--kc-blue); border:none; width:46px; height:46px; border-radius:50%; font-size:18px; cursor:pointer; box-shadow:0 4px 20px rgba(245,166,35,.4); display:none; align-items:center; justify-content:center; z-index:900; transition:all .25s; font-weight:800; }
+#scrollTop:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(245,166,35,.55); }
 #scrollTop.visible { display:flex; }
+
+/* ── STEP INDICATOR ── */
+.step-indicator {
+  display:flex; align-items:center; justify-content:center;
+  gap:0; margin-bottom:2.5rem; padding:0 20px;
+}
+.step-item { display:flex; align-items:center; gap:0; flex:1; max-width:220px; }
+.step-circle {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Syne',sans-serif; font-weight:800; font-size:.85rem;
+  border:2px solid rgba(255,255,255,.15); color:var(--gray);
+  background:rgba(255,255,255,.04); transition:all .4s;
+}
+.step-circle.active { background:var(--kc-gold); color:var(--kc-blue); border-color:var(--kc-gold); box-shadow:0 0 18px rgba(245,166,35,.4); }
+.step-circle.done { background:rgba(0,230,118,.2); color:var(--g-green); border-color:var(--g-green); }
+.step-label { font-size:.72rem; color:var(--gray); text-transform:uppercase; letter-spacing:.08em; margin-left:10px; font-weight:600; transition:color .4s; white-space:nowrap; }
+.step-label.active { color:var(--kc-gold); }
+.step-label.done { color:var(--g-green); }
+.step-line { flex:1; height:2px; background:rgba(255,255,255,.1); margin:0 8px; border-radius:1px; transition:background .4s; }
+.step-line.done { background:var(--g-green); }
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:none;} }
 .prod-card:nth-child(1){animation-delay:.04s;} .prod-card:nth-child(2){animation-delay:.09s;}
 .prod-card:nth-child(3){animation-delay:.14s;} .prod-card:nth-child(4){animation-delay:.19s;}
 .prod-card:nth-child(5){animation-delay:.24s;} .prod-card:nth-child(6){animation-delay:.29s;}
+@keyframes pulse-gold { 0%,100%{box-shadow:0 4px 18px rgba(245,166,35,.4);} 50%{box-shadow:0 4px 30px rgba(245,166,35,.8);} }
+.btn-primary:not(:disabled) { animation:pulse-gold 2.5s ease-in-out infinite; }
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
-  .top-header { padding:12px 20px; }
-  .main-nav   { padding:0 16px; }
+  .top-header { padding:12px 16px; }
+  .btn-ir-sistema span { display:none; }
+  .main-nav   { padding:0 12px; }
   .hero-slider{ height:320px; }
   .slide-overlay { padding:30px; }
   .slide-overlay h2 { font-size:26px; }
   .section    { padding:50px 20px; }
   .stats-bar  { padding:36px 20px; }
   .footer-top { padding:40px 20px; }
+  .quick-actions { padding:12px 20px; }
 }
   </style>
 </head>
@@ -429,26 +621,26 @@ footer { background:var(--kc-blue); color:#fff; }
       <div class="sub">Better Care for a Better World</div>
     </div>
   </div>
-  <div class="sys-badge">⚡ DistribuIQ — Sistema Logístico</div>
+  <div class="header-actions">
+    <!-- Search -->
+    <div class="header-search-wrap" id="searchWrap">
+      <input class="header-search-input" id="globalSearch" type="text" placeholder="Buscar producto..." oninput="buscarGlobal(this.value)" onkeydown="if(event.key==='Escape')cerrarBusqueda()"/>
+      <button class="header-search-btn" onclick="toggleSearch()" title="Buscar"><i class="fas fa-search"></i></button>
+    </div>
+    <!-- Cart badge -->
+    <button class="cart-header-btn" onclick="navScroll('#sec-sistema')" title="Ver carrito">
+      <i class="fas fa-cart-shopping"></i>
+      <span class="cart-badge-count" id="cartBadge">0</span>
+    </button>
+    <!-- CTA -->
+    <button class="btn-ir-sistema" onclick="abrirCatalogo()">
+      <i class="fas fa-bolt"></i><span>Hacer Pedido</span>
+    </button>
+  </div>
 </header>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span>Innovación</span><span class="dot">✦</span>
-    <span>Higiene &amp; Cuidado Personal</span><span class="dot">✦</span>
-    <span>Sostenibilidad</span><span class="dot">✦</span>
-    <span>+175 años de historia</span><span class="dot">✦</span>
-    <span>Distribución Inteligente</span><span class="dot">✦</span>
-    <span>Método de Transporte</span><span class="dot">✦</span>
-    <span>Optimización Logística</span><span class="dot">✦</span>
-    <span>3 Plantas · MTY · GDL · CDMX</span><span class="dot">✦</span>
-    <span>Better Care for a Better World</span><span class="dot">✦</span>
-  </div>
-</div>
-
 <!-- NAV -->
-<nav class="main-nav">
+<nav class="main-nav" id="mainNav">
   <div class="dropdown">
     <div class="nav-btn">Conócenos ▾</div>
     <div class="dropdown-menu">
@@ -457,28 +649,38 @@ footer { background:var(--kc-blue); color:#fff; }
       <div class="dropdown-item" onclick="abrirModal('objetivo')">🏆 Objetivo</div>
     </div>
   </div>
-  <div class="nav-btn" onclick="navScroll('#sec-empresa')">Empresa</div>
-  <div class="nav-btn" onclick="navScroll('#sec-marcas')">Marcas</div>
-  <div class="nav-btn" onclick="navScroll('#sec-sistema')">Sistema</div>
-  <div class="nav-btn" onclick="navScroll('#sec-optimizar')">Optimizar</div>
+  <div class="nav-btn" id="nav-empresa" onclick="navScroll('#sec-empresa')">Empresa</div>
+  <div class="nav-btn" id="nav-marcas" onclick="navScroll('#sec-marcas')">Marcas</div>
+  <div class="nav-btn" id="nav-sistema" onclick="navScroll('#sec-sistema')">Sistema</div>
+  <div class="nav-btn" id="nav-optimizar" onclick="navScroll('#sec-optimizar')">Optimizar</div>
 </nav>
+
+<!-- QUICK ACTIONS -->
+<div class="quick-actions">
+  <span class="quick-actions-label">Acceso rápido</span>
+  <button class="quick-btn gold" onclick="abrirCatalogo()"><i class="fas fa-box-open"></i> Ver Catálogo de Productos</button>
+  <button class="quick-btn outline" onclick="navScroll('#sec-empresa')"><i class="fas fa-building"></i> Empresa</button>
+  <button class="quick-btn outline" onclick="navScroll('#sec-marcas')"><i class="fas fa-tags"></i> Nuestras Marcas</button>
+  <button class="quick-btn green" onclick="navScroll('#sec-optimizar')"><i class="fas fa-bolt"></i> Optimizar Distribución</button>
+</div>
 
 <!-- HERO SLIDER -->
 <section class="hero-slider">
   <div class="slides-wrapper" id="slidesWrapper">
-
     <div class="slide slide-1">
       <div class="slide-bg" style="background-image:url('imagenes/productfondo.png'); background-size:cover; background-position:center;">
         <div class="slide-deco"></div>
         <div class="slide-overlay">
-          <div class="slide-label">Sistema Logístico</div>
+          <div class="slide-label">Sistema Logístico Inteligente</div>
           <h2>Distribución Inteligente para un Mundo Mejor</h2>
           <p>Optimiza pedidos entre plantas KC aplicando el Método de Transporte para minimizar costos.</p>
-          <button class="slide-cta" onclick="navScroll('#sec-sistema')"><i class="fas fa-bolt"></i> Ir al sistema</button>
+          <div class="slide-ctas">
+            <button class="slide-cta" onclick="abrirCatalogo()"><i class="fas fa-bolt"></i> Hacer Pedido Ahora</button>
+            <button class="slide-cta secondary" onclick="navScroll('#sec-sistema')"><i class="fas fa-eye"></i> Ver Sistema</button>
+          </div>
         </div>
       </div>
     </div>
-
     <div class="slide slide-2">
       <div class="slide-bg" style="background-image:url('imagenes/kimtrabajo.png'); background-size:cover; background-position:center;">
         <div class="slide-deco"></div>
@@ -486,11 +688,12 @@ footer { background:var(--kc-blue); color:#fff; }
           <div class="slide-label">Nuestro Equipo</div>
           <h2>Personas comprometidas con el bienestar</h2>
           <p>Más de 47,000 colaboradores impulsando un mundo mejor cada día.</p>
-          <button class="slide-cta" onclick="navScroll('#sec-marcas')"><i class="fas fa-box-open"></i> Ver portafolio</button>
+          <div class="slide-ctas">
+            <button class="slide-cta" onclick="navScroll('#sec-marcas')"><i class="fas fa-box-open"></i> Ver Portafolio</button>
+          </div>
         </div>
       </div>
     </div>
-
     <div class="slide slide-3">
       <div class="slide-bg" style="background-image:url('imagenes/profesionalkim.jpg'); background-size:cover; background-position:center;">
         <div class="slide-deco"></div>
@@ -498,11 +701,12 @@ footer { background:var(--kc-blue); color:#fff; }
           <div class="slide-label">Innovación y Tecnología</div>
           <h2>Liderando el futuro del cuidado personal</h2>
           <p>Tecnología aplicada a la logística para garantizar abastecimiento eficiente y sin desabasto.</p>
-          <button class="slide-cta" onclick="navScroll('#sec-optimizar')"><i class="fas fa-chart-bar"></i> Ver resultados</button>
+          <div class="slide-ctas">
+            <button class="slide-cta" onclick="navScroll('#sec-optimizar')"><i class="fas fa-chart-bar"></i> Ver Resultados</button>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
   <button class="arrow prev" onclick="cambiarSlide(-1)">&#8249;</button>
   <button class="arrow next" onclick="cambiarSlide(1)">&#8250;</button>
@@ -532,15 +736,27 @@ footer { background:var(--kc-blue); color:#fff; }
   <div class="mvc-grid">
     <div class="mvc-card" onclick="abrirModal('mision')">
       <div class="mvc-top"></div>
-      <div class="mvc-body"><div class="mvc-emoji">🎯</div><h3>Misión</h3><p>Proporcionar productos esenciales de higiene y cuidado personal que ayuden a las personas a vivir una vida más saludable, segura y digna.</p></div>
+      <div class="mvc-body">
+        <div class="mvc-emoji">🎯</div><h3>Misión</h3>
+        <p>Proporcionar productos esenciales de higiene y cuidado personal que ayuden a las personas a vivir una vida más saludable, segura y digna.</p>
+        <div class="mvc-link">Leer completo <i class="fas fa-arrow-right" style="font-size:10px;"></i></div>
+      </div>
     </div>
     <div class="mvc-card" onclick="abrirModal('vision')">
       <div class="mvc-top" style="background:linear-gradient(90deg,#1055b5,#2d7dd2)"></div>
-      <div class="mvc-body"><div class="mvc-emoji">🔭</div><h3>Visión</h3><p>Ser la empresa líder mundial en soluciones de cuidado personal, reconocida por su responsabilidad social y compromiso ambiental.</p></div>
+      <div class="mvc-body">
+        <div class="mvc-emoji">🔭</div><h3>Visión</h3>
+        <p>Ser la empresa líder mundial en soluciones de cuidado personal, reconocida por su responsabilidad social y compromiso ambiental.</p>
+        <div class="mvc-link">Leer completo <i class="fas fa-arrow-right" style="font-size:10px;"></i></div>
+      </div>
     </div>
     <div class="mvc-card" onclick="abrirModal('objetivo')">
       <div class="mvc-top" style="background:linear-gradient(90deg,#2d7dd2,#5ba0e0)"></div>
-      <div class="mvc-body"><div class="mvc-emoji">🏆</div><h3>Objetivo</h3><p>Optimizar procesos de distribución mediante tecnología, garantizando productos de alta calidad, eficientes y sostenibles.</p></div>
+      <div class="mvc-body">
+        <div class="mvc-emoji">🏆</div><h3>Objetivo</h3>
+        <p>Optimizar procesos de distribución mediante tecnología, garantizando productos de alta calidad, eficientes y sostenibles.</p>
+        <div class="mvc-link">Leer completo <i class="fas fa-arrow-right" style="font-size:10px;"></i></div>
+      </div>
     </div>
   </div>
 </section>
@@ -553,11 +769,24 @@ footer { background:var(--kc-blue); color:#fff; }
     <p>Marcas en las que confían millones de hogares alrededor del mundo todos los días.</p>
   </div>
   <div class="marcas-grid">
-    <div class="marca-chip">Kleenex®</div><div class="marca-chip">Huggies®</div>
-    <div class="marca-chip">Kotex®</div><div class="marca-chip">Scott®</div>
-    <div class="marca-chip">Depend®</div><div class="marca-chip">Pull-Ups®</div>
-    <div class="marca-chip">GoodNites®</div><div class="marca-chip">Plenitud®</div>
-    <div class="marca-chip">Andrex®</div><div class="marca-chip">WypAll®</div>
+    <div class="marca-chip"><span>🧻</span> Kleenex® <span class="marca-cat">Tissue</span></div>
+    <div class="marca-chip"><span>👶</span> Huggies® <span class="marca-cat">Pañales</span></div>
+    <div class="marca-chip"><span>💜</span> Kotex® <span class="marca-cat">Higiene Fem.</span></div>
+    <div class="marca-chip"><span>🪣</span> Scott® <span class="marca-cat">Toallas</span></div>
+    <div class="marca-chip"><span>🛡️</span> Depend® <span class="marca-cat">Incontinencia</span></div>
+    <div class="marca-chip"><span>🌙</span> Pull-Ups® <span class="marca-cat">Entrenamiento</span></div>
+    <div class="marca-chip"><span>⭐</span> GoodNites® <span class="marca-cat">Noche</span></div>
+    <div class="marca-chip"><span>🌸</span> Plenitud® <span class="marca-cat">Adulto Mayor</span></div>
+    <div class="marca-chip"><span>🐾</span> Andrex® <span class="marca-cat">Tissue UK</span></div>
+    <div class="marca-chip"><span>🧤</span> WypAll® <span class="marca-cat">Industrial</span></div>
+    <div class="marca-chip"><span>💧</span> Cottonelle® <span class="marca-cat">Tissue Premium</span></div>
+    <div class="marca-chip"><span>🌿</span> U by Kotex® <span class="marca-cat">Higiene Moderna</span></div>
+    <div class="marca-chip"><span>👼</span> Little Swimmers® <span class="marca-cat">Agua y Playa</span></div>
+    <div class="marca-chip"><span>🧼</span> Kleenguard® <span class="marca-cat">Protección</span></div>
+    <div class="marca-chip"><span>♻️</span> Scott Naturals® <span class="marca-cat">Eco</span></div>
+    <div class="marca-chip"><span>🌺</span> Softex® <span class="marca-cat">Cuidado Suave</span></div>
+    <div class="marca-chip"><span>🏥</span> Kimcare® <span class="marca-cat">Institucional</span></div>
+    <div class="marca-chip"><span>✈️</span> Kleenex Travel® <span class="marca-cat">Viaje</span></div>
   </div>
 </section>
 
@@ -581,24 +810,59 @@ footer { background:var(--kc-blue); color:#fff; }
   <div class="sec-head">
     <div class="sec-eyebrow">Sistema Inteligente</div>
     <h2>Centro de Pedidos y Distribución</h2>
-    <p>Realiza pedidos de productos KC y el sistema calculará la distribución óptima desde nuestras plantas usando el Método de Transporte.</p>
+    <p>Sigue estos 3 pasos para realizar tu pedido y calcular la distribución óptima desde nuestras plantas.</p>
   </div>
-  <div class="sys-divider"><span>📦 Catálogo de Productos</span></div>
-  <div class="products-grid" id="products-grid"></div>
+
+  <!-- STEP INDICATOR -->
+  <div class="step-indicator" id="stepIndicator">
+    <div class="step-item">
+      <div class="step-circle active" id="sc1">1</div>
+      <span class="step-label active" id="sl1">Agregar productos</span>
+    </div>
+    <div class="step-line" id="sline1"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc2">2</div>
+      <span class="step-label" id="sl2">Confirmar pedido</span>
+    </div>
+    <div class="step-line" id="sline2"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc3">3</div>
+      <span class="step-label" id="sl3">Calcular distribución</span>
+    </div>
+  </div>
+
+  <!-- CATALOG TRIGGER -->
+  <div class="catalog-trigger-card" onclick="abrirCatalogo()">
+    <div class="ctc-icon">📦</div>
+    <h3>Catálogo Completo de Productos KC</h3>
+    <p>Explora todos los productos disponibles, filtra por categoría y agrega al carrito fácilmente.</p>
+    <button class="btn-open-big" onclick="event.stopPropagation();abrirCatalogo()">
+      <i class="fas fa-box-open"></i> Abrir Catálogo — <span id="totalProductos">12 productos</span>
+    </button>
+  </div>
+
   <div class="sys-divider"><span>🛒 Carrito & Plantas</span></div>
   <div class="two-col">
     <div class="sys-panel">
       <div class="sys-title"><i class="fas fa-cart-shopping"></i> Carrito de Pedido<span class="pill" id="cart-pill">0 ítems</span></div>
-      <div id="cart-body"><div class="cart-empty"><i class="fas fa-cart-shopping"></i>El carrito está vacío</div></div>
+      <div id="cart-body">
+        <div class="cart-empty">
+          <i class="fas fa-cart-shopping"></i>
+          El carrito está vacío
+          <div class="cart-empty-hint">Agrega productos desde el catálogo para comenzar</div>
+          <button class="btn-open-catalog" onclick="abrirCatalogo()"><i class="fas fa-plus"></i> Abrir Catálogo</button>
+        </div>
+      </div>
       <button class="btn-confirm" id="btn-confirm" disabled onclick="confirmarPedido()"><i class="fas fa-check-circle"></i> Confirmar Pedido</button>
-      <button class="btn-confirm" id="btn-resumen" style="margin-top:.5rem;background:linear-gradient(135deg,rgba(245,166,35,.85),rgba(230,149,26,.85));display:none;" onclick="abrirResumen()"><i class="fas fa-receipt"></i> Ver Resumen del Pedido</button>
+      <button class="btn-confirm" id="btn-resumen" style="margin-top:.5rem;background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));color:var(--kc-blue);font-weight:800;display:none;" onclick="abrirResumen()"><i class="fas fa-receipt"></i> Ver Resumen del Pedido</button>
     </div>
     <div class="sys-panel">
       <div class="sys-title"><i class="fas fa-industry"></i> Plantas de Producción<span class="pill">Oferta disponible</span></div>
       <div class="plants-stack" id="plants-grid"></div>
       <div class="cost-box">
-        <div class="cost-box-lbl">Matriz de Costos ($/unidad)</div>
+        <div class="cost-box-lbl">Matriz de Costos ($/unidad transportada · MXN)</div>
         <div id="cost-preview"></div>
+        <div class="cost-box-note">* Costo por unidad en pesos mexicanos por ruta planta→tienda</div>
       </div>
     </div>
   </div>
@@ -612,7 +876,9 @@ footer { background:var(--kc-blue); color:#fff; }
       <div class="ttl">Método de Costo Mínimo</div>
       <div class="desc">Asigna automáticamente la demanda a las plantas con menor costo, balanceando oferta y demanda.</div>
     </div>
-    <button class="btn-primary" id="btn-optimize" onclick="optimizar()" disabled><i class="fas fa-bolt"></i> Calcular Distribución Óptima</button>
+    <button class="btn-primary" id="btn-optimize" onclick="optimizar()" disabled>
+      <i class="fas fa-bolt"></i> Calcular Distribución Óptima
+    </button>
   </div>
   <div id="result-panel">
     <div class="result-header">
@@ -633,6 +899,41 @@ footer { background:var(--kc-blue); color:#fff; }
     </div>
   </div>
 </section>
+
+<!-- ── CATALOG OVERLAY ── -->
+<div class="catalog-overlay" id="catalogOverlay">
+  <div class="catalog-panel">
+    <div class="catalog-header">
+      <div>
+        <div class="catalog-title">Catálogo <span>KC</span></div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:2px;">Selecciona productos y agrégalos al carrito · <span id="catalog-cart-count">0 en carrito</span></div>
+      </div>
+      <button class="catalog-close" onclick="cerrarCatalogo()" title="Cerrar catálogo (Esc)">✕</button>
+    </div>
+    <div class="catalog-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="catalogSearchInput" placeholder="Buscar por nombre o categoría..." oninput="filtrarCatalogo()"/>
+    </div>
+    <div class="catalog-filters" id="catalogFilters">
+      <button class="cat-filter-btn active" data-cat="Todos" onclick="setFilter(this,'Todos')">Todos</button>
+      <button class="cat-filter-btn" data-cat="Tissue" onclick="setFilter(this,'Tissue')">🧻 Tissue</button>
+      <button class="cat-filter-btn" data-cat="Pañales" onclick="setFilter(this,'Pañales')">👶 Pañales</button>
+      <button class="cat-filter-btn" data-cat="Higiene" onclick="setFilter(this,'Higiene')">💜 Higiene</button>
+      <button class="cat-filter-btn" data-cat="Toalla" onclick="setFilter(this,'Toalla')">🪣 Toallas</button>
+      <button class="cat-filter-btn" data-cat="Cuidado" onclick="setFilter(this,'Cuidado')">🛡️ Cuidado</button>
+      <button class="cat-filter-btn" data-cat="Noche" onclick="setFilter(this,'Noche')">🌙 Noche</button>
+      <button class="cat-filter-btn" data-cat="Industrial" onclick="setFilter(this,'Industrial')">🧤 Industrial</button>
+    </div>
+    <div class="catalog-grid" id="catalogGrid"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);margin-top:4px;">
+      <div style="font-size:.8rem;color:rgba(255,255,255,.4);"><span id="catalogResultCount">12</span> productos · <span id="catalog-cart-count2">0 en carrito</span></div>
+      <div style="display:flex;gap:10px;">
+        <button class="quick-btn outline" onclick="cerrarCatalogo()" style="font-size:.78rem;padding:8px 16px;">Cerrar</button>
+        <button class="quick-btn gold" onclick="cerrarCatalogo();navScroll('#sec-sistema')" style="font-size:.78rem;padding:8px 16px;"><i class="fas fa-cart-shopping"></i> Ir al Carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ORDER SUMMARY MODAL -->
 <div class="order-overlay" id="orderOverlay" onclick="cerrarResumen(event)">
@@ -664,12 +965,12 @@ footer { background:var(--kc-blue); color:#fff; }
         <div class="ticket-dist" id="tk-dist"></div>
         <div class="ticket-result-chip">
           <div class="big" id="tk-costo">$0</div>
-          <div class="sub">Costo de Transporte Optimizado</div>
+          <div class="sub">Costo de Transporte Optimizado (MXN)</div>
           <div class="saving" id="tk-ahorro">— Ahorro estimado</div>
         </div>
       </div>
       <div id="tk-no-dist" style="text-align:center;padding:12px 0 4px;color:var(--gray);font-size:.82rem;">
-        <i class="fas fa-circle-info" style="color:#7ec8f8;"></i> Presiona "Calcular Distribución Óptima" para ver el plan de envío completo en el ticket.
+        <i class="fas fa-circle-info" style="color:#7ec8f8;"></i> Presiona "Calcular Distribución Óptima" para ver el plan de envío completo.
       </div>
     </div>
     <hr class="ticket-sep"/>
@@ -694,7 +995,7 @@ footer { background:var(--kc-blue); color:#fff; }
     <div class="footer-col"><h4>Kimberly‑Clark</h4><p>Better Care for a Better World.</p><p>Fundada en 1872, Wisconsin, EE.UU.</p></div>
     <div class="footer-col"><h4>Empresa</h4><a href="#" onclick="abrirModal('mision');return false;">Misión</a><a href="#" onclick="abrirModal('vision');return false;">Visión</a><a href="#" onclick="abrirModal('objetivo');return false;">Objetivo</a></div>
     <div class="footer-col"><h4>Marcas</h4><a href="#">Huggies®</a><a href="#">Kleenex®</a><a href="#">Kotex®</a><a href="#">Scott®</a></div>
-    <div class="footer-col"><h4>Sistema</h4><a href="#" onclick="navScroll('#sec-sistema');return false;">Catálogo</a><a href="#" onclick="navScroll('#sec-optimizar');return false;">Optimización</a><p style="margin-top:8px;">Proyecto Académico — Investigación de Operaciones</p></div>
+    <div class="footer-col"><h4>Sistema</h4><a href="#" onclick="abrirCatalogo();return false;">Catálogo</a><a href="#" onclick="navScroll('#sec-optimizar');return false;">Optimización</a><p style="margin-top:8px;">Proyecto Académico — Investigación de Operaciones</p></div>
   </div>
   <div class="footer-bottom">© 2026 Kimberly‑Clark México · DistribuIQ — Método de Transporte · Proyecto Académico</div>
 </footer>
@@ -707,34 +1008,144 @@ footer { background:var(--kc-blue); color:#fff; }
 const PLANTS=[{id:'MTY',name:'Monterrey',offer:500,color:'#4fc3f7'},{id:'GDL',name:'Guadalajara',offer:400,color:'#81d4fa'},{id:'CDM',name:'CDMX',offer:600,color:'#b3e5fc'}];
 const BASE_COSTS=[[4,6,8],[5,3,7],[6,4,5]];
 const PRODUCTS=[
-  {id:1,name:'Kleenex Facial', price:45, stock:320,emoji:'🧻',cat:'Tissue'},
-  {id:2,name:'Huggies Etapas',price:285,stock:210,emoji:'👶',cat:'Pañales'},
-  {id:3,name:'Scott Toallas',  price:62, stock:280,emoji:'🪣',cat:'Toalla'},
-  {id:4,name:'Kotex Ultra',    price:78, stock:190,emoji:'💜',cat:'Higiene'},
-  {id:5,name:'Depend Adulto',  price:220,stock:250,emoji:'🛡️',cat:'Cuidado'},
-  {id:6,name:'Plenitud Noche', price:195,stock:250,emoji:'🌙',cat:'Noche'},
+  {id:1, name:'Kleenex Facial',      price:45,  stock:320, emoji:'🧻', cat:'Tissue'},
+  {id:2, name:'Huggies Etapas',      price:285, stock:210, emoji:'👶', cat:'Pañales'},
+  {id:3, name:'Scott Toallas',       price:62,  stock:280, emoji:'🪣', cat:'Toalla'},
+  {id:4, name:'Kotex Ultra',         price:78,  stock:190, emoji:'💜', cat:'Higiene'},
+  {id:5, name:'Depend Adulto',       price:220, stock:250, emoji:'🛡️', cat:'Cuidado'},
+  {id:6, name:'Plenitud Noche',      price:195, stock:250, emoji:'🌙', cat:'Noche'},
+  {id:7, name:'Kleenex Box 3D',      price:55,  stock:300, emoji:'📦', cat:'Tissue'},
+  {id:8, name:'Huggies Natural Care',price:310, stock:180, emoji:'🌿', cat:'Pañales'},
+  {id:9, name:'WypAll X80',          price:430, stock:150, emoji:'🧤', cat:'Industrial'},
+  {id:10,name:'Kotex Toallas Diarias',price:48, stock:350, emoji:'🌸', cat:'Higiene'},
+  {id:11,name:'Pull-Ups Día',        price:265, stock:220, emoji:'⭐', cat:'Pañales'},
+  {id:12,name:'Scott Papel Higiénico',price:42, stock:400, emoji:'🚿', cat:'Tissue'},
 ];
 const STORE_NAMES=['Tienda A','Tienda B','Tienda C'];
 
 /* ── STATE ── */
 let cart={}, demands=null, pedidoConfirmado=false, lastOptResult=null;
 let barChart=null, pieChart=null;
+let catalogFilter='Todos', catalogSearchTerm='';
 
 /* ── INIT ── */
-document.addEventListener('DOMContentLoaded',()=>{ renderProducts(); renderPlants(); renderCostPreview(); });
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPlants();
+  renderCostPreview();
+  renderCatalog();
+  document.getElementById('totalProductos').textContent=`${PRODUCTS.length} productos`;
+  setupNavObserver();
+});
 
-/* ── PRODUCTS ── */
-function renderProducts(){
-  document.getElementById('products-grid').innerHTML=PRODUCTS.map(p=>{
-    const pct=Math.round((p.stock/320)*100);
+/* ── NAV ACTIVE (IntersectionObserver) ── */
+function setupNavObserver(){
+  const secs=[
+    {id:'sec-empresa', nav:'nav-empresa'},
+    {id:'sec-marcas',  nav:'nav-marcas'},
+    {id:'sec-sistema', nav:'nav-sistema'},
+    {id:'sec-optimizar',nav:'nav-optimizar'},
+  ];
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        secs.forEach(s=>document.getElementById(s.nav)?.classList.remove('active'));
+        const match=secs.find(s=>s.id===e.target.id);
+        if(match)document.getElementById(match.nav)?.classList.add('active');
+      }
+    });
+  },{threshold:0.35});
+  secs.forEach(s=>{const el=document.getElementById(s.id);if(el)obs.observe(el);});
+}
+
+/* ── SEARCH ── */
+function toggleSearch(){
+  const wrap=document.getElementById('searchWrap');
+  wrap.classList.toggle('open');
+  if(wrap.classList.contains('open'))document.getElementById('globalSearch').focus();
+  else{document.getElementById('globalSearch').value='';buscarGlobal('');}
+}
+function cerrarBusqueda(){
+  document.getElementById('searchWrap').classList.remove('open');
+  document.getElementById('globalSearch').value='';
+}
+function buscarGlobal(term){
+  if(!term.trim())return;
+  // Open catalog with search pre-filled
+  abrirCatalogo();
+  document.getElementById('catalogSearchInput').value=term;
+  catalogSearchTerm=term;
+  filtrarCatalogo();
+  cerrarBusqueda();
+}
+
+/* ── CATALOG ── */
+function abrirCatalogo(){
+  document.getElementById('catalogOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  catalogFilter='Todos';
+  catalogSearchTerm='';
+  document.getElementById('catalogSearchInput').value='';
+  document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-cat="Todos"]').classList.add('active');
+  renderCatalog();
+  setTimeout(()=>document.getElementById('catalogSearchInput').focus(),300);
+}
+function cerrarCatalogo(){
+  document.getElementById('catalogOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function setFilter(btn,cat){
+  document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  catalogFilter=cat;
+  filtrarCatalogo();
+}
+function filtrarCatalogo(){
+  catalogSearchTerm=document.getElementById('catalogSearchInput').value.toLowerCase();
+  renderCatalog();
+}
+function renderCatalog(){
+  const filtered=PRODUCTS.filter(p=>{
+    const matchCat=catalogFilter==='Todos'||p.cat===catalogFilter;
+    const matchSearch=!catalogSearchTerm||p.name.toLowerCase().includes(catalogSearchTerm)||p.cat.toLowerCase().includes(catalogSearchTerm);
+    return matchCat&&matchSearch;
+  });
+  const grid=document.getElementById('catalogGrid');
+  if(!filtered.length){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--gray)"><i class="fas fa-search" style="font-size:2rem;opacity:.3;display:block;margin-bottom:1rem;"></i>No se encontraron productos</div>`;
+    document.getElementById('catalogResultCount').textContent='0';
+    return;
+  }
+  grid.innerHTML=filtered.map(p=>{
+    const pct=Math.round((p.stock/400)*100);
+    const inCart=cart[p.id]||0;
     return `<div class="prod-card">
       <div class="prod-img">${p.emoji}</div>
       <div><div class="prod-name">${p.name}</div><div class="prod-cat">${p.cat}</div></div>
       <div class="prod-price">$${p.price.toFixed(2)}</div>
-      <div><div class="prod-stock">${p.stock} unidades</div><div class="stock-bar"><div class="stock-fill" style="width:${pct}%"></div></div></div>
-      <button class="btn-add" onclick="agregarProducto(${p.id})"><i class="fas fa-plus"></i> Agregar</button>
+      <div><div class="prod-stock">${p.stock} unidades disponibles</div><div class="stock-bar"><div class="stock-fill" style="width:${pct}%"></div></div></div>
+      <div class="prod-in-cart${inCart?' visible':''}" id="cic-${p.id}">${inCart?`✓ ${inCart} en carrito`:''}</div>
+      <button class="btn-add" onclick="agregarProducto(${p.id})"><i class="fas fa-plus"></i> Agregar al Carrito</button>
     </div>`;
   }).join('');
+  document.getElementById('catalogResultCount').textContent=filtered.length;
+  actualizarCatalogCartCount();
+}
+function actualizarCatalogCartCount(){
+  const total=Object.values(cart).reduce((a,b)=>a+b,0);
+  const t=`${total} en carrito`;
+  const el1=document.getElementById('catalog-cart-count');
+  const el2=document.getElementById('catalog-cart-count2');
+  if(el1)el1.textContent=t;
+  if(el2)el2.textContent=t;
+  // Update in-cart labels
+  PRODUCTS.forEach(p=>{
+    const el=document.getElementById(`cic-${p.id}`);
+    if(el){
+      if(cart[p.id]){el.textContent=`✓ ${cart[p.id]} en carrito`;el.classList.add('visible');}
+      else{el.textContent='';el.classList.remove('visible');}
+    }
+  });
 }
 
 /* ── PLANTS ── */
@@ -750,7 +1161,6 @@ function renderPlants(){
     </div>`;
   }).join('');
 }
-
 function renderCostPreview(){
   let h='<table class="cost-mini-tbl"><tr><th></th>';
   STORE_NAMES.forEach(s=>{h+=`<th>${s}</th>`;});
@@ -769,18 +1179,30 @@ function agregarProducto(id){
   cart[id]=(cart[id]||0)+1;
   const p=PRODUCTS.find(x=>x.id===id);
   if(cart[id]>p.stock){cart[id]=p.stock;showToast('Stock máximo alcanzado','info');return;}
-  renderCart(); showToast(`${p.name} agregado ✓`,'success');
+  renderCart();
+  actualizarCatalogCartCount();
+  actualizarCartBadge();
+  showToast(`✓ ${p.name} agregado al carrito`,'success');
+  updateSteps(1);
 }
-function eliminarProducto(id){delete cart[id];renderCart();}
+function eliminarProducto(id){
+  delete cart[id]; renderCart(); actualizarCartBadge(); actualizarCatalogCartCount();
+}
 function actualizarCantidad(id,delta){
   if(!cart[id])return;
   const p=PRODUCTS.find(x=>x.id==id);
   cart[id]+=delta;
   if(cart[id]<=0)delete cart[id];
   else if(cart[id]>p.stock)cart[id]=p.stock;
-  renderCart();
+  renderCart(); actualizarCartBadge(); actualizarCatalogCartCount();
 }
 function calcularTotal(){return Object.entries(cart).reduce((s,[id,q])=>s+PRODUCTS.find(p=>p.id==id).price*q,0);}
+function actualizarCartBadge(){
+  const total=Object.values(cart).reduce((a,b)=>a+b,0);
+  const badge=document.getElementById('cartBadge');
+  badge.textContent=total;
+  total>0?badge.classList.add('visible'):badge.classList.remove('visible');
+}
 
 function renderCart(){
   const body=document.getElementById('cart-body');
@@ -790,7 +1212,7 @@ function renderCart(){
   const total=items.reduce((s,id)=>s+cart[id],0);
   pill.textContent=`${total} ítem${total!==1?'s':''}`;
   if(!items.length){
-    body.innerHTML=`<div class="cart-empty"><i class="fas fa-cart-shopping"></i>El carrito está vacío</div>`;
+    body.innerHTML=`<div class="cart-empty"><i class="fas fa-cart-shopping"></i>El carrito está vacío<div class="cart-empty-hint">Agrega productos desde el catálogo para comenzar</div><button class="btn-open-catalog" onclick="abrirCatalogo()"><i class="fas fa-plus"></i> Abrir Catálogo</button></div>`;
     btnC.disabled=true; return;
   }
   const rows=items.map(id=>{
@@ -799,7 +1221,7 @@ function renderCart(){
       <td><span style="font-size:1.15rem">${p.emoji}</span></td>
       <td style="font-weight:600">${p.name}</td>
       <td><div class="qty-ctrl"><button onclick="actualizarCantidad(${id},-1)"><i class="fas fa-minus"></i></button><span>${q}</span><button onclick="actualizarCantidad(${id},1)"><i class="fas fa-plus"></i></button></div></td>
-      <td style="color:#7ec8f8;font-weight:700;">$${(p.price*q).toLocaleString()}</td>
+      <td style="color:var(--kc-gold);font-weight:700;">$${(p.price*q).toLocaleString()}</td>
       <td><button class="btn-del" onclick="eliminarProducto(${id})"><i class="fas fa-trash"></i></button></td>
     </tr>`;
   }).join('');
@@ -814,11 +1236,24 @@ function confirmarPedido(){
   demands=[Math.round(total*.40),Math.round(total*.35),total-Math.round(total*.40)-Math.round(total*.35)];
   pedidoConfirmado=true;
   document.getElementById('btn-confirm').disabled=true;
-  document.getElementById('btn-confirm').innerHTML='<i class="fas fa-check"></i> Pedido Confirmado';
+  document.getElementById('btn-confirm').innerHTML='<i class="fas fa-check"></i> Pedido Confirmado ✓';
   document.getElementById('btn-optimize').disabled=false;
   document.getElementById('btn-resumen').style.display='block';
-  showToast(`Pedido confirmado — ${total} uds. / 3 tiendas`,'success');
+  showToast(`✓ Pedido confirmado — ${total} uds. listo para optimizar`,'success');
+  updateSteps(2);
   navScroll('#sec-optimizar');
+}
+
+/* ── STEP INDICATOR ── */
+function updateSteps(step){
+  for(let i=1;i<=3;i++){
+    const sc=document.getElementById(`sc${i}`);
+    const sl=document.getElementById(`sl${i}`);
+    const line=document.getElementById(`sline${i}`);
+    if(i<step){sc.classList.remove('active');sc.classList.add('done');sl.classList.remove('active');sl.classList.add('done');if(line)line.classList.add('done');}
+    else if(i===step){sc.classList.add('active');sc.classList.remove('done');sl.classList.add('active');sl.classList.remove('done');}
+    else{sc.classList.remove('active','done');sl.classList.remove('active','done');}
+  }
 }
 
 /* ── TRANSPORTE ── */
@@ -859,8 +1294,9 @@ function optimizar(){
     buildResultTable(asig); buildCharts(asig);
     document.getElementById('result-panel').classList.add('visible');
     document.getElementById('chart-section').classList.add('visible');
-    btn.innerHTML='<i class="fas fa-check"></i> Distribución Calculada';
+    btn.innerHTML='<i class="fas fa-check"></i> Distribución Calculada ✓';
     showToast('¡Distribución óptima calculada!','success');
+    updateSteps(3);
   },950);
 }
 
@@ -882,8 +1318,8 @@ function buildResultTable(asig){
 function buildCharts(asig){
   const barData=PLANTS.map((pl,i)=>asig[i].reduce((a,b)=>a+b,0));
   const costData=PLANTS.map((pl,i)=>asig[i].reduce((s,v,j)=>s+v*BASE_COSTS[i][j],0));
-  const colors=['rgba(79,195,247,.75)','rgba(30,136,229,.75)','rgba(0,230,118,.7)'];
-  const borders=['#4fc3f7','#1e88e5','#00e676'];
+  const colors=['rgba(245,166,35,.75)','rgba(30,136,229,.75)','rgba(0,230,118,.7)'];
+  const borders=['#f5a623','#1e88e5','#00e676'];
   const ticks={color:'#8892a4',font:{family:'DM Sans',size:11}};
   const grid={color:'rgba(255,255,255,.05)'};
   if(barChart)barChart.destroy();
@@ -923,7 +1359,6 @@ function abrirResumen(){
   }
   document.getElementById('orderOverlay').classList.add('show');
 }
-
 function cerrarResumen(e){
   if(!e||e.target===document.getElementById('orderOverlay'))
     document.getElementById('orderOverlay').classList.remove('show');
@@ -970,13 +1405,13 @@ function descargarPDF(){
     doc.text(`${p.emoji} ${p.name}`,40,y+8);
     doc.setTextColor(136,146,164);doc.text(p.cat,220,y+8);
     doc.setTextColor(240,244,255);doc.text(String(qty),310,y+8);doc.text(`$${p.price.toFixed(2)}`,400,y+8);
-    doc.setFont('helvetica','bold');doc.setTextColor(126,200,248);
+    doc.setFont('helvetica','bold');doc.setTextColor(245,166,35);
     doc.text(`$${line.toLocaleString()}`,W-40,y+8,{align:'right'});
     doc.setFont('helvetica','normal');y+=18;
   });
   y+=10;
   doc.setFillColor(15,32,80);doc.roundedRect(W-220,y,190,64,4,4,'F');
-  doc.setDrawColor(45,125,210);doc.setLineWidth(0.5);doc.roundedRect(W-220,y,190,64,4,4,'S');
+  doc.setDrawColor(245,166,35);doc.setLineWidth(0.5);doc.roundedRect(W-220,y,190,64,4,4,'S');
   doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(136,146,164);
   doc.text('Subtotal:',W-215,y+16);doc.text('IVA (16%):',W-215,y+30);
   doc.line(W-215,y+37,W-35,y+37);
@@ -992,7 +1427,7 @@ function descargarPDF(){
     doc.setFillColor(15,32,64);doc.roundedRect(30,y,W-60,18,3,3,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(79,195,247);
     doc.text('DISTRIBUCION OPTIMA DESDE PLANTAS',40,y+13);y+=26;
-    const pColors=[[79,195,247],[129,212,250],[179,229,252]];
+    const pColors=[[245,166,35],[30,136,229],[0,230,118]];
     PLANTS.forEach((pl,i)=>{
       const units=lastOptResult.asig[i].reduce((a,b)=>a+b,0);
       const cost=lastOptResult.asig[i].reduce((s,v,j)=>s+v*BASE_COSTS[i][j],0);
@@ -1001,19 +1436,19 @@ function descargarPDF(){
       doc.setFillColor(...pColors[i]);doc.circle(46,y+11,5,'F');
       doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(240,244,255);
       doc.text(`${pl.name} (${pl.id})`,58,y+14);
-      doc.setFont('helvetica','normal');doc.setTextColor(126,200,248);
+      doc.setFont('helvetica','normal');doc.setTextColor(245,166,35);
       doc.text(`${units} unidades (${pct}%)`,250,y+14);
-      doc.setTextColor(136,146,164);doc.text(`Costo: $${cost.toLocaleString()}`,W-40,y+14,{align:'right'});
+      doc.setTextColor(136,146,164);doc.text(`Costo: $${cost.toLocaleString()} MXN`,W-40,y+14,{align:'right'});
       y+=28;
     });
     y+=6;
     doc.setFillColor(0,50,20);doc.roundedRect(30,y,W-60,50,6,6,'F');
     doc.setDrawColor(0,230,118);doc.setLineWidth(0.8);doc.roundedRect(30,y,W-60,50,6,6,'S');
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(136,146,164);
-    doc.text('COSTO MINIMO DE TRANSPORTE OPTIMIZADO',W/2,y+15,{align:'center'});
+    doc.text('COSTO MINIMO DE TRANSPORTE OPTIMIZADO (MXN)',W/2,y+15,{align:'center'});
     doc.setFontSize(20);doc.setTextColor(0,230,118);
     doc.text(`$${lastOptResult.total.toLocaleString()}`,W/2,y+36,{align:'center'});
-    doc.setFontSize(9);doc.setTextColor(126,200,248);
+    doc.setFontSize(9);doc.setTextColor(245,166,35);
     doc.text(`Ahorro estimado: ${lastOptResult.saving}% vs distribucion estandar`,W/2,y+47,{align:'center'});
     y+=62;
   }
@@ -1023,16 +1458,17 @@ function descargarPDF(){
   doc.text('Kimberly-Clark Mexico — DistribuIQ — Sistema de Distribucion Inteligente',W/2,pH-20,{align:'center'});
   doc.text('Documento generado automaticamente. Proyecto Academico — Investigacion de Operaciones.',W/2,pH-9,{align:'center'});
   doc.save(`KC-Pedido-${pedNum.replace('#','')}-${now.getFullYear()}.pdf`);
-  showToast('Ticket PDF descargado ✓','success');
+  showToast('✓ Ticket PDF descargado','success');
 }
 
-/* ── SLIDER ── */
+/* ── SLIDER (manual only, no autoplay) ── */
 let current=0;
 const slidesWrapper=document.getElementById('slidesWrapper');
 const dots=document.querySelectorAll('.dot-btn');
 function irASlide(n){current=n;slidesWrapper.style.transform=`translateX(-${n*100}%)`;dots.forEach((d,i)=>d.classList.toggle('active',i===n));}
 function cambiarSlide(dir){irASlide((current+dir+3)%3);}
-setInterval(()=>cambiarSlide(1),5000);
+// Gentle autoplay every 10s (non-intrusive)
+setInterval(()=>cambiarSlide(1),10000);
 
 /* ── MODALS ── */
 const MODALES={
@@ -1042,7 +1478,13 @@ const MODALES={
 };
 function abrirModal(id){const{titulo,texto}=MODALES[id];document.getElementById('modalTitle').textContent=titulo;document.getElementById('modalText').textContent=texto;document.getElementById('overlay').classList.add('show');}
 function cerrarModal(){document.getElementById('overlay').classList.remove('show');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrarModal();cerrarResumen();}});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    cerrarModal();cerrarResumen();
+    if(document.getElementById('catalogOverlay').classList.contains('show'))cerrarCatalogo();
+    if(document.getElementById('searchWrap').classList.contains('open'))cerrarBusqueda();
+  }
+});
 
 /* ── UTILS ── */
 function navScroll(sel){document.querySelector(sel)?.scrollIntoView({behavior:'smooth',block:'start'});}
@@ -1053,7 +1495,7 @@ function showToast(msg,type='info'){
   t.querySelector('#toast-msg').textContent=msg;
   t.querySelector('i').className=type==='success'?'fas fa-circle-check':'fas fa-circle-info';
   t.className=`show ${type}`;clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
 </body>
