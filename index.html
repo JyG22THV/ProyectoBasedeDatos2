@@ -957,14 +957,33 @@ footer { background:var(--kc-blue); color:#fff; }
       <div style="font-size:.8rem;color:rgba(255,255,255,.4);"><span id="catalogResultCount">12</span> productos · <span id="catalog-cart-count2">0 en carrito</span></div>
       <div style="display:flex;gap:10px;">
         <button class="quick-btn outline" onclick="cerrarCatalogo()" style="font-size:.78rem;padding:8px 16px;">Cerrar</button>
-        <button class="quick-btn gold" onclick="cerrarCatalogo();navScroll('#sec-sistema')" style="font-size:.78rem;padding:8px 16px;"><i class="fas fa-cart-shopping"></i> Ir al Carrito</button>
+        <button class="quick-btn gold" onclick="cerrarCatalogo();abrirCarrito()" style="font-size:.78rem;padding:8px 16px;"><i class="fas fa-cart-shopping"></i> Ir al Carrito</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ── CART OVERLAY ── -->
+<div class="catalog-overlay" id="cartOverlay">
+  <div class="catalog-panel">
+    <div class="catalog-header">
+      <div>
+        <div class="catalog-title">🛒 Tu <span>Carrito</span></div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:2px;">Revisa tus productos antes de confirmar</div>
+      </div>
+      <button class="catalog-close" onclick="cerrarCarrito()" title="Cerrar (Esc)">✕</button>
+    </div>
+
+    <!-- Cart items area -->
+    <div id="cart-overlay-body" style="flex:1;overflow-y:auto;padding-bottom:8px;"></div>
+
+    <!-- Footer actions -->
+    <div id="cart-overlay-footer" style="padding-top:16px;border-top:1px solid rgba(255,255,255,.1);margin-top:8px;"></div>
+  </div>
+</div>
+
 <!-- ORDER SUMMARY MODAL -->
-<div class="order-overlay" id="orderOverlay" onclick="cerrarResumen(event)">
+<div class="order-overlay" id="orderOverlay" onclick="if(event.target===this)cerrarResumenYReiniciar()">
   <div class="order-modal" onclick="event.stopPropagation()">
     <div class="ticket-head">
       <div class="ticket-head-row">
@@ -1004,7 +1023,7 @@ footer { background:var(--kc-blue); color:#fff; }
     <hr class="ticket-sep"/>
     <div class="ticket-actions">
       <button class="btn-pdf" onclick="descargarPDF()"><i class="fas fa-file-arrow-down"></i> Descargar Ticket PDF</button>
-      <button class="btn-close-ticket" onclick="cerrarResumen()">Cerrar</button>
+      <button class="btn-close-ticket" onclick="cerrarResumenYReiniciar()">Cerrar y Nuevo Pedido</button>
     </div>
   </div>
 </div>
@@ -1489,6 +1508,133 @@ function descargarPDF(){
   showToast('✓ Ticket PDF descargado','success');
 }
 
+/* ── CART OVERLAY ── */
+function abrirCarrito(){
+  document.getElementById('cartOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  renderCartOverlay();
+}
+function cerrarCarrito(){
+  document.getElementById('cartOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function renderCartOverlay(){
+  const body=document.getElementById('cart-overlay-body');
+  const footer=document.getElementById('cart-overlay-footer');
+  const items=Object.keys(cart);
+  if(!items.length){
+    body.innerHTML=`<div class="cart-empty" style="padding:3rem 1rem;">
+      <i class="fas fa-cart-shopping"></i>
+      Tu carrito está vacío
+      <div class="cart-empty-hint">Agrega productos desde el catálogo</div>
+      <button class="btn-open-catalog" onclick="cerrarCarrito();abrirCatalogo()"><i class="fas fa-plus"></i> Ir al Catálogo</button>
+    </div>`;
+    footer.innerHTML='';
+    return;
+  }
+  const total=items.reduce((s,id)=>s+cart[id],0);
+  const subtotal=calcularTotal();
+  // Highlight panel
+  body.innerHTML=`
+    <div style="background:rgba(245,166,35,.07);border:2px solid rgba(245,166,35,.35);border-radius:14px;padding:1.2rem;margin-bottom:1rem;animation:fadeUp .4s ease both;">
+      <div style="font-size:.72rem;color:var(--kc-gold);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:.8rem;">
+        <i class="fas fa-cart-shopping"></i> Productos en tu carrito (${total} ítem${total!==1?'s':''})
+      </div>
+      <table class="cart-tbl" style="width:100%">
+        <thead><tr>
+          <th></th><th>Producto</th><th>Categoría</th><th>Cant.</th><th>Subtotal</th><th></th>
+        </tr></thead>
+        <tbody>
+          ${items.map(id=>{
+            const p=PRODUCTS.find(x=>x.id==id),q=cart[id];
+            return `<tr>
+              <td style="font-size:1.3rem">${p.emoji}</td>
+              <td style="font-weight:600;color:var(--white)">${p.name}</td>
+              <td><span style="background:rgba(45,125,210,.2);color:#7ec8f8;padding:2px 8px;border-radius:10px;font-size:.72rem;">${p.cat}</span></td>
+              <td><div class="qty-ctrl">
+                <button onclick="actualizarCantidad(${id},-1);renderCartOverlay()"><i class="fas fa-minus"></i></button>
+                <span>${q}</span>
+                <button onclick="actualizarCantidad(${id},1);renderCartOverlay()"><i class="fas fa-plus"></i></button>
+              </div></td>
+              <td style="color:var(--kc-gold);font-weight:700;font-family:'Syne',sans-serif;">$${(p.price*q).toLocaleString()}</td>
+              <td><button class="btn-del" onclick="eliminarProducto(${id});renderCartOverlay()"><i class="fas fa-trash"></i></button></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:1rem;align-items:center;padding:0 .2rem;">
+      <span style="font-size:.82rem;color:var(--gray)">${total} producto${total!==1?'s':''}</span>
+      <div style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;">
+        Subtotal: <span style="color:var(--kc-gold)">$${subtotal.toLocaleString()}</span>
+      </div>
+    </div>`;
+  footer.innerHTML=`
+    <div style="display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+      <button class="quick-btn outline" onclick="cerrarCarrito();abrirCatalogo()" style="padding:10px 20px;font-size:.82rem;">
+        <i class="fas fa-arrow-left"></i> Seguir comprando
+      </button>
+      <div style="display:flex;gap:10px;">
+        <button class="quick-btn outline" onclick="cerrarCarrito()" style="padding:10px 18px;font-size:.82rem;">Cerrar</button>
+        <button onclick="cerrarCarrito();pedidoConfirmado?abrirResumen():confirmarPedidoYAbrir()" style="
+          display:inline-flex;align-items:center;gap:10px;
+          padding:12px 28px;border-radius:12px;border:none;cursor:pointer;
+          background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));
+          color:var(--kc-blue);font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;
+          box-shadow:0 5px 20px rgba(245,166,35,.45);transition:all .25s;
+          animation:pulse-gold 2s ease-in-out infinite;
+        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+          <i class="fas fa-check-circle"></i>
+          ${pedidoConfirmado?'Ver Resumen del Pedido':'Confirmar y Continuar'}
+          <i class="fas fa-arrow-right" style="font-size:.8rem;"></i>
+        </button>
+      </div>
+    </div>`;
+}
+function confirmarPedidoYAbrir(){
+  const total=Object.entries(cart).reduce((s,[,q])=>s+q,0);
+  if(!total)return;
+  demands=[Math.round(total*.40),Math.round(total*.35),total-Math.round(total*.40)-Math.round(total*.35)];
+  pedidoConfirmado=true;
+  document.getElementById('btn-confirm').disabled=true;
+  document.getElementById('btn-confirm').innerHTML='<i class="fas fa-check"></i> Pedido Confirmado ✓';
+  document.getElementById('btn-optimize').disabled=false;
+  document.getElementById('btn-resumen').style.display='block';
+  updateSteps(2);
+  showToast(`✓ Pedido confirmado — ${total} uds. listo para optimizar`,'success');
+  navScroll('#sec-optimizar');
+}
+
+/* ── RESET ── */
+function reiniciarPedido(){
+  cart={};demands=null;pedidoConfirmado=false;lastOptResult=null;
+  // Cart
+  renderCart();actualizarCartBadge();
+  // Steps
+  updateSteps(1);
+  // Optimizer btn
+  const bo=document.getElementById('btn-optimize');
+  bo.disabled=true;bo.innerHTML='<i class="fas fa-bolt"></i> Calcular Distribución Óptima';
+  // Confirm btn
+  const bc=document.getElementById('btn-confirm');
+  bc.disabled=true;bc.innerHTML='<i class="fas fa-check-circle"></i> Confirmar Pedido';
+  // Resumen btn (en carrito)
+  document.getElementById('btn-resumen').style.display='none';
+  // Result panels
+  document.getElementById('result-panel').classList.remove('visible');
+  document.getElementById('chart-section').classList.remove('visible');
+  // Charts
+  if(barChart){barChart.destroy();barChart=null;}
+  if(pieChart){pieChart.destroy();pieChart=null;}
+  // Catalog in-cart labels
+  actualizarCatalogCartCount();
+  showToast('Pedido reiniciado — puedes empezar de nuevo','info');
+}
+function cerrarResumenYReiniciar(e){
+  document.getElementById('orderOverlay').classList.remove('show');
+  reiniciarPedido();
+}
+
 /* ── SLIDER (manual only, no autoplay) ── */
 let current=0;
 const slidesWrapper=document.getElementById('slidesWrapper');
@@ -1508,7 +1654,9 @@ function abrirModal(id){const{titulo,texto}=MODALES[id];document.getElementById(
 function cerrarModal(){document.getElementById('overlay').classList.remove('show');}
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
-    cerrarModal();cerrarResumen();
+    cerrarModal();
+    if(document.getElementById('orderOverlay').classList.contains('show'))document.getElementById('orderOverlay').classList.remove('show');
+    if(document.getElementById('cartOverlay').classList.contains('show'))cerrarCarrito();
     if(document.getElementById('catalogOverlay').classList.contains('show'))cerrarCatalogo();
     if(document.getElementById('searchWrap').classList.contains('open'))cerrarBusqueda();
   }
