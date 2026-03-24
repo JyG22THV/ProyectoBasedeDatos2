@@ -350,7 +350,9 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:14px; margin-bottom:2.5rem; }
 .prod-card { background:var(--sys-card); border:1px solid var(--sys-border); border-radius:15px; padding:1rem; display:flex; flex-direction:column; gap:.65rem; transition:transform .3s, box-shadow .3s, border-color .3s; animation:fadeUp .6s ease both; }
 .prod-card:hover { transform:translateY(-5px); box-shadow:0 8px 28px rgba(0,48,135,.5); border-color:rgba(45,125,210,.5); }
-.prod-img   { width:100%; height:84px; border-radius:10px; background:linear-gradient(135deg,rgba(0,48,135,.35),rgba(45,125,210,.2)); display:grid; place-items:center; font-size:2.1rem; }
+.prod-img   { width:100%; height:100px; border-radius:10px; background:linear-gradient(135deg,rgba(0,48,135,.35),rgba(45,125,210,.2)); overflow:hidden; }
+.prod-img img { width:100%; height:100%; object-fit:cover; border-radius:10px; display:block; transition:transform .3s; }
+.prod-card:hover .prod-img img { transform:scale(1.06); }
 .prod-name  { font-family:'Syne',sans-serif; font-size:.85rem; font-weight:700; }
 .prod-cat   { font-size:.7rem; color:var(--gray); margin-top:-4px; }
 .prod-price { color:var(--kc-gold); font-size:.92rem; font-weight:700; }
@@ -1055,18 +1057,18 @@ footer { background:var(--kc-blue); color:#fff; }
 const PLANTS=[{id:'MTY',name:'Monterrey',offer:500,color:'#4fc3f7'},{id:'GDL',name:'Guadalajara',offer:400,color:'#81d4fa'},{id:'CDM',name:'CDMX',offer:600,color:'#b3e5fc'}];
 const BASE_COSTS=[[4,6,8],[5,3,7],[6,4,5]];
 const PRODUCTS=[
-  {id:1, name:'Kleenex Facial',      price:45,  stock:320, emoji:'🧻', cat:'Tissue'},
-  {id:2, name:'Huggies Etapas',      price:285, stock:210, emoji:'👶', cat:'Pañales'},
-  {id:3, name:'Scott Toallas',       price:62,  stock:280, emoji:'🪣', cat:'Toalla'},
-  {id:4, name:'Kotex Ultra',         price:78,  stock:190, emoji:'💜', cat:'Higiene'},
-  {id:5, name:'Depend Adulto',       price:220, stock:250, emoji:'🛡️', cat:'Cuidado'},
-  {id:6, name:'Plenitud Noche',      price:195, stock:250, emoji:'🌙', cat:'Noche'},
-  {id:7, name:'Kleenex Box 3D',      price:55,  stock:300, emoji:'📦', cat:'Tissue'},
-  {id:8, name:'Huggies Natural Care',price:310, stock:180, emoji:'🌿', cat:'Pañales'},
-  {id:9, name:'WypAll X80',          price:430, stock:150, emoji:'🧤', cat:'Industrial'},
-  {id:10,name:'Kotex Toallas Diarias',price:48, stock:350, emoji:'🌸', cat:'Higiene'},
-  {id:11,name:'Pull-Ups Día',        price:265, stock:220, emoji:'⭐', cat:'Pañales'},
-  {id:12,name:'Scott Papel Higiénico',price:42, stock:400, emoji:'🚿', cat:'Tissue'},
+  {id:1, name:'Kleenex Facial',      price:45,  stock:320, img:'https://images.unsplash.com/photo-1584553421349-3557471bed79?w=200&h=200&fit=crop', cat:'Tissue'},
+  {id:2, name:'Huggies Etapas',      price:285, stock:210, img:'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=200&h=200&fit=crop', cat:'Pañales'},
+  {id:3, name:'Scott Toallas',       price:62,  stock:280, img:'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=200&h=200&fit=crop', cat:'Toalla'},
+  {id:4, name:'Kotex Ultra',         price:78,  stock:190, img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop', cat:'Higiene'},
+  {id:5, name:'Depend Adulto',       price:220, stock:250, img:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=200&h=200&fit=crop', cat:'Cuidado'},
+  {id:6, name:'Plenitud Noche',      price:195, stock:250, img:'https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=200&h=200&fit=crop', cat:'Noche'},
+  {id:7, name:'Kleenex Box 3D',      price:55,  stock:300, img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=200&h=200&fit=crop', cat:'Tissue'},
+  {id:8, name:'Huggies Natural Care',price:310, stock:180, img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=200&h=200&fit=crop', cat:'Pañales'},
+  {id:9, name:'WypAll X80',          price:430, stock:150, img:'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=200&h=200&fit=crop', cat:'Industrial'},
+  {id:10,name:'Kotex Toallas Diarias',price:48, stock:350, img:'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=200&h=200&fit=crop', cat:'Higiene'},
+  {id:11,name:'Pull-Ups Día',        price:265, stock:220, img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=200&h=200&fit=crop', cat:'Pañales'},
+  {id:12,name:'Scott Papel Higiénico',price:42, stock:400, img:'https://images.unsplash.com/photo-1584553421349-3557471bed79?w=200&h=200&fit=crop', cat:'Tissue'},
 ];
 const STORE_NAMES=['Tienda A','Tienda B','Tienda C'];
 
@@ -1167,7 +1169,7 @@ function renderCatalog(){
     const pct=Math.round((p.stock/400)*100);
     const inCart=cart[p.id]||0;
     return `<div class="prod-card">
-      <div class="prod-img">${p.emoji}</div>
+      <div class="prod-img"><img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'"></div>
       <div><div class="prod-name">${p.name}</div><div class="prod-cat">${p.cat}</div></div>
       <div class="prod-price">$${p.price.toFixed(2)}</div>
       <div><div class="prod-stock">${p.stock} unidades disponibles</div><div class="stock-bar"><div class="stock-fill" style="width:${pct}%"></div></div></div>
@@ -1265,7 +1267,7 @@ function renderCart(){
   const rows=items.map(id=>{
     const p=PRODUCTS.find(x=>x.id==id),q=cart[id];
     return `<tr>
-      <td><span style="font-size:1.15rem">${p.emoji}</span></td>
+      <td><img src="${p.img}" alt="${p.name}" style="width:36px;height:36px;object-fit:cover;border-radius:7px;display:block;"></td>
       <td style="font-weight:600">${p.name}</td>
       <td><div class="qty-ctrl"><button onclick="actualizarCantidad(${id},-1)"><i class="fas fa-minus"></i></button><span>${q}</span><button onclick="actualizarCantidad(${id},1)"><i class="fas fa-plus"></i></button></div></td>
       <td style="color:var(--kc-gold);font-weight:700;">$${(p.price*q).toLocaleString()}</td>
@@ -1383,7 +1385,7 @@ function abrirResumen(){
   document.getElementById('tk-hora').textContent=now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
   document.getElementById('tk-items').innerHTML=Object.entries(cart).map(([id,qty])=>{
     const p=PRODUCTS.find(x=>x.id==id);
-    return `<div class="ticket-item"><div class="ticket-item-emoji">${p.emoji}</div><div class="ticket-item-info"><div class="ticket-item-name">${p.name}</div><div class="ticket-item-qty">${qty} unidad${qty!==1?'es':''} × $${p.price.toFixed(2)}</div></div><div class="ticket-item-price">$${(p.price*qty).toLocaleString()}</div></div>`;
+    return `<div class="ticket-item"><div class="ticket-item-emoji"><img src="${p.img}" alt="${p.name}" style="width:32px;height:32px;object-fit:cover;border-radius:6px;display:block;"></div><div class="ticket-item-info"><div class="ticket-item-name">${p.name}</div><div class="ticket-item-qty">${qty} unidad${qty!==1?'es':''} × $${p.price.toFixed(2)}</div></div><div class="ticket-item-price">$${(p.price*qty).toLocaleString()}</div></div>`;
   }).join('');
   const sub=calcularTotal(),iva=sub*.16,tot=sub+iva;
   document.getElementById('tk-subtotal').textContent=`$${sub.toLocaleString('es-MX',{minimumFractionDigits:2})}`;
@@ -1449,7 +1451,7 @@ function descargarPDF(){
     const p=PRODUCTS.find(x=>x.id==id);const line=p.price*qty;subtotal+=line;
     if(idx%2===0){doc.setFillColor(12,26,50);doc.rect(30,y-4,W-60,18,'F');}
     doc.setTextColor(240,244,255);doc.setFontSize(9);
-    doc.text(`${p.emoji} ${p.name}`,40,y+8);
+    doc.text(`${p.name}`,40,y+8);
     doc.setTextColor(136,146,164);doc.text(p.cat,220,y+8);
     doc.setTextColor(240,244,255);doc.text(String(qty),310,y+8);doc.text(`$${p.price.toFixed(2)}`,400,y+8);
     doc.setFont('helvetica','bold');doc.setTextColor(245,166,35);
@@ -1548,7 +1550,7 @@ function renderCartOverlay(){
           ${items.map(id=>{
             const p=PRODUCTS.find(x=>x.id==id),q=cart[id];
             return `<tr>
-              <td style="font-size:1.3rem">${p.emoji}</td>
+              <td style="font-size:1.3rem"><img src="${p.img}" alt="${p.name}" style="width:36px;height:36px;object-fit:cover;border-radius:7px;display:block;"></td>
               <td style="font-weight:600;color:var(--white)">${p.name}</td>
               <td><span style="background:rgba(45,125,210,.2);color:#7ec8f8;padding:2px 8px;border-radius:10px;font-size:.72rem;">${p.cat}</span></td>
               <td><div class="qty-ctrl">
