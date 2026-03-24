@@ -1675,6 +1675,289 @@ function showToast(msg,type='info'){
   t.className=`show ${type}`;clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
 }
+
+/* ── CHATBOT ── */
+const chatHistory = [];
+let chatOpen = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const win = document.getElementById('kc-chat-window');
+  const fab = document.getElementById('kc-chat-fab');
+  win.classList.toggle('open', chatOpen);
+  fab.classList.toggle('active', chatOpen);
+  if (chatOpen) {
+    document.getElementById('kc-chat-input').focus();
+    if (chatHistory.length === 0) appendChatMsg('assistant', '¡Hola! Soy el asistente de Kimberly-Clark. Puedo ayudarte con información sobre productos, distribución, pedidos y más. ¿En qué te puedo ayudar?');
+  }
+}
+
+function appendChatMsg(role, text) {
+  const msgs = document.getElementById('kc-chat-msgs');
+  const div = document.createElement('div');
+  div.className = `kc-msg kc-msg-${role}`;
+  div.innerHTML = `<div class="kc-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendTyping() {
+  const msgs = document.getElementById('kc-chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'kc-msg kc-msg-assistant';
+  div.id = 'kc-typing';
+  div.innerHTML = '<div class="kc-bubble kc-typing-bubble"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function sendChatMsg() {
+  const input = document.getElementById('kc-chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+
+  appendChatMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  appendTyping();
+
+  const sendBtn = document.getElementById('kc-send-btn');
+  sendBtn.disabled = true;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Eres el asistente virtual de Kimberly-Clark México, experto en el Sistema de Distribución Inteligente de la empresa. 
+Conoces todos los productos: Huggies (pañales, toallitas), Kleenex (pañuelos, papel higiénico), Scott (papel cocina, servilletas), Kotex (higiene femenina), Depend (incontinencia adulta), Pull-Ups (entrenamiento). 
+Ayudas con: pedidos, distribución desde plantas (Queréndaro, San Juan del Río, Tlalnepantla), optimización de rutas y costos, inventarios, y cualquier consulta sobre la empresa.
+Responde siempre en español, de forma concisa, amable y profesional. Máximo 3-4 oraciones por respuesta salvo que pidan más detalle.`,
+        messages: chatHistory
+      })
+    });
+
+    const data = await res.json();
+    document.getElementById('kc-typing')?.remove();
+
+    if (data.content && data.content[0]) {
+      const reply = data.content[0].text;
+      chatHistory.push({ role: 'assistant', content: reply });
+      appendChatMsg('assistant', reply);
+    } else {
+      appendChatMsg('assistant', 'Lo siento, hubo un problema al obtener la respuesta. Intenta de nuevo.');
+    }
+  } catch(e) {
+    document.getElementById('kc-typing')?.remove();
+    appendChatMsg('assistant', 'Error de conexión. Por favor intenta nuevamente.');
+  }
+
+  sendBtn.disabled = false;
+  document.getElementById('kc-chat-input').focus();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('kc-chat-input');
+  if (inp) {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMsg(); }
+    });
+    inp.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
+  }
+});
 </script>
+
+<!-- ── CHATBOT HTML ── -->
+<style>
+#kc-chat-fab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer;
+  background: linear-gradient(135deg, var(--kc-blue), var(--kc-light));
+  color: #fff; font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 28px rgba(0,48,135,.55), 0 0 0 0 rgba(45,125,210,.4);
+  transition: transform .25s, box-shadow .25s;
+  animation: chat-pulse 2.8s ease-in-out infinite;
+}
+@keyframes chat-pulse {
+  0%,100%{box-shadow:0 6px 28px rgba(0,48,135,.55),0 0 0 0 rgba(45,125,210,.4);}
+  50%{box-shadow:0 6px 28px rgba(0,48,135,.55),0 0 0 10px rgba(45,125,210,0);}
+}
+#kc-chat-fab:hover { transform: scale(1.1); }
+#kc-chat-fab.active { animation: none; background: linear-gradient(135deg,#1a3a6e,var(--kc-mid)); box-shadow: 0 6px 28px rgba(0,48,135,.55); }
+#kc-chat-fab .fab-icon-chat { display: flex; }
+#kc-chat-fab .fab-icon-close { display: none; }
+#kc-chat-fab.active .fab-icon-chat { display: none; }
+#kc-chat-fab.active .fab-icon-close { display: flex; }
+
+#kc-chat-window {
+  position: fixed; bottom: 100px; right: 28px; z-index: 9998;
+  width: 360px; max-height: 520px;
+  background: var(--sys-card);
+  border: 1px solid var(--sys-border);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(45,125,210,.15);
+  display: flex; flex-direction: column;
+  transform: scale(.85) translateY(20px); opacity: 0; pointer-events: none;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .25s;
+  overflow: hidden;
+}
+#kc-chat-window.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+
+.kc-chat-header {
+  background: linear-gradient(135deg, var(--kc-blue), var(--kc-mid));
+  padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+  position: relative; overflow: hidden; flex-shrink: 0;
+}
+.kc-chat-header::after {
+  content: ''; position: absolute; right: -30px; top: -30px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,166,35,.18), transparent 70%);
+}
+.kc-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--kc-gold), var(--kc-gold2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: var(--kc-blue); font-weight: 800; flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(245,166,35,.4);
+}
+.kc-header-info { flex: 1; }
+.kc-header-name { font-family: 'Syne', sans-serif; font-size: .88rem; font-weight: 800; color: #fff; }
+.kc-header-status { font-size: .71rem; color: rgba(255,255,255,.65); display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.kc-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--g-green); box-shadow: 0 0 6px var(--g-green); }
+.kc-chat-close {
+  background: rgba(255,255,255,.12); border: none; color: #fff; width: 30px; height: 30px;
+  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; transition: background .2s; flex-shrink: 0; position: relative; z-index: 1;
+}
+.kc-chat-close:hover { background: rgba(255,255,255,.22); }
+
+#kc-chat-msgs {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  scrollbar-width: thin; scrollbar-color: rgba(45,125,210,.3) transparent;
+}
+#kc-chat-msgs::-webkit-scrollbar { width: 4px; }
+#kc-chat-msgs::-webkit-scrollbar-track { background: transparent; }
+#kc-chat-msgs::-webkit-scrollbar-thumb { background: rgba(45,125,210,.35); border-radius: 4px; }
+
+.kc-msg { display: flex; }
+.kc-msg-user { justify-content: flex-end; }
+.kc-msg-assistant { justify-content: flex-start; }
+
+.kc-bubble {
+  max-width: 80%; padding: 10px 14px; border-radius: 16px;
+  font-size: .83rem; line-height: 1.55; font-family: 'DM Sans', sans-serif;
+}
+.kc-msg-user .kc-bubble {
+  background: linear-gradient(135deg, var(--kc-blue), var(--kc-mid));
+  color: #fff; border-bottom-right-radius: 4px;
+  box-shadow: 0 3px 12px rgba(0,48,135,.4);
+}
+.kc-msg-assistant .kc-bubble {
+  background: rgba(255,255,255,.06); color: var(--white);
+  border: 1px solid var(--sys-border); border-bottom-left-radius: 4px;
+}
+
+.kc-typing-bubble {
+  display: flex; align-items: center; gap: 5px; padding: 12px 16px;
+}
+.kc-typing-bubble span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--kc-light); display: inline-block;
+  animation: kc-bounce .9s ease-in-out infinite;
+}
+.kc-typing-bubble span:nth-child(2) { animation-delay: .15s; }
+.kc-typing-bubble span:nth-child(3) { animation-delay: .3s; }
+@keyframes kc-bounce { 0%,60%,100%{transform:translateY(0);opacity:.5;} 30%{transform:translateY(-6px);opacity:1;} }
+
+.kc-chat-footer {
+  padding: 12px 14px; border-top: 1px solid var(--sys-border);
+  background: rgba(0,0,0,.2); flex-shrink: 0;
+}
+.kc-input-row {
+  display: flex; align-items: flex-end; gap: 8px;
+  background: rgba(255,255,255,.06); border: 1px solid var(--sys-border);
+  border-radius: 14px; padding: 8px 8px 8px 14px; transition: border-color .2s;
+}
+.kc-input-row:focus-within { border-color: rgba(45,125,210,.55); }
+#kc-chat-input {
+  flex: 1; background: none; border: none; outline: none; resize: none;
+  color: var(--white); font-family: 'DM Sans', sans-serif; font-size: .84rem;
+  line-height: 1.5; max-height: 100px; min-height: 22px;
+  scrollbar-width: thin;
+}
+#kc-chat-input::placeholder { color: var(--gray); }
+#kc-send-btn {
+  width: 34px; height: 34px; border-radius: 10px; border: none; cursor: pointer;
+  background: linear-gradient(135deg, var(--kc-gold), var(--kc-gold2));
+  color: var(--kc-blue); font-size: 13px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; box-shadow: 0 3px 10px rgba(245,166,35,.35);
+}
+#kc-send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: 0 5px 16px rgba(245,166,35,.5); }
+#kc-send-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+.kc-quick-chips {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;
+}
+.kc-chip {
+  background: rgba(45,125,210,.12); border: 1px solid rgba(45,125,210,.3);
+  color: #7ec8f8; font-size: .71rem; font-family: 'Syne', sans-serif; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px; cursor: pointer; transition: all .2s;
+  white-space: nowrap;
+}
+.kc-chip:hover { background: rgba(45,125,210,.25); border-color: rgba(45,125,210,.55); }
+
+@media(max-width:420px){
+  #kc-chat-window { width: calc(100vw - 20px); right: 10px; bottom: 88px; }
+  #kc-chat-fab { bottom: 16px; right: 16px; }
+}
+</style>
+
+<button id="kc-chat-fab" onclick="toggleChat()" aria-label="Abrir chat">
+  <span class="fab-icon-chat"><i class="fas fa-comment-dots"></i></span>
+  <span class="fab-icon-close"><i class="fas fa-times"></i></span>
+</button>
+
+<div id="kc-chat-window">
+  <div class="kc-chat-header">
+    <div class="kc-avatar">KC</div>
+    <div class="kc-header-info">
+      <div class="kc-header-name">Asistente KC</div>
+      <div class="kc-header-status"><span class="kc-status-dot"></span>En línea · IA Kimberly-Clark</div>
+    </div>
+    <button class="kc-chat-close" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+  </div>
+
+  <div id="kc-chat-msgs"></div>
+
+  <div class="kc-chat-footer">
+    <div class="kc-quick-chips">
+      <span class="kc-chip" onclick="quickAsk('¿Qué productos tienen disponibles?')">📦 Productos</span>
+      <span class="kc-chip" onclick="quickAsk('¿Cómo hago un pedido?')">🛒 Pedidos</span>
+      <span class="kc-chip" onclick="quickAsk('¿Cuáles son las plantas de distribución?')">🏭 Plantas</span>
+      <span class="kc-chip" onclick="quickAsk('¿Cómo funciona la optimización de rutas?')">🗺️ Rutas</span>
+    </div>
+    <div class="kc-input-row">
+      <textarea id="kc-chat-input" placeholder="Escribe tu mensaje..." rows="1"></textarea>
+      <button id="kc-send-btn" onclick="sendChatMsg()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<script>
+function quickAsk(text) {
+  document.getElementById('kc-chat-input').value = text;
+  sendChatMsg();
+}
+</script>
+
 </body>
 </html>
