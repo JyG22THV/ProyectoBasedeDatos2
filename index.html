@@ -1679,6 +1679,20 @@ function showToast(msg,type='info'){
 /* ── CHATBOT ── */
 const chatHistory = [];
 let chatOpen = false;
+let groqKey = '';
+
+function getGroqKey() { return groqKey; }
+
+function saveGroqKey(key) {
+  groqKey = key.trim();
+  sessionStorage.setItem('kc_groq_key', groqKey);
+}
+
+// Load key from session if exists
+(function() {
+  const saved = sessionStorage.getItem('kc_groq_key');
+  if (saved) groqKey = saved;
+})();
 
 function toggleChat() {
   chatOpen = !chatOpen;
@@ -1687,9 +1701,46 @@ function toggleChat() {
   win.classList.toggle('open', chatOpen);
   fab.classList.toggle('active', chatOpen);
   if (chatOpen) {
-    document.getElementById('kc-chat-input').focus();
-    if (chatHistory.length === 0) appendChatMsg('assistant', '¡Hola! Soy el asistente de Kimberly-Clark. Puedo ayudarte con información sobre productos, distribución, pedidos y más. ¿En qué te puedo ayudar?');
+    if (!groqKey) {
+      showKeyScreen();
+    } else {
+      showChatScreen();
+      if (chatHistory.length === 0) appendChatMsg('assistant', '¡Hola! 👋 Soy el Asistente KC de Kimberly-Clark. Puedo ayudarte con productos, precios, pedidos, distribución y más. ¿En qué te puedo ayudar?');
+    }
   }
+}
+
+function showKeyScreen() {
+  document.getElementById('kc-key-screen').style.display = 'flex';
+  document.getElementById('kc-chat-screen').style.display = 'none';
+  setTimeout(() => document.getElementById('kc-key-input').focus(), 100);
+}
+
+function showChatScreen() {
+  document.getElementById('kc-key-screen').style.display = 'none';
+  document.getElementById('kc-chat-screen').style.display = 'flex';
+  setTimeout(() => document.getElementById('kc-chat-input').focus(), 100);
+}
+
+function submitKey() {
+  const val = document.getElementById('kc-key-input').value.trim();
+  const err = document.getElementById('kc-key-error');
+  if (!val.startsWith('gsk_')) {
+    err.style.display = 'block';
+    err.textContent = 'La key debe empezar con gsk_ — revisa que la copiaste completa.';
+    return;
+  }
+  err.style.display = 'none';
+  saveGroqKey(val);
+  showChatScreen();
+  if (chatHistory.length === 0) appendChatMsg('assistant', '¡Hola! 👋 Soy el Asistente KC de Kimberly-Clark. Puedo ayudarte con productos, precios, pedidos, distribución y más. ¿En qué te puedo ayudar?');
+}
+
+function resetKey() {
+  groqKey = '';
+  sessionStorage.removeItem('kc_groq_key');
+  showKeyScreen();
+  document.getElementById('kc-key-input').value = '';
 }
 
 function appendChatMsg(role, text) {
@@ -1725,26 +1776,71 @@ async function sendChatMsg() {
   const sendBtn = document.getElementById('kc-send-btn');
   sendBtn.disabled = true;
 
+  const GROQ_KEY = getGroqKey();
+  if (!GROQ_KEY) { showKeyScreen(); return; }
+
+  const SYSTEM_PROMPT = `Eres el asistente virtual oficial del Sistema de Distribución Inteligente de Kimberly-Clark México. Tu nombre es "Asistente KC".
+
+PERSONALIDAD Y TONO:
+- Amigable, cercano y profesional. Usa un lenguaje claro y accesible.
+- Usa emojis ocasionalmente para hacer la conversación más dinámica (📦 🚚 ✅ 💛 etc.)
+- Responde SIEMPRE en español.
+- Sé conciso: máximo 4-5 oraciones salvo que el usuario pida más detalle.
+- NUNCA respondas preguntas ajenas a Kimberly-Clark, sus productos o el sistema.
+
+CATÁLOGO DE PRODUCTOS (precios y stock):
+1. Kleenex Facial — $45.00 | Stock: 320 uds | Tissue
+2. Huggies Etapas — $285.00 | Stock: 210 uds | Pañales
+3. Scott Toallas — $62.00 | Stock: 280 uds | Toalla
+4. Kotex Ultra — $78.00 | Stock: 190 uds | Higiene
+5. Cottonelle Elegance — $220.00 | Stock: 250 uds | Cuidado
+6. Scotch Brite — $195.00 | Stock: 250 uds | Esponja
+7. Jabón Escudo — $55.00 | Stock: 300 uds | Jabón
+8. Huggies Natural Care — $310.00 | Stock: 180 uds | Pañales
+9. WypAll X80 — $430.00 | Stock: 150 uds | Industrial
+10. Servilletas Pétalo — $48.00 | Stock: 350 uds | Higiene
+11. Pull-Ups Día — $265.00 | Stock: 220 uds | Pañales
+12. Repuesto Jabón Antibacterial Gojo — $42.00 | Stock: 400 uds | Sanitizante
+
+PLANTAS DE DISTRIBUCIÓN:
+- Monterrey (MTY): capacidad 500 unidades
+- Guadalajara (GDL): capacidad 400 unidades
+- CDMX (CDM): capacidad 600 unidades
+
+COSTOS DE TRANSPORTE (MXN por unidad):
+- Monterrey → Tienda A: $4 | Tienda B: $6 | Tienda C: $8
+- Guadalajara → Tienda A: $5 | Tienda B: $3 | Tienda C: $7
+- CDMX → Tienda A: $6 | Tienda B: $4 | Tienda C: $5
+
+PROCESO DEL SISTEMA (6 pasos):
+PASO 1 — CATÁLOGO: El usuario abre el catálogo KC y selecciona productos. Puede filtrar por categoría o buscar por nombre.
+PASO 2 — CARRITO: Los productos van al carrito. El usuario ajusta cantidades y ve el subtotal en tiempo real.
+PASO 3 — CONFIRMAR PEDIDO: Se registran las cantidades y se distribuyen automáticamente entre 3 tiendas (≈40% Tienda A, 35% Tienda B, 25% Tienda C).
+PASO 4 — OPTIMIZACIÓN: El sistema calcula la distribución óptima desde las plantas usando programación lineal, minimizando el costo total de envío.
+PASO 5 — RESULTADOS: Se muestran gráficas de barras y pastel con costos por planta y el ahorro estimado vs. distribución manual.
+PASO 6 — PDF: El usuario descarga un ticket PDF con número de pedido, fecha, productos, subtotal, IVA (16%) y total optimizado.
+
+RESTRICCIÓN ABSOLUTA: Si alguien pregunta algo fuera de Kimberly-Clark, responde: "¡Solo puedo ayudarte con temas de Kimberly-Clark y nuestro sistema de distribución! 😊 ¿En qué te puedo apoyar?"`;
+
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_KEY}` },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'llama-3.3-70b-versatile',
         max_tokens: 1000,
-        system: `Eres el asistente virtual de Kimberly-Clark México, experto en el Sistema de Distribución Inteligente de la empresa. 
-Conoces todos los productos: Huggies (pañales, toallitas), Kleenex (pañuelos, papel higiénico), Scott (papel cocina, servilletas), Kotex (higiene femenina), Depend (incontinencia adulta), Pull-Ups (entrenamiento). 
-Ayudas con: pedidos, distribución desde plantas (Queréndaro, San Juan del Río, Tlalnepantla), optimización de rutas y costos, inventarios, y cualquier consulta sobre la empresa.
-Responde siempre en español, de forma concisa, amable y profesional. Máximo 3-4 oraciones por respuesta salvo que pidan más detalle.`,
-        messages: chatHistory
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...chatHistory
+        ]
       })
     });
 
     const data = await res.json();
     document.getElementById('kc-typing')?.remove();
 
-    if (data.content && data.content[0]) {
-      const reply = data.content[0].text;
+    if (data.choices && data.choices[0]) {
+      const reply = data.choices[0].message.content;
       chatHistory.push({ role: 'assistant', content: reply });
       appendChatMsg('assistant', reply);
     } else {
@@ -1936,18 +2032,46 @@ document.addEventListener('DOMContentLoaded', () => {
     <button class="kc-chat-close" onclick="toggleChat()"><i class="fas fa-times"></i></button>
   </div>
 
-  <div id="kc-chat-msgs"></div>
-
-  <div class="kc-chat-footer">
-    <div class="kc-quick-chips">
-      <span class="kc-chip" onclick="quickAsk('¿Qué productos tienen disponibles?')">📦 Productos</span>
-      <span class="kc-chip" onclick="quickAsk('¿Cómo hago un pedido?')">🛒 Pedidos</span>
-      <span class="kc-chip" onclick="quickAsk('¿Cuáles son las plantas de distribución?')">🏭 Plantas</span>
-      <span class="kc-chip" onclick="quickAsk('¿Cómo funciona la optimización de rutas?')">🗺️ Rutas</span>
+  <!-- KEY SCREEN -->
+  <div id="kc-key-screen" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 24px; gap:14px; flex:1;">
+    <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--kc-blue);box-shadow:0 4px 16px rgba(245,166,35,.4);">🔑</div>
+    <div style="text-align:center;">
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--white);margin-bottom:6px;">Conecta tu API Key</div>
+      <div style="font-size:.78rem;color:var(--gray);line-height:1.55;">Para usar el chatbot necesitas una key gratuita de Groq. Tu key <strong style="color:var(--white);">nunca se guarda</strong> en el servidor, solo en tu navegador.</div>
     </div>
-    <div class="kc-input-row">
-      <textarea id="kc-chat-input" placeholder="Escribe tu mensaje..." rows="1"></textarea>
-      <button id="kc-send-btn" onclick="sendChatMsg()"><i class="fas fa-paper-plane"></i></button>
+    <div style="width:100%;">
+      <input id="kc-key-input" type="password" placeholder="Pega tu key aquí (gsk_...)"
+        style="width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--sys-border);background:rgba(255,255,255,.06);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='rgba(45,125,210,.6)'" onblur="this.style.borderColor=''"
+        onkeydown="if(event.key==='Enter')submitKey()"/>
+      <div id="kc-key-error" style="display:none;color:#ff6b6b;font-size:.73rem;margin-top:5px;padding-left:4px;"></div>
+    </div>
+    <button onclick="submitKey()" style="width:100%;padding:11px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));color:var(--kc-blue);font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;box-shadow:0 4px 14px rgba(245,166,35,.4);transition:all .2s;"
+      onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+      Activar Chatbot →
+    </button>
+    <a href="https://console.groq.com/keys" target="_blank" style="font-size:.73rem;color:var(--kc-light);text-decoration:none;opacity:.8;">¿No tienes key? Obtén una gratis en console.groq.com →</a>
+  </div>
+
+  <!-- CHAT SCREEN -->
+  <div id="kc-chat-screen" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
+    <div id="kc-chat-msgs"></div>
+    <div class="kc-chat-footer">
+      <div class="kc-quick-chips">
+        <span class="kc-chip" onclick="quickAsk('¿Qué productos tienen disponibles?')">📦 Productos</span>
+        <span class="kc-chip" onclick="quickAsk('¿Cómo hago un pedido?')">🛒 Pedidos</span>
+        <span class="kc-chip" onclick="quickAsk('¿Cuáles son las plantas de distribución?')">🏭 Plantas</span>
+        <span class="kc-chip" onclick="quickAsk('¿Cómo funciona la optimización?')">🗺️ Rutas</span>
+      </div>
+      <div class="kc-input-row">
+        <textarea id="kc-chat-input" placeholder="Escribe tu mensaje..." rows="1"></textarea>
+        <button id="kc-send-btn" onclick="sendChatMsg()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+      <div style="text-align:center;margin-top:8px;">
+        <span onclick="resetKey()" style="font-size:.68rem;color:var(--gray);cursor:pointer;opacity:.6;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.6'">
+          🔑 Cambiar API key
+        </span>
+      </div>
     </div>
   </div>
 </div>
