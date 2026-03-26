@@ -136,6 +136,83 @@ body { font-family:'DM Sans',sans-serif; background:var(--kc-blue); color:var(--
 }
 .dropdown-item:hover { background:#f4f7fc; border-left-color:var(--kc-light); padding-left:28px; }
 
+/* ── SLIDE 4 ── */
+.slide-4 .slide-bg { background-color:#001533; }
+.slide-4 .slide-bg::before {
+  background:linear-gradient(to right, rgba(0,10,40,0.82) 0%, rgba(0,10,40,0.4) 60%, transparent 100%);
+}
+.slide-4 .slide-deco {
+  background:radial-gradient(circle,rgba(245,166,35,.13),transparent 70%);
+}
+
+/* ── SOCIAL OVERLAY ── */
+.social-overlay {
+  display:none; position:fixed; inset:0; background:rgba(4,8,20,0.93);
+  backdrop-filter:blur(12px); z-index:3500; animation:fadeIn .25s ease;
+}
+.social-overlay.show { display:flex; flex-direction:column; }
+.social-panel {
+  width:100%; max-width:980px; margin:0 auto;
+  flex:1; display:flex; flex-direction:column;
+  padding:28px 36px; overflow-y:auto;
+  animation:slideUp .35s cubic-bezier(.34,1.2,.64,1) both;
+}
+.social-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:28px; flex-wrap:wrap; gap:12px;
+}
+.social-title { font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:#fff; }
+.social-title span { color:var(--kc-gold); }
+.social-close {
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+  color:#fff; width:40px; height:40px; border-radius:50%; font-size:18px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s;
+}
+.social-close:hover { background:rgba(255,255,255,.2); transform:rotate(90deg); }
+
+/* Video block */
+.video-block {
+  width:100%; border-radius:18px; overflow:hidden;
+  background:#000; margin-bottom:28px;
+  box-shadow:0 12px 48px rgba(0,0,0,.7);
+  position:relative; padding-top:56.25%; /* 16:9 */
+  border:1px solid rgba(45,125,210,.25);
+}
+.video-block iframe {
+  position:absolute; inset:0; width:100%; height:100%; border:none;
+}
+
+/* Social cards grid */
+.social-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px;
+  margin-bottom:10px;
+}
+.social-card {
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+  border-radius:16px; padding:22px 16px; text-align:center;
+  text-decoration:none; color:#fff; transition:all .25s; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+}
+.social-card:hover { transform:translateY(-5px); border-color:var(--sc-color,var(--kc-gold)); background:rgba(255,255,255,.09); box-shadow:0 8px 28px rgba(0,0,0,.4); }
+.social-icon {
+  width:52px; height:52px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; background:var(--sc-color,var(--kc-blue));
+  box-shadow:0 4px 14px rgba(0,0,0,.3);
+}
+.social-name { font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; }
+.social-handle { font-size:.72rem; color:var(--gray); }
+.social-follow {
+  margin-top:4px; padding:5px 14px; border-radius:20px; font-size:.73rem;
+  font-family:'Syne',sans-serif; font-weight:700; border:1px solid var(--sc-color,var(--kc-gold));
+  color:var(--sc-color,var(--kc-gold)); background:transparent; cursor:pointer; transition:all .2s;
+  text-decoration:none; display:inline-block;
+}
+.social-card:hover .social-follow {
+  background:var(--sc-color,var(--kc-gold));
+  color:#fff;
+}
+
 /* ── HERO SLIDER ── */
 .hero-slider { position:relative; width:100%; height:460px; overflow:hidden; }
 .slides-wrapper { display:flex; height:100%; transition:transform .9s cubic-bezier(.77,0,.175,1); }
@@ -709,6 +786,29 @@ footer { background:var(--kc-blue); color:#fff; }
         </div>
       </div>
     </div>
+    <div class="slide slide-4">
+      <div class="slide-bg">
+        <div class="slide-deco"></div>
+        <div class="slide-overlay">
+          <div class="slide-label">Síguenos &amp; Conócenos</div>
+          <h2>¿Quieres saber más de nosotros?</h2>
+          <p>Descubre quiénes somos, lo que hacemos y únete a nuestra comunidad en redes sociales.</p>
+          <div class="slide-ctas">
+            <button class="slide-cta" onclick="abrirSocial()">
+              <i class="fas fa-play-circle"></i> ¡Conócenos!
+            </button>
+          </div>
+        </div>
+        <!-- Floating social icons deco -->
+        <div style="position:absolute;right:8%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:3;opacity:.85;">
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(29,161,242,.25);border:1px solid rgba(29,161,242,.4);display:flex;align-items:center;justify-content:center;font-size:18px;animation:fadeUp .5s .1s ease both;">𝕏</div>
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(24,119,242,.25);border:1px solid rgba(24,119,242,.4);display:flex;align-items:center;justify-content:center;font-size:18px;animation:fadeUp .5s .2s ease both;"><i class="fab fa-facebook-f" style="color:#4a90d9;font-size:16px;"></i></div>
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(225,48,108,.25);border:1px solid rgba(225,48,108,.4);display:flex;align-items:center;justify-content:center;font-size:18px;animation:fadeUp .5s .3s ease both;"><i class="fab fa-instagram" style="color:#e1306c;font-size:16px;"></i></div>
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,0,0,.22);border:1px solid rgba(255,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:18px;animation:fadeUp .5s .4s ease both;"><i class="fab fa-youtube" style="color:#ff4444;font-size:16px;"></i></div>
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,119,181,.25);border:1px solid rgba(0,119,181,.4);display:flex;align-items:center;justify-content:center;font-size:18px;animation:fadeUp .5s .5s ease both;"><i class="fab fa-linkedin-in" style="color:#4a90d9;font-size:16px;"></i></div>
+        </div>
+      </div>
+    </div>
   </div>
   <button class="arrow prev" onclick="cambiarSlide(-1)">&#8249;</button>
   <button class="arrow next" onclick="cambiarSlide(1)">&#8250;</button>
@@ -716,8 +816,81 @@ footer { background:var(--kc-blue); color:#fff; }
     <button class="dot-btn active" onclick="irASlide(0)"></button>
     <button class="dot-btn" onclick="irASlide(1)"></button>
     <button class="dot-btn" onclick="irASlide(2)"></button>
+    <button class="dot-btn" onclick="irASlide(3)"></button>
   </div>
 </section>
+
+<!-- SOCIAL OVERLAY -->
+<div class="social-overlay" id="socialOverlay">
+  <div class="social-panel">
+    <div class="social-header">
+      <div>
+        <div class="social-title">Conócenos <span>más</span></div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:3px;">Video corporativo y nuestras redes sociales oficiales</div>
+      </div>
+      <button class="social-close" onclick="cerrarSocial()" title="Cerrar (Esc)">✕</button>
+    </div>
+
+    <!-- VIDEO -->
+    <div style="font-size:.72rem;color:var(--kc-gold);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:10px;"><i class="fas fa-play-circle"></i> Video Corporativo</div>
+    <div class="video-block">
+      <iframe
+        src="https://www.youtube.com/embed/Y5e0oFYFBCs?rel=0&modestbranding=1"
+        title="Kimberly-Clark Corporativo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- REDES -->
+    <div style="font-size:.72rem;color:var(--kc-gold);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:14px;"><i class="fas fa-share-nodes"></i> Nuestras Redes Sociales</div>
+    <div class="social-grid">
+      <a class="social-card" href="https://twitter.com/KCMexico" target="_blank" style="--sc-color:#1da1f2;">
+        <div class="social-icon" style="background:rgba(29,161,242,.2);border:1px solid rgba(29,161,242,.3);color:#1da1f2;font-weight:900;font-size:18px;">𝕏</div>
+        <div class="social-name">X / Twitter</div>
+        <div class="social-handle">@KCMexico</div>
+        <span class="social-follow">Seguir</span>
+      </a>
+      <a class="social-card" href="https://www.facebook.com/KimberlyclarkMexico" target="_blank" style="--sc-color:#1877f2;">
+        <div class="social-icon" style="background:rgba(24,119,242,.2);border:1px solid rgba(24,119,242,.3);"><i class="fab fa-facebook-f" style="color:#1877f2;font-size:20px;"></i></div>
+        <div class="social-name">Facebook</div>
+        <div class="social-handle">KimberlyclarkMexico</div>
+        <span class="social-follow">Seguir</span>
+      </a>
+      <a class="social-card" href="https://www.instagram.com/kimberlyclarkmexico" target="_blank" style="--sc-color:#e1306c;">
+        <div class="social-icon" style="background:rgba(225,48,108,.2);border:1px solid rgba(225,48,108,.3);"><i class="fab fa-instagram" style="color:#e1306c;font-size:20px;"></i></div>
+        <div class="social-name">Instagram</div>
+        <div class="social-handle">@kimberlyclarkmexico</div>
+        <span class="social-follow">Seguir</span>
+      </a>
+      <a class="social-card" href="https://www.youtube.com/@KimberlyClarkMexico" target="_blank" style="--sc-color:#ff0000;">
+        <div class="social-icon" style="background:rgba(255,0,0,.18);border:1px solid rgba(255,0,0,.3);"><i class="fab fa-youtube" style="color:#ff4444;font-size:20px;"></i></div>
+        <div class="social-name">YouTube</div>
+        <div class="social-handle">@KimberlyClarkMexico</div>
+        <span class="social-follow">Suscribirse</span>
+      </a>
+      <a class="social-card" href="https://www.linkedin.com/company/kimberly-clark" target="_blank" style="--sc-color:#0077b5;">
+        <div class="social-icon" style="background:rgba(0,119,181,.2);border:1px solid rgba(0,119,181,.3);"><i class="fab fa-linkedin-in" style="color:#0a66c2;font-size:20px;"></i></div>
+        <div class="social-name">LinkedIn</div>
+        <div class="social-handle">Kimberly-Clark</div>
+        <span class="social-follow">Conectar</span>
+      </a>
+      <a class="social-card" href="https://www.tiktok.com/@kimberlyclarkmexico" target="_blank" style="--sc-color:#69c9d0;">
+        <div class="social-icon" style="background:rgba(105,201,208,.15);border:1px solid rgba(105,201,208,.3);"><i class="fab fa-tiktok" style="color:#69c9d0;font-size:20px;"></i></div>
+        <div class="social-name">TikTok</div>
+        <div class="social-handle">@kimberlyclarkmexico</div>
+        <span class="social-follow">Seguir</span>
+      </a>
+    </div>
+
+    <div style="text-align:center;padding:16px 0 4px;">
+      <button onclick="cerrarSocial()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:var(--gray);padding:10px 28px;border-radius:10px;font-family:'Syne',sans-serif;font-weight:600;font-size:.83rem;cursor:pointer;transition:all .2s;"
+        onmouseover="this.style.background='rgba(255,255,255,.13)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- STATS -->
 <div class="stats-bar">
@@ -1642,7 +1815,7 @@ let current=0;
 const slidesWrapper=document.getElementById('slidesWrapper');
 const dots=document.querySelectorAll('.dot-btn');
 function irASlide(n){current=n;slidesWrapper.style.transform=`translateX(-${n*100}%)`;dots.forEach((d,i)=>d.classList.toggle('active',i===n));}
-function cambiarSlide(dir){irASlide((current+dir+3)%3);}
+function cambiarSlide(dir){irASlide((current+dir+4)%4);}
 // Gentle autoplay every 10s (non-intrusive)
 setInterval(()=>cambiarSlide(1),10000);
 
@@ -1654,12 +1827,15 @@ const MODALES={
 };
 function abrirModal(id){const{titulo,texto}=MODALES[id];document.getElementById('modalTitle').textContent=titulo;document.getElementById('modalText').textContent=texto;document.getElementById('overlay').classList.add('show');}
 function cerrarModal(){document.getElementById('overlay').classList.remove('show');}
+function abrirSocial(){document.getElementById('socialOverlay').classList.add('show');document.body.style.overflow='hidden';}
+function cerrarSocial(){document.getElementById('socialOverlay').classList.remove('show');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     cerrarModal();
     if(document.getElementById('orderOverlay').classList.contains('show'))document.getElementById('orderOverlay').classList.remove('show');
     if(document.getElementById('cartOverlay').classList.contains('show'))cerrarCarrito();
     if(document.getElementById('catalogOverlay').classList.contains('show'))cerrarCatalogo();
+    if(document.getElementById('socialOverlay').classList.contains('show'))cerrarSocial();
     if(document.getElementById('searchWrap').classList.contains('open'))cerrarBusqueda();
   }
 });
