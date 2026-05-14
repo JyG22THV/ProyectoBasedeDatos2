@@ -1625,6 +1625,16 @@ function buildCharts(asig){
 
 /* ── ORDER SUMMARY ── */
 function abrirResumen(){
+  // Si aún no tiene datos de envío, mostrar formulario primero
+  const dc=window.datosCliente||{};
+  if(!dc.nombre){
+    abrirShipping();
+    return;
+  }
+  _mostrarTicket();
+}
+
+function _mostrarTicket(){
   const now=new Date();
   document.getElementById('tk-num').textContent='#'+String(Math.floor(100000+Math.random()*900000));
   document.getElementById('tk-fecha').textContent=now.toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});
@@ -1880,9 +1890,15 @@ function renderCartOverlay(){
 function confirmarPedidoYAbrir(){
   const total=Object.entries(cart).reduce((s,[,q])=>s+q,0);
   if(!total)return;
-  // Abre el formulario de envío primero
-  cerrarCarrito();
-  abrirShipping();
+  demands=[Math.round(total*.40),Math.round(total*.35),total-Math.round(total*.40)-Math.round(total*.35)];
+  pedidoConfirmado=true;
+  document.getElementById('btn-confirm').disabled=true;
+  document.getElementById('btn-confirm').innerHTML='<i class="fas fa-check"></i> Pedido Confirmado ✓';
+  document.getElementById('btn-optimize').disabled=false;
+  document.getElementById('btn-resumen').style.display='block';
+  updateSteps(2);
+  showToast(`✓ Pedido confirmado — ${total} uds. listo para optimizar`,'success');
+  navScroll('#sec-optimizar');
 }
 
 /* ── SHIPPING FORM ── */
@@ -1905,10 +1921,8 @@ function cerrarShipping(){
 }
 
 function finalizarPedido(){
+  // Cierra el formulario sin borrar el pedido — el usuario puede volver a intentarlo
   cerrarShipping();
-  reiniciarPedido();
-  window.datosCliente={};
-  showToast('¡Gracias! Carrito listo para una nueva compra 🛒','success');
 }
 
 function enviarFormularioEnvio(){
@@ -1966,19 +1980,9 @@ function enviarFormularioEnvio(){
     cp:     document.getElementById('ship-cp').value.trim(),
   };
 
-  // Proceder con el pedido
-  const total=Object.entries(cart).reduce((s,[,q])=>s+q,0);
-  demands=[Math.round(total*.40),Math.round(total*.35),total-Math.round(total*.40)-Math.round(total*.35)];
-  pedidoConfirmado=true;
-  document.getElementById('btn-confirm').disabled=true;
-  document.getElementById('btn-confirm').innerHTML='<i class="fas fa-check"></i> Pedido Confirmado ✓';
-  document.getElementById('btn-optimize').disabled=false;
-  document.getElementById('btn-resumen').style.display='block';
-  updateSteps(2);
-
   cerrarShipping();
-  abrirResumen();
-  showToast(`✓ Datos registrados — ${total} uds. listo para optimizar`,'success');
+  _mostrarTicket();
+  showToast('✓ Datos registrados — aquí está tu ticket completo','success');
 }
 
 
@@ -2010,6 +2014,7 @@ function reiniciarPedido(){
 function cerrarResumenYReiniciar(e){
   document.getElementById('orderOverlay').classList.remove('show');
   reiniciarPedido();
+  window.datosCliente={};
 }
 
 /* ── SLIDER (manual only, no autoplay) ── */
@@ -2632,19 +2637,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- Progress bar -->
     <div class="ship-progress">
-      <div class="ship-step-dot done">✓</div>
+      <div class="ship-step-dot done" title="Carrito">✓</div>
       <div class="ship-step-line done"></div>
-      <div class="ship-step-dot done">✓</div>
+      <div class="ship-step-dot done" title="Confirmar pedido">✓</div>
       <div class="ship-step-line done"></div>
-      <div class="ship-step-dot active">3</div>
+      <div class="ship-step-dot done" title="Optimización">✓</div>
+      <div class="ship-step-line done"></div>
+      <div class="ship-step-dot active" title="Datos de envío">4</div>
       <div class="ship-step-line pending"></div>
-      <div class="ship-step-dot pending">4</div>
+      <div class="ship-step-dot pending" title="Ticket">5</div>
     </div>
 
     <!-- Header -->
     <div class="ship-modal-header">
       <div class="ship-icon"><i class="fas fa-truck"></i></div>
-      <div class="ship-eye">Paso 3 de 4 — Datos de envío</div>
+      <div class="ship-eye">Paso 4 de 5 — Datos de envío</div>
       <h2>¿A dónde enviamos tu pedido?</h2>
       <p>Completa todos los campos para poder procesar y enviar tu pedido correctamente.</p>
     </div>
@@ -2740,8 +2747,8 @@ document.addEventListener('DOMContentLoaded', () => {
           Confirmar datos y ver mi pedido
           <i class="fas fa-arrow-right" style="font-size:.85rem;"></i>
         </button>
-        <button class="ship-btn-back" onclick="finalizarPedido()">
-          <i class="fas fa-check-double"></i> Finalizar
+        <button class="ship-btn-back" onclick="cerrarShipping()">
+          <i class="fas fa-arrow-left"></i> Regresar a resultados
         </button>
       </div>
 
