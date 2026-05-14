@@ -1220,8 +1220,80 @@ footer { background:var(--kc-blue); color:#fff; }
     <div class="footer-col"><h4>Marcas</h4><a href="#">Huggies®</a><a href="#">Kleenex®</a><a href="#">Kotex®</a><a href="#">Scott®</a></div>
     <div class="footer-col"><h4>Sistema</h4><a href="#" onclick="abrirCatalogo();return false;">Catálogo</a><a href="#" onclick="navScroll('#sec-optimizar');return false;">Optimización</a><p style="margin-top:8px;">Proyecto Académico — Investigación de Operaciones</p></div>
   </div>
-  <div class="footer-bottom">© 2026 Azuris Distribution México · DistribuIQ — Método de Transporte · Proyecto Académico</div>
+  <div class="footer-bottom">
+    © 2026 Azuris Distribution México · DistribuIQ — Método de Transporte · Proyecto Académico
+    &nbsp;·&nbsp;
+    <button class="priv-footer-link" onclick="abrirPrivacidad()">Aviso de Privacidad</button>
+  </div>
 </footer>
+
+<!-- AVISO DE PRIVACIDAD MODAL -->
+<div id="privacyOverlay">
+  <div class="priv-modal-wrap">
+    <div class="priv-modal-header">
+      <button class="priv-close-btn" onclick="cerrarPrivacidad()">✕</button>
+      <div class="eye">🔒 Protección de Datos Personales</div>
+      <h2>Aviso de Privacidad</h2>
+      <div class="date">Última actualización: <span>Mayo 2026</span></div>
+    </div>
+    <div class="priv-body">
+      <div class="priv-block">
+        <div class="priv-block-title">Responsable</div>
+        <p><span class="priv-hi">Azuris Distribution</span>, con sitio web en <span class="priv-hi">azurisdistribution.com</span>, es responsable del tratamiento de los datos personales que usted proporcione a través del formulario de pedido disponible en nuestra plataforma de distribución inteligente.</p>
+      </div>
+      <div class="priv-block">
+        <div class="priv-block-title">Datos que Recabamos</div>
+        <p>Recabamos únicamente los datos que usted proporciona de forma obligatoria a través del formulario de pedido, previo a la emisión de su ticket de confirmación:</p>
+        <ul>
+          <li><span class="priv-hi">Nombre completo o razón social</span> — para identificar al solicitante del pedido.</li>
+          <li><span class="priv-hi">Correo electrónico de contacto</span> — para enviar confirmaciones y notificaciones de su orden.</li>
+          <li><span class="priv-hi">Número telefónico de contacto</span> — para coordinación logística y atención de incidencias.</li>
+          <li><span class="priv-hi">Dirección completa de envío</span> — para calcular la distribución óptima desde nuestras plantas y garantizar la entrega.</li>
+        </ul>
+      </div>
+      <div class="priv-block">
+        <div class="priv-block-title">Finalidad</div>
+        <p>Los datos personales recabados serán utilizados exclusivamente para:</p>
+        <ul>
+          <li>Procesar, confirmar y gestionar su pedido de productos dentro de la plataforma.</li>
+          <li>Calcular la distribución óptima desde nuestras plantas de producción hasta su punto de entrega mediante el Método de Costo Mínimo.</li>
+          <li>Generar y entregar el ticket de confirmación con todos los detalles de su orden.</li>
+          <li>Contactarlo para coordinar la entrega y dar seguimiento a su pedido.</li>
+          <li>Cumplir con las obligaciones legales y fiscales derivadas de la relación comercial.</li>
+        </ul>
+      </div>
+      <div class="priv-block gold">
+        <div class="priv-block-title">Uso y Transferencia de Datos</div>
+        <p>Azuris Distribution <span class="priv-no">NO vende, comparte, renta ni transfiere</span> sus datos personales a terceros con fines comerciales propios de dichos terceros, bajo ninguna circunstancia.</p>
+        <p>Sus datos podrán ser compartidos únicamente con empresas de logística aliadas para efectos exclusivos de la entrega de su pedido, o cuando así lo exija una autoridad competente conforme a la legislación mexicana aplicable.</p>
+      </div>
+      <div class="priv-block">
+        <div class="priv-block-title">Protección de Datos</div>
+        <p>Nos comprometemos a proteger sus datos personales conforme a lo establecido en la <span class="priv-hi">Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</span> y su Reglamento, vigentes en los Estados Unidos Mexicanos. Implementamos medidas técnicas y administrativas para evitar el acceso no autorizado, pérdida o alteración de su información.</p>
+        <p>El chatbot integrado en la plataforma opera con una clave de API proporcionada directamente por el usuario en su navegador; dicha clave <span class="priv-hi">no es almacenada en nuestros servidores</span>.</p>
+      </div>
+      <div class="priv-block">
+        <div class="priv-block-title">Derechos ARCO</div>
+        <p>Usted tiene derecho a <span class="priv-hi">Acceder, Rectificar, Cancelar u Oponerse</span> al tratamiento de sus datos personales en cualquier momento.</p>
+        <div class="arco-row">
+          <div class="arco-cell"><div class="arco-letter">A</div><div class="arco-word">Acceso</div></div>
+          <div class="arco-cell"><div class="arco-letter">R</div><div class="arco-word">Rectificación</div></div>
+          <div class="arco-cell"><div class="arco-letter">C</div><div class="arco-word">Cancelación</div></div>
+          <div class="arco-cell"><div class="arco-letter">O</div><div class="arco-word">Oposición</div></div>
+        </div>
+        <p style="margin-top:12px;">Para ejercer cualquiera de estos derechos, contáctenos en: <span class="priv-hi">privacidad@azurisdistribution.com</span> o a través de nuestras redes <span class="priv-hi">@azurismexicoplant26</span>.</p>
+      </div>
+      <div class="priv-block gold">
+        <div class="priv-block-title">Limitación de Responsabilidad</div>
+        <p>Azuris Distribution queda completamente deslindado de cualquier responsabilidad derivada del uso indebido de la información proporcionada por terceros ajenos a nuestra organización. El uso de esta plataforma y la realización de un pedido implican la aceptación del presente Aviso de Privacidad.</p>
+      </div>
+      <div class="priv-block">
+        <div class="priv-block-title">Cambios al Aviso</div>
+        <p>Nos reservamos el derecho de modificar este Aviso de Privacidad en cualquier momento, en respuesta a cambios legislativos o en la evolución de nuestros servicios. Los cambios serán publicados en esta misma página.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <div id="toast"><i></i><span id="toast-msg"></span></div>
@@ -1838,7 +1910,21 @@ document.addEventListener('keydown',e=>{
     if(document.getElementById('catalogOverlay').classList.contains('show'))cerrarCatalogo();
     if(document.getElementById('socialOverlay').classList.contains('show'))cerrarSocial();
     if(document.getElementById('searchWrap').classList.contains('open'))cerrarBusqueda();
+    if(document.getElementById('privacyOverlay').classList.contains('show'))cerrarPrivacidad();
   }
+});
+
+/* ── AVISO DE PRIVACIDAD ── */
+function abrirPrivacidad(){
+  document.getElementById('privacyOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function cerrarPrivacidad(){
+  document.getElementById('privacyOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+document.getElementById('privacyOverlay').addEventListener('click',function(e){
+  if(e.target===this) cerrarPrivacidad();
 });
 
 /* ── UTILS ── */
@@ -2192,6 +2278,100 @@ document.addEventListener('DOMContentLoaded', () => {
   #kc-chat-window { width: calc(100vw - 20px); right: 10px; bottom: 88px; }
   #kc-chat-fab { bottom: 16px; right: 16px; }
 }
+
+/* ── AVISO DE PRIVACIDAD MODAL ── */
+#privacyOverlay {
+  display:none; position:fixed; inset:0; z-index:9000;
+  background:rgba(4,8,20,0.95); backdrop-filter:blur(14px);
+  animation:fadeIn .25s ease;
+  overflow-y:auto;
+}
+#privacyOverlay.show { display:flex; flex-direction:column; align-items:center; }
+.priv-modal-wrap {
+  width:100%; max-width:800px; margin:32px auto;
+  padding:0 20px 48px;
+  animation:slideUp .35s cubic-bezier(.34,1.2,.64,1) both;
+}
+.priv-modal-header {
+  background:linear-gradient(135deg,var(--kc-blue),var(--kc-mid));
+  border-radius:18px 18px 0 0; padding:42px 40px 36px;
+  text-align:center; position:relative;
+}
+.priv-modal-header .eye {
+  font-size:11px; letter-spacing:3px; text-transform:uppercase;
+  color:var(--kc-gold); font-weight:600; margin-bottom:12px;
+}
+.priv-modal-header h2 {
+  font-family:'Playfair Display',serif; font-size:32px; font-weight:900;
+  color:#fff; margin-bottom:8px;
+}
+.priv-modal-header .date {
+  font-size:.82rem; color:rgba(255,255,255,.6); font-family:'Syne',sans-serif;
+}
+.priv-modal-header .date span { color:var(--kc-gold); font-weight:700; }
+.priv-close-btn {
+  position:absolute; top:18px; right:18px;
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+  color:#fff; width:40px; height:40px; border-radius:50%; font-size:18px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all .2s;
+}
+.priv-close-btn:hover { background:rgba(255,255,255,.25); transform:rotate(90deg); }
+
+.priv-body {
+  background:#fff; border-radius:0 0 18px 18px;
+  padding:36px 40px; display:flex; flex-direction:column; gap:20px;
+}
+.priv-block {
+  border-radius:12px; padding:22px 24px;
+  border-left:4px solid var(--kc-blue);
+  background:#f4f7fc;
+  border:1px solid #d0daea;
+  border-left:4px solid var(--kc-blue);
+}
+.priv-block.gold { border-left-color:var(--kc-gold); }
+.priv-block-title {
+  font-family:'Syne',sans-serif; font-size:.75rem; font-weight:800;
+  text-transform:uppercase; letter-spacing:.12em; color:var(--kc-blue);
+  margin-bottom:10px; display:flex; align-items:center; gap:8px;
+}
+.priv-block.gold .priv-block-title { color:#b36a00; }
+.priv-block p {
+  font-size:14px; line-height:1.85; color:#555e70;
+}
+.priv-block p + p { margin-top:8px; }
+.priv-block ul { list-style:none; margin-top:10px; display:flex; flex-direction:column; gap:7px; }
+.priv-block ul li {
+  display:flex; align-items:flex-start; gap:9px;
+  font-size:14px; line-height:1.75; color:#555e70;
+}
+.priv-block ul li::before { content:'▸'; color:var(--kc-gold); flex-shrink:0; margin-top:2px; }
+.priv-no { color:#c0392b; font-weight:700; }
+.priv-hi { color:var(--kc-blue); font-weight:600; }
+.arco-row {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:12px;
+}
+.arco-cell {
+  background:#fff; border:1px solid #d0daea; border-radius:10px;
+  padding:12px 8px; text-align:center;
+}
+.arco-letter {
+  font-family:'Playfair Display',serif; font-size:22px; font-weight:900;
+  color:var(--kc-blue); line-height:1;
+}
+.arco-word {
+  font-family:'Syne',sans-serif; font-size:.65rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.05em; color:#8892a4; margin-top:4px;
+}
+
+/* Footer link */
+.priv-footer-link {
+  color:rgba(255,255,255,.45); font-size:.8rem; cursor:pointer;
+  text-decoration:underline; text-underline-offset:3px;
+  transition:color .2s; background:none; border:none; padding:0;
+  font-family:'DM Sans',sans-serif;
+}
+.priv-footer-link:hover { color:var(--kc-gold); }
 </style>
 
 <button id="kc-chat-fab" onclick="toggleChat()" aria-label="Abrir chat">
