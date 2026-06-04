@@ -2155,18 +2155,30 @@ const chatHistory = [];
 let chatOpen = false;
 let groqKey = '';
 
-function getGroqKey() { return groqKey; }
-
-function saveGroqKey(key) {
-  groqKey = key.trim();
-  sessionStorage.setItem('kc_groq_key', groqKey);
+// Cargar la API Key de Groq desde Firestore al iniciar la página
+async function cargarGroqKey() {
+  try {
+    const snap = await db.collection('configuracion').doc('chatbot').get();
+    if (snap.exists && snap.data().groqApiKey) {
+      groqKey = snap.data().groqApiKey;
+      console.log('✅ Chatbot listo');
+    } else {
+      console.warn('⚠️ No se encontró groqApiKey en Firestore');
+      mostrarChatbotNoDisponible();
+    }
+  } catch (err) {
+    console.error('❌ Error al cargar key del chatbot:', err);
+    mostrarChatbotNoDisponible();
+  }
 }
 
-// Load key from session if exists
-(function() {
-  const saved = sessionStorage.getItem('kc_groq_key');
-  if (saved) groqKey = saved;
-})();
+function mostrarChatbotNoDisponible() {
+  document.getElementById('kc-unavail-title').textContent = 'Chatbot no disponible';
+  document.getElementById('kc-unavail-msg').textContent = 'El asistente no está configurado en este momento. Intenta más tarde.';
+  document.getElementById('kc-unavail-icon').textContent = '⚠️';
+}
+
+cargarGroqKey();
 
 function toggleChat() {
   chatOpen = !chatOpen;
@@ -2187,34 +2199,12 @@ function toggleChat() {
 function showKeyScreen() {
   document.getElementById('kc-key-screen').style.display = 'flex';
   document.getElementById('kc-chat-screen').style.display = 'none';
-  setTimeout(() => document.getElementById('kc-key-input').focus(), 100);
 }
 
 function showChatScreen() {
   document.getElementById('kc-key-screen').style.display = 'none';
   document.getElementById('kc-chat-screen').style.display = 'flex';
   setTimeout(() => document.getElementById('kc-chat-input').focus(), 100);
-}
-
-function submitKey() {
-  const val = document.getElementById('kc-key-input').value.trim();
-  const err = document.getElementById('kc-key-error');
-  if (!val.startsWith('gsk_')) {
-    err.style.display = 'block';
-    err.textContent = 'La key debe empezar con gsk_ — revisa que la copiaste completa.';
-    return;
-  }
-  err.style.display = 'none';
-  saveGroqKey(val);
-  showChatScreen();
-  if (chatHistory.length === 0) appendChatMsg('assistant', '¡Hola! 👋 Soy el Asistente AD de Azuris Distribution. Puedo ayudarte con productos, precios, pedidos, distribución y más. ¿En qué te puedo ayudar?');
-}
-
-function resetKey() {
-  groqKey = '';
-  sessionStorage.removeItem('kc_groq_key');
-  showKeyScreen();
-  document.getElementById('kc-key-input').value = '';
 }
 
 function appendChatMsg(role, text) {
@@ -2250,7 +2240,7 @@ async function sendChatMsg() {
   const sendBtn = document.getElementById('kc-send-btn');
   sendBtn.disabled = true;
 
-  const GROQ_KEY = getGroqKey();
+  const GROQ_KEY = groqKey;
   if (!GROQ_KEY) { showKeyScreen(); return; }
 
   const SYSTEM_PROMPT = `Eres el asistente virtual oficial del Sistema de Distribución Inteligente de Azuris Distribution México. Tu nombre es "Asistente AD".
@@ -2847,25 +2837,13 @@ document.addEventListener('DOMContentLoaded', () => {
     <button class="kc-chat-close" onclick="toggleChat()"><i class="fas fa-times"></i></button>
   </div>
 
-  <!-- KEY SCREEN -->
+  <!-- KEY SCREEN — loading / no disponible -->
   <div id="kc-key-screen" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 24px; gap:14px; flex:1;">
-    <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--kc-blue);box-shadow:0 4px 16px rgba(245,166,35,.4);">🔑</div>
+    <div id="kc-unavail-icon" style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--kc-blue);box-shadow:0 4px 16px rgba(245,166,35,.4);">🤖</div>
     <div style="text-align:center;">
-      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--white);margin-bottom:6px;">Conecta tu API Key</div>
-      <div style="font-size:.78rem;color:var(--gray);line-height:1.55;">Para usar el chatbot necesitas una key gratuita de Groq. Tu key <strong style="color:var(--white);">nunca se guarda</strong> en el servidor, solo en tu navegador.</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--white);margin-bottom:6px;" id="kc-unavail-title">Cargando asistente...</div>
+      <div style="font-size:.78rem;color:var(--gray);line-height:1.55;" id="kc-unavail-msg">Conectando con el sistema, un momento por favor.</div>
     </div>
-    <div style="width:100%;">
-      <input id="kc-key-input" type="password" placeholder="Pega tu key aquí (gsk_...)"
-        style="width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--sys-border);background:rgba(255,255,255,.06);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;transition:border-color .2s;"
-        onfocus="this.style.borderColor='rgba(45,125,210,.6)'" onblur="this.style.borderColor=''"
-        onkeydown="if(event.key==='Enter')submitKey()"/>
-      <div id="kc-key-error" style="display:none;color:#ff6b6b;font-size:.73rem;margin-top:5px;padding-left:4px;"></div>
-    </div>
-    <button onclick="submitKey()" style="width:100%;padding:11px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--kc-gold),var(--kc-gold2));color:var(--kc-blue);font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;box-shadow:0 4px 14px rgba(245,166,35,.4);transition:all .2s;"
-      onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
-      Activar Chatbot →
-    </button>
-    <a href="https://console.groq.com/keys" target="_blank" style="font-size:.73rem;color:var(--kc-light);text-decoration:none;opacity:.8;">¿No tienes key? Obtén una gratis en console.groq.com →</a>
   </div>
 
   <!-- CHAT SCREEN -->
@@ -2881,11 +2859,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="kc-input-row">
         <textarea id="kc-chat-input" placeholder="Escribe tu mensaje..." rows="1"></textarea>
         <button id="kc-send-btn" onclick="sendChatMsg()"><i class="fas fa-paper-plane"></i></button>
-      </div>
-      <div style="text-align:center;margin-top:8px;">
-        <span onclick="resetKey()" style="font-size:.68rem;color:var(--gray);cursor:pointer;opacity:.6;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.6'">
-          🔑 Cambiar API key
-        </span>
       </div>
     </div>
   </div>
