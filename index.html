@@ -3,53 +3,16 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Azuris Distribution | Sistema de Distribución Inteligente</title>
+  <title>Prueba | Sistema de Distribución Inteligente</title>
   <link rel="icon" type="image/png" href="imagenes/Azurilogo.png"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-  <!-- ══ FIREBASE SDK ══ -->
-  <script type="module">
-    import { initializeApp }                              from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp }
-                                                          from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey:            "AIzaSyBtj_RetS0XsyboQhAQDtOLtrlNjRY3D7c",
-      authDomain:        "azuris-distribution.firebaseapp.com",
-      projectId:         "azuris-distribution",
-      storageBucket:     "azuris-distribution.firebasestorage.app",
-      messagingSenderId: "128268104704",
-      appId:             "1:128268104704:web:f00956ea4d4a9259ee14e5",
-      measurementId:     "G-H42Z4E10JW"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
-
-    /**
-     * Guarda un pedido completo en la colección "pedidos" de Firestore.
-     * Retorna el ID generado o null si falla.
-     */
-    window.guardarPedidoFirestore = async function(datosCliente, carritoItems, total) {
-      try {
-        const docRef = await addDoc(collection(db, "pedidos"), {
-          cliente:       datosCliente,
-          carrito:       carritoItems,
-          total:         total,
-          estado:        "pendiente",
-          fechaCreacion: serverTimestamp()
-        });
-        console.log("✅ Pedido guardado — ID:", docRef.id);
-        return docRef.id;
-      } catch (err) {
-        console.error("❌ Error al guardar pedido en Firestore:", err);
-        return null;
-      }
-    };
-  </script>
+  <!-- Firebase SDKs (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
   <style>
 :root {
   --kc-blue:   #003087;
@@ -1359,10 +1322,71 @@ const PRODUCTS=[
 ];
 const STORE_NAMES=['Tienda A','Tienda B','Tienda C'];
 
+/* ── FIREBASE ── */
+const firebaseConfig={
+  apiKey:"AIzaSyBtj_RetS0XsyboQhAQDtOLtrlNjRY3D7c",
+  authDomain:"azuris-distribution.firebaseapp.com",
+  projectId:"azuris-distribution",
+  storageBucket:"azuris-distribution.firebasestorage.app",
+  messagingSenderId:"128268104704",
+  appId:"1:128268104704:web:f00956ea4d4a9259ee14e5",
+  measurementId:"G-H42Z4E10JW"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+try{firebase.analytics();}catch(e){}
+
+async function guardarPedidoFirebase(){
+  try{
+    const dc=window.datosCliente||{};
+    const subtotal=calcularTotal();
+    const iva=subtotal*0.16;
+    const pedidoData={
+      numeroPedido:pedidoNumero,
+      timestamp:firebase.firestore.FieldValue.serverTimestamp(),
+      fechaLocal:pedidoFechaObj.toISOString(),
+      estado:'confirmado',
+      cliente:{
+        nombre:dc.nombre||'',
+        email:dc.email||'',
+        telefono:dc.tel||'',
+        estadoMex:dc.estado||'',
+        ciudad:dc.ciudad||'',
+        direccion:dc.dir||'',
+        colonia:dc.colonia||'',
+        cp:dc.cp||''
+      },
+      productos:Object.entries(cart).map(([id,qty])=>{
+        const p=PRODUCTS.find(x=>x.id==id);
+        return{id:Number(id),nombre:p.name,categoria:p.cat,precioUnitario:p.price,cantidad:qty,subtotal:p.price*qty};
+      }),
+      resumenCobro:{subtotal,iva,total:subtotal+iva},
+      demandas:demands||[],
+      distribucion:lastOptResult?{
+        asignacion:PLANTS.map((pl,i)=>({
+          plantaId:pl.id,
+          plantaNombre:pl.name,
+          unidadesTotales:lastOptResult.asig[i].reduce((a,b)=>a+b,0),
+          costoEnvio:lastOptResult.asig[i].reduce((s,v,j)=>s+v*BASE_COSTS[i][j],0),
+          unidadesPorTienda:{'Tienda A':lastOptResult.asig[i][0],'Tienda B':lastOptResult.asig[i][1],'Tienda C':lastOptResult.asig[i][2]}
+        })),
+        costoTransporteTotal:lastOptResult.total,
+        ahorroEstimadoPct:lastOptResult.saving
+      }:null
+    };
+    const docRef=await db.collection('pedidos').add(pedidoData);
+    console.log('OK Firebase. DocID:',docRef.id,'| Pedido:',pedidoNumero);
+    setTimeout(()=>showToast('Pedido sincronizado con la base de datos','success'),2000);
+  }catch(err){
+    console.error('Error Firebase:',err);
+  }
+}
+
 /* ── STATE ── */
 let cart={}, demands=null, pedidoConfirmado=false, lastOptResult=null;
 let barChart=null, pieChart=null;
 let catalogFilter='Todos', catalogSearchTerm='';
+let pedidoNumero='', pedidoFechaObj=null;
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1676,8 +1700,11 @@ function abrirResumen(){
 }
 
 function _mostrarTicket(){
-  const now=new Date();
-  document.getElementById('tk-num').textContent='#'+String(Math.floor(100000+Math.random()*900000));
+  // Usar el número y fecha del pedido generados al confirmar envío
+  if(!pedidoNumero) pedidoNumero='#'+String(Math.floor(100000+Math.random()*900000));
+  if(!pedidoFechaObj) pedidoFechaObj=new Date();
+  const now=pedidoFechaObj;
+  document.getElementById('tk-num').textContent=pedidoNumero;
   document.getElementById('tk-fecha').textContent=now.toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});
   document.getElementById('tk-hora').textContent=now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
   document.getElementById('tk-items').innerHTML=Object.entries(cart).map(([id,qty])=>{
@@ -2021,20 +2048,12 @@ function enviarFormularioEnvio(){
     cp:     document.getElementById('ship-cp').value.trim(),
   };
 
-  // ══ ENVIAR A FIRESTORE ══
-  if (typeof window.guardarPedidoFirestore === 'function') {
-    const carritoItems = Object.entries(cart).map(([id, qty]) => {
-      const prod = PRODUCTS.find(p => String(p.id) === String(id));
-      return {
-        id:       id,
-        nombre:   prod ? prod.name  : id,
-        precio:   prod ? prod.price : 0,
-        cantidad: qty
-      };
-    });
-    const totalPedido = carritoItems.reduce((sum, i) => sum + (i.precio * i.cantidad), 0);
-    window.guardarPedidoFirestore(window.datosCliente, carritoItems, totalPedido);
-  }
+  // Generar número de pedido único y timestamp
+  pedidoNumero='#'+String(Math.floor(100000+Math.random()*900000));
+  pedidoFechaObj=new Date();
+
+  // Guardar en Firebase Firestore (asíncrono, no bloquea la UI)
+  guardarPedidoFirebase();
 
   cerrarShipping();
   _mostrarTicket();
@@ -2045,6 +2064,7 @@ function enviarFormularioEnvio(){
 /* ── RESET ── */
 function reiniciarPedido(){
   cart={};demands=null;pedidoConfirmado=false;lastOptResult=null;
+  pedidoNumero='';pedidoFechaObj=null;
   // Cart
   renderCart();actualizarCartBadge();
   // Steps
