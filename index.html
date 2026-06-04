@@ -1374,8 +1374,9 @@ async function guardarPedidoFirebase(){
         ahorroEstimadoPct:lastOptResult.saving
       }:null
     };
-    const docRef=await db.collection('pedidos').add(pedidoData);
-    console.log('OK Firebase. DocID:',docRef.id,'| Pedido:',pedidoNumero);
+    const docId='Pedido-'+pedidoNumero.replace('#','');
+    await db.collection('pedidos').doc(docId).set(pedidoData);
+    console.log('OK Firebase. DocID:',docId);
     setTimeout(()=>showToast('Pedido sincronizado con la base de datos','success'),2000);
   }catch(err){
     console.error('Error Firebase:',err);
