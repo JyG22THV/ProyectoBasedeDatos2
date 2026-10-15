@@ -1622,7 +1622,7 @@ function calcularTransporte(ofertas,demandas,costos){
   const sup=[...ofertas],dem=[...demandas];
   const rows=sup.length,cols=dem.length;
   const ts=sup.reduce((a,b)=>a+b,0),td=dem.reduce((a,b)=>a+b,0);
-  if(ts>td)dem.push(ts-td); else if(td>ts)sup.push(td-ts);
+  if(td>ts)sup.push(td-ts);
   const r2=sup.length,c2=dem.length;
   const asig=Array.from({length:r2},()=>Array(c2).fill(0));
   const c2d=costos.map(r=>[...r]);
